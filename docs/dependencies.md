@@ -13,6 +13,8 @@ A line is `tool`, the name `build.py` looks for, and why.
     tool      zig          the C compiler, the linker and the archiver, for every target
 
 Python runs `build.py` and the scripts of `tools/`, with nothing outside its standard library.
+That is also what fetches Bridge's two packages, at the commit `bridge.txt` states - `readme.md`,
+*What it needs of Bridge*.
 
 ## What the built artifacts import
 
