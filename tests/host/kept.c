@@ -23,18 +23,6 @@ static const char *const TEST_PHASES[] = {
     "value_b", "look_b", "walk", "flag", "near", "far", "one"
 };
 
-/*
-** A case of this file: the module it loads, how many sparse sets and
-** direct-indexed components its deployment has room for, and the phases it
-** runs.
-*/
-typedef struct {
-    const char *what;
-    const char *path;
-    int64_t sets;
-    const char *phases[12];
-} test_kept_case_t;
-
 static const test_kept_case_t TEST_KEPT[] = {
     { "single", NSINGLE_PATH, BRIDGE_NONE,
         { "look", "attach_a", "look", "value_a", "look", "work", "look" } },

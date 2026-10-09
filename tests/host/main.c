@@ -68,6 +68,11 @@ static const host_case_t TEST_CASES[] = {
         test_run_mover, "", test_set },
 };
 
+/*
+** main
+**
+** Runs the case the command line names.
+*/
 int main(int argc, char **argv)
 {
     host_t h;

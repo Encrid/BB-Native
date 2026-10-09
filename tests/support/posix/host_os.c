@@ -68,8 +68,9 @@ void host_thread_start(host_thread_t *t)
 */
 void host_thread_join(host_thread_t *t)
 {
-    pthread_t *thread = t->handle;
+    pthread_t *kept = t->handle;
+    pthread_t thread = *kept;
 
-    pthread_join(*thread, nullptr);
-    free(thread);
+    pthread_join(thread, nullptr);
+    free(kept);
 }

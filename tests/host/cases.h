@@ -18,6 +18,19 @@
     #include "host.h"
 
 /*
+** A case that reads what is kept in another layout than a table: what its
+** row calls it, the module it loads, how many sparse sets and
+** direct-indexed components its deployment has room for, and the phases it
+** runs.
+*/
+typedef struct {
+    const char *what;
+    const char *path;
+    int64_t sets;
+    const char *phases[12];
+} test_kept_case_t;
+
+/*
 ** test_hear
 **
 ** The sink of this program: prints a record with its barrier, whose it is
