@@ -241,6 +241,11 @@ def build(target, debug, out, bridge):
                                 ['-D' + d for d in flags])
                        for c in sources(ROOT / 'tests/modules', source, 'nidle', '"native_idle.h"')]
                 for name, source, flags in MODULES}
+    # the program that calls the backend as the library does: the backend seam, the layer over
+    # the operating system, and a loader of its own
+    direct_o = [compile_('direct-' + c.stem, c, ours + [seams, utils] + defines)
+                for c in sorted((ROOT / 'tests/direct').glob('*.c'))] + \
+               [obj / ('os-%s.o' % name) for name in OS]
     together(compiles)
 
     links = []
@@ -259,6 +264,7 @@ def build(target, debug, out, bridge):
     step('putting the library beside the host', [beside], [bridge / 'bridge' / beside.name],
          [lambda: shutil.copyfile(bridge / 'bridge' / beside.name, beside)])
     link('host', host_o + [bridge / 'bridge' / beside.name], system + here)
+    link('direct', direct_o, system)
     together(links)
     return {'python': sys.executable, 'exe': exe}
 
@@ -407,7 +413,10 @@ CASES = [(name, ['host', name], match, never) for name, match, never in [
     ('backend_create-a-setting-refused',
      r"backend 'native' would not start: it knows no setting 'cache'.*bridge_create refused.*alive",
      None),
-]]
+]] + [
+    ('define_func-an-entry-the-abi-has-not-refused', ['direct'],
+     r"an entry the SDK has not is refused: the native SDK has no entry 'teleport'", None),
+]
 ALONE = ()
 
 
