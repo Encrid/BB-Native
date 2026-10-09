@@ -1,0 +1,22 @@
+/*
+** Copyright (C) 2026 BB-Native Owner
+**
+** This file is part of BB-Native.
+**
+** Under the GNU Affero General Public License, version 3 only: see license.
+**
+** tests/modules/nticker.h -- the one component of nticker.c: a
+** count.
+*/
+
+#ifndef TEST_NTICKER_H
+    #define TEST_NTICKER_H
+
+    #include "bridge_schema.h"
+
+    #define TICK_FIELDS { uint32_t n; }
+
+BRIDGE_SCHEMA_STRUCT_TYPE(tick_t, TICK_FIELDS);
+BRIDGE_SCHEMA_STRUCT_DESC(tick_t, TICK_FIELDS);
+
+#endif

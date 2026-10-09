@@ -1,0 +1,55 @@
+/*
+** Copyright (C) 2026 BB-Native Owner
+**
+** This file is part of BB-Native.
+**
+** Under the GNU Affero General Public License, version 3 only: see license.
+**
+** tests/host/main.c -- the host program of the tests: its cases, each by
+** the name the build runs it by, the function that is it, what that is
+** handed, and its fixture.
+*/
+
+#include "cases.h"
+
+static const host_case_t TEST_CASES[] = {
+    { "BRIDGE_NATIVE-system-reads-and-writes", test_run_mover, "", test_set },
+    { "BRIDGE_NATIVE_COMPONENT-declared", test_run_mover, "", test_set },
+    { "BRIDGE_NATIVE_ADD_SYSTEM-registered-and-run",
+        test_run_mover, "", test_set },
+    { "bridge_native_get_query-the-query-of-a-system",
+        test_run_mover, "", test_set },
+    { "bridge_native_get_span-two-tables-walked",
+        test_run_mover, "", test_set },
+    { "bridge_native_log-a-line-with-two-numbers",
+        test_run_mover, "", test_set },
+    { "BRIDGE_NATIVE_ATTACH-seen-by-an-observer", test_observe, "", test_set },
+    { "bridge_native_lend-a-value-lent-to-attach",
+        test_observe, "", test_set },
+    { "BRIDGE_NATIVE_PUT_CHANGES-changes-stated-and-made",
+        test_order_changes, "", test_set },
+    { "bridge_api_t-entry-from-a-foreign-thread-refused",
+        test_enter_from_foreign_thread, "", test_set },
+    { "call-an-entry-refused-fails-the-invocation",
+        test_refuse_entry, "", test_set },
+    { "backend_get_capabilities-untrusted-refused",
+        test_state_untrusted, "", test_set },
+    { "backend_get_capabilities-work-limit-refused",
+        test_state_limit, "w", test_set },
+    { "backend_get_capabilities-memory-limit-refused",
+        test_state_limit, "m", test_set },
+    { "backend_get_capabilities-timeout-refused",
+        test_state_limit, "t", test_set },
+    { "module_compile-no-path-refused", test_state_no_path, "", test_set },
+    { "module_compile-library-cannot-open",
+        test_name_no_library, "", test_set },
+    { "backend_create-a-setting-refused", test_hand_setting, "", test_set },
+};
+
+int main(int argc, char **argv)
+{
+    host_t h;
+
+    host_init(&h, argc, argv);
+    return (host_run(&h, TEST_CASES, sizeof(TEST_CASES) / sizeof(*TEST_CASES)));
+}
