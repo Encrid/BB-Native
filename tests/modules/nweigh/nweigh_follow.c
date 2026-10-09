@@ -10,8 +10,8 @@
 */
 
 #include "nweigh.h"
-#include "native/native_measured.h"
-#include "native/native_reach.h"
+#include "native_measured.h"
+#include "native_reach.h"
 
 uint32_t nweigh_value;
 uint32_t nweigh_linked;

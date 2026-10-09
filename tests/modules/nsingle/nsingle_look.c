@@ -10,7 +10,7 @@
 */
 
 #include "nsingle.h"
-#include "native/native_measured.h"
+#include "native_measured.h"
 
 volatile uint32_t nsingle_which;
 

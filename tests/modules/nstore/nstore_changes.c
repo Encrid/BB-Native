@@ -12,7 +12,7 @@
 */
 
 #include "nstore.h"
-#include "native/native_measured.h"
+#include "native_measured.h"
 
 uint32_t nstore_a;
 uint32_t nstore_b;

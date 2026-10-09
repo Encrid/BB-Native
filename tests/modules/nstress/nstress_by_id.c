@@ -10,7 +10,7 @@
 */
 
 #include "nstress.h"
-#include "native/native_reach.h"
+#include "native_reach.h"
 
 uint64_t nstress_ids[SLOTS];
 uint8_t nstress_has[SLOTS];

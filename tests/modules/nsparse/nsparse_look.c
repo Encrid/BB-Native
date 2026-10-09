@@ -10,7 +10,7 @@
 */
 
 #include "nsparse.h"
-#include "native/native_measured.h"
+#include "native_measured.h"
 
 uint32_t nsparse_in_set;
 uint32_t nsparse_in_table;

@@ -10,8 +10,8 @@
 */
 
 #include "ndirect.h"
-#include "native/native_measured.h"
-#include "native/native_reach.h"
+#include "native_measured.h"
+#include "native_reach.h"
 
 uint64_t ndirect_mixed[COUNT];
 

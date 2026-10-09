@@ -10,7 +10,7 @@
 */
 
 #include "ndirect.h"
-#include "native/native_measured.h"
+#include "native_measured.h"
 
 uint32_t ndirect_a;
 uint32_t ndirect_d;

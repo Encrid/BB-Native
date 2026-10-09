@@ -11,7 +11,7 @@
 */
 
 #include "nweigh.h"
-#include "native/native_measured.h"
+#include "native_measured.h"
 
 uint32_t nweigh_walking;
 uint32_t nweigh_flagged;

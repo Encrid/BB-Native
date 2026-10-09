@@ -10,7 +10,7 @@
 */
 
 #include "ntoggle.h"
-#include "native/native_reach.h"
+#include "native_reach.h"
 
 /*
 ** see_entity

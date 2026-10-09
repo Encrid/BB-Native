@@ -14,7 +14,7 @@
     #define TEST_NSTORE_H
 
     #include "bridge_native.h"
-    #include "native/native_say.h"
+    #include "native_say.h"
 
 /*
 ** A is as big as the build says: for what a change costs an entity that

@@ -11,7 +11,7 @@
 */
 
 #include "nstore.h"
-#include "native/native_reach.h"
+#include "native_reach.h"
 
 #if !defined(BIG) && !defined(TABLES)
 uint32_t nstore_with_b;

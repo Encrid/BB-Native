@@ -11,7 +11,7 @@
 */
 
 #include "nstore.h"
-#include "native/native_reach.h"
+#include "native_reach.h"
 
 #if !defined(BIG) && !defined(TABLES)
 constexpr uint32_t KEPT = 64;

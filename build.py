@@ -64,6 +64,9 @@ MODULES = [
     ('nsetter', 'nsetter', []), ('nwatcher', 'nwatcher', []),
     ('nstamp5', 'nstamp', ['VALUE=5', 'PHASE="update"']),
     ('nstamp9', 'nstamp', ['VALUE=9', 'PHASE="update"']),
+    ('nsingle', 'nsingle', []), ('ntoggle', 'ntoggle', []), ('ntag', 'ntag', []),
+    ('ndirect', 'ndirect', []), ('nsparse', 'nsparse', []),
+    ('nlayout0', 'nlayout', ['V=0', 'KEPT=1']),
 ]
 
 def die(msg):
@@ -413,6 +416,28 @@ CASES = [(name, ['host', name], match, never) for name, match, never in [
     ('backend_create-a-setting-refused',
      r"backend 'native' would not start: it knows no setting 'cache'.*bridge_create refused.*alive",
      None),
+    ('bridge_native_get_single-the-one-row',
+     r"it has no value 0 0.*it has a value: gravity, wind 10 1.*wind 20 2.*wind 20 77.*alive", None),
+    ('bridge_native_get_bits-read-and-turned',
+     r"by words: rows, and of them on 6 6.*flicker.*rows, and of them on 6 3.*"
+     r"look_b: by rows: on, and their sum 3 39.*find: by id: alive, and of them on 6 3.*alive", None),
+    ('BRIDGE_NATIVE_DECLARE_TAG-carried-with-no-bytes',
+     r"look: M, in tables: rows that carry it, and spans whose base says carried 3 1.*"
+     r"P, by its index: entities whose cell says carried 2 0.*R, direct-indexed: entities given it 3 0"
+     r".*alive", None),
+    ('bridge_native_get_cells-reached-by-an-id',
+     r"look_b: the table walked: rows, and of them given D 6 3.*"
+     r"near: by id: alive, and of them given D 6 3.*near: by id: the sum of D 306 0.*alive", None),
+    ('bridge_native_get_sparse_index-reached-by-an-id',
+     r"look: the set walked: spans, rows 1 3.*the sum of its values 306 0.*"
+     r"look_b: the table walked: rows, and of them in the set 6 3.*alive", None),
+    ('BRIDGE_NATIVE_DECLARE-an-enum-a-struct-names',
+     r"st:store@0.1.0: loaded.*look: values, and the sum of a 3 3003.*alive", r"not loaded"),
+    ('bridge_native_get_list-triggers-of-an-observer', SEEN, None),
+    ('BRIDGE_NATIVE_OBSERVER-registered-and-told', SEEN, None),
+    ('bridge_native_get_header-read-through-a-pointer', SEEN, None),
+    ('BRIDGE_NATIVE_STATE-a-statement-put-in-scratch', TALLY, None),
+    ('bridge_native_put-bytes-copied-into-scratch', TALLY, None),
 ]] + [
     ('define_func-an-entry-the-abi-has-not-refused', ['direct'],
      r"an entry the SDK has not is refused: the native SDK has no entry 'teleport'", None),

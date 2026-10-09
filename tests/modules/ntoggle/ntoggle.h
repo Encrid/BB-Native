@@ -14,7 +14,7 @@
     #define TEST_NTOGGLE_H
 
     #include "bridge_native.h"
-    #include "native/native_say.h"
+    #include "native_say.h"
 
     #define A_FIELDS { uint32_t v; }
     #define B_FIELDS { uint32_t v; }

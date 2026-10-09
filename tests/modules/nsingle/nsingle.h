@@ -13,7 +13,7 @@
     #define TEST_NSINGLE_H
 
     #include "bridge_native.h"
-    #include "native/native_say.h"
+    #include "native_say.h"
 
     #define G_FIELDS { uint32_t gravity; uint32_t wind; }
     #define A_FIELDS { uint32_t v; }

@@ -14,7 +14,7 @@
     #define TEST_NSPARSE_H
 
     #include "bridge_native.h"
-    #include "native/native_say.h"
+    #include "native_say.h"
 
     #ifdef FAT
         #define A_FIELDS { uint32_t v; uint8_t rest[4092]; }
