@@ -100,6 +100,19 @@ not for a change to documents alone.
 
 What it costs is what it cost there, and is read off the first run.
 
+### How a run is started by hand
+
+**A workflow can be started by hand, and one that runs for `main` publishes however it was
+started.** Enkrid ruled it on 2026-10-09, as recommended. It was found when `main` was made: a
+run starts for a push with a file in it that is not a document or a workflow, and a branch
+made at a commit another branch already has is a push with no file in it, so nothing ran.
+Bridge's `main` was there before its workflows were, and never met it.
+
+A run started by hand on another branch tests and publishes nothing, as a pull request's does.
+
+It stays of use after the first run: what `main` hands can be published again, for the same
+commit, with no commit made for it.
+
 ## The questions
 
 None stands. Four were listed when the stage was planned: three were put and ruled, and the
