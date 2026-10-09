@@ -33,8 +33,9 @@ packages as Bridge's build wrote them:
 
     python build.py --bridge DIR test
 
-Either way each file is held against the hash its package states. What this project hands in its turn states the commit of
-Bridge it was built against, so that a host can refuse a backend built against another.
+Either way each file is held against the hash its package states. What this project hands in
+its turn states the commit of Bridge it was built against, so that a host can refuse a backend
+built against another.
 
 Bridge is another project. A document or a comment here cites one of Bridge's documents by its
 name and a heading, and `bridge_headings.txt` is every heading of them at the commit this
