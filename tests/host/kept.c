@@ -32,6 +32,9 @@ static const test_kept_case_t TEST_KEPT[] = {
     { "direct", NDIRECT_PATH, 1, { "spawn", "attach_b", "look_b", "near" } },
     { "sparse", NSPARSE_PATH, 1, { "spawn", "attach_b", "look", "look_b" } },
     { "layout", NLAYOUT0_PATH, 2, { "spawn", "look" } },
+    { "changed", NDIRECT_PATH, 1, { "spawn", "attach_b", "look_b", "near",
+        "value_b", "near", "detach_b_half", "look_b", "destroy_half",
+        "look_b", "near" } },
 };
 
 /*
@@ -100,5 +103,25 @@ void test_read_kept(host_t *h)
     a.cfg.log_ring = 256 * 24;
     host_load(h, &a);
     run_phases(h, c);
+    host_close(h);
+}
+
+/*
+** test_keep_bytes
+**
+** A module that asks for bytes of the persistent arena, in a deployment
+** that gives it a share.
+*/
+void test_keep_bytes(host_t *h)
+{
+    bridge_artifact_t a;
+
+    h->sink = hear_plain;
+    if (host_open(h))
+        return;
+    host_state_native(&a, "test:alloc@0.1.0", NALLOC_PATH);
+    a.cfg.persistent = 64;
+    host_load(h, &a);
+    host_run_frames_unsaid(h->b, 1);
     host_close(h);
 }

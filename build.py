@@ -66,7 +66,7 @@ MODULES = [
     ('nstamp9', 'nstamp', ['VALUE=9', 'PHASE="update"']),
     ('nsingle', 'nsingle', []), ('ntoggle', 'ntoggle', []), ('ntag', 'ntag', []),
     ('ndirect', 'ndirect', []), ('nsparse', 'nsparse', []),
-    ('nlayout0', 'nlayout', ['V=0', 'KEPT=1']),
+    ('nlayout0', 'nlayout', ['V=0', 'KEPT=1']), ('nalloc', 'nalloc', []),
 ]
 
 def die(msg):
@@ -438,6 +438,19 @@ CASES = [(name, ['host', name], match, never) for name, match, never in [
     ('bridge_native_get_header-read-through-a-pointer', SEEN, None),
     ('BRIDGE_NATIVE_STATE-a-statement-put-in-scratch', TALLY, None),
     ('bridge_native_put-bytes-copied-into-scratch', TALLY, None),
+    ('bridge_line_t-a-line-with-its-two-numbers', TALLY, None),
+    ('declare-two-components-declared', TALLY, None),
+    ('add_system-registered-and-run', TALLY, None),
+    ('spawn-a-thousand-made-at-init', TALLY, None),
+    ('observe-told-of-an-attach', SEEN, None),
+    ('attach-a-value-given-again',
+     r"value_b.*heard_d: heard of D: entity, events 3 2.*near: by id: the sum of D 1104 0.*alive", None),
+    ('detach-a-component-taken',
+     r"detach_b_half.*heard_d: heard of D: entity, events 1 4.*rows, and of them given D 6 2.*alive", None),
+    ('destroy-two-entities-gone',
+     r"destroy_half.*rows, and of them given D 4 1.*near: by id: alive, and of them given D 4 1.*alive",
+     None),
+    ('alloc-bytes-kept-from-init', r"say: kept 1 42.*alive", None),
 ]] + [
     ('define_func-an-entry-the-abi-has-not-refused', ['direct'],
      r"an entry the SDK has not is refused: the native SDK has no entry 'teleport'", None),

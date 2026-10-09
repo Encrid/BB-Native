@@ -66,6 +66,16 @@ static const host_case_t TEST_CASES[] = {
         test_run_mover, "", test_set },
     { "bridge_native_put-bytes-copied-into-scratch",
         test_run_mover, "", test_set },
+    { "bridge_line_t-a-line-with-its-two-numbers",
+        test_run_mover, "", test_set },
+    { "declare-two-components-declared", test_run_mover, "", test_set },
+    { "add_system-registered-and-run", test_run_mover, "", test_set },
+    { "spawn-a-thousand-made-at-init", test_run_mover, "", test_set },
+    { "observe-told-of-an-attach", test_observe, "", test_set },
+    { "attach-a-value-given-again", test_read_kept, "changed", test_set },
+    { "detach-a-component-taken", test_read_kept, "changed", test_set },
+    { "destroy-two-entities-gone", test_read_kept, "changed", test_set },
+    { "alloc-bytes-kept-from-init", test_keep_bytes, "", test_set },
 };
 
 /*

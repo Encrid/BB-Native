@@ -25,13 +25,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 LIST = ROOT / 'docs/tests.md'
 SEAMS = {
-    'The host seam': ['include/bridge.h'],
-    'The module seam': ['include/bridge_abi.h', 'include/bridge_schema.h'],
-    'The backend seam': ['include/bridge_backend.h'],
+    'The SDK': ['sdk/bridge_native.h', 'sdk/bridge_native_api.h', 'sdk/bridge_native_kept.h',
+                'sdk/bridge_native_log.h'],
 }
 # a struct a host fills is exposed key by key: each is stated, and each is refused in its own
 # words. Any other struct is a layout, and is exposed whole.
-BY_KEY = 'include/bridge.h'
+BY_KEY = ''
 
 
 def strip(text):
