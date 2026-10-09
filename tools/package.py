@@ -23,13 +23,13 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 import build  # noqa: E402
 
-if len(sys.argv) != 2:
-    sys.exit('usage: package.py <the folder a target was built into>')
-out = pathlib.Path(sys.argv[1])
+if len(sys.argv) != 3:
+    sys.exit('usage: package.py <the folder a target was built into> <the folder of Bridge\'s packages>')
+out, bridge = pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2])
 target = out.name.removesuffix('-debug')
 row = build.TARGETS[target]
-expected = build.packages(out, row['library'])
-document = (ROOT / 'docs/seam/host_api/host_api.md').read_text(encoding='utf-8')
+expected = build.packages(out, row['library'], bridge)
+document = (ROOT / 'docs/readme.md').read_text(encoding='utf-8')
 bad = 0
 
 
@@ -45,7 +45,7 @@ for name in sorted(there - set(expected)):
 for name, files in sorted(expected.items()):
     folder = out / 'packages' / name
     if '`%s`' % name not in document:
-        fault('host_api.md does not name the package %s' % name)
+        fault('readme.md does not name the package %s' % name)
     if name not in there:
         fault('packages/%s is not there' % name)
         continue
@@ -58,11 +58,12 @@ for name, files in sorted(expected.items()):
     if 'package.txt' not in held:
         continue
     lines = (folder / 'package.txt').read_text(encoding='utf-8').split('\n')
-    head = '\n'.join(lines[:4])
+    head = '\n'.join(lines[:5])
     if not re.fullmatch(r'package %s\ncommit [0-9a-f]{40}( with changes that are not committed)?\n'
+                        r'bridge [0-9a-f]{40}( with changes that are not committed)?\n'
                         r'target %s\nrun (yes|no)' % (re.escape(name), re.escape(target)), head):
-        fault('packages/%s/package.txt does not state its name, a commit, the target and whether it ran' % name)
-    stated = dict(reversed(line.split('  ', 1)) for line in lines[4:] if line)
+        fault('packages/%s/package.txt does not state its name, a commit, that of Bridge, the target and whether it ran' % name)
+    stated = dict(reversed(line.split('  ', 1)) for line in lines[5:] if line)
     for source, called in files:
         if called not in held:
             continue

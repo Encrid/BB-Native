@@ -34,7 +34,7 @@ ASK = """%s
 
 Thank you. Before this can be merged, `cla.md` at the root of the repository has to be signed by
 @%s. It is a licence and not a transfer: you keep the copyright of what you wrote. It says
-plainly that Bridge is also offered under terms that are paid for, and that a contribution may
+plainly that BB-Native is also offered under terms that are paid for, and that a contribution may
 be part of that. Please read it.
 
 To sign, answer here with a comment that is this sentence and nothing else:

@@ -76,6 +76,8 @@ static const host_case_t TEST_CASES[] = {
     { "detach-a-component-taken", test_read_kept, "changed", test_set },
     { "destroy-two-entities-gone", test_read_kept, "changed", test_set },
     { "alloc-bytes-kept-from-init", test_keep_bytes, "", test_set },
+    { "instance_get_func-no-such-export-refused",
+        test_load_no_init, "", test_set },
 };
 
 /*

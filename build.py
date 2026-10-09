@@ -67,6 +67,7 @@ MODULES = [
     ('nsingle', 'nsingle', []), ('ntoggle', 'ntoggle', []), ('ntag', 'ntag', []),
     ('ndirect', 'ndirect', []), ('nsparse', 'nsparse', []),
     ('nlayout0', 'nlayout', ['V=0', 'KEPT=1']), ('nalloc', 'nalloc', []),
+    ('nnoinit', 'nnoinit', []),
 ]
 
 def die(msg):
@@ -269,7 +270,8 @@ def build(target, debug, out, bridge):
     link('host', host_o + [bridge / 'bridge' / beside.name], system + here)
     link('direct', direct_o, system)
     together(links)
-    return {'python': sys.executable, 'exe': exe}
+    write_packages(target, out, lib, bridge, False)
+    return {'python': sys.executable, 'exe': exe, 'bridge': bridge}
 
 
 def sources(where, name, idle, said='_idle.h"'):
@@ -284,7 +286,17 @@ def sources(where, name, idle, said='_idle.h"'):
 
 
 def command_line(out, built, command, kept):
-    """What a case runs: a program of the build."""
+    """What a case runs: a program of the build, or a tool of ours over the tree."""
+    if command[0] == 'package':
+        return [str(built['python']), str(ROOT / 'tools/package.py'), str(out), str(built['bridge'])]
+    if command[0] == 'cla':
+        return [str(built['python']), str(ROOT / 'tools/cla.py'), '--decide'] + command[1:]
+    if command[0] in ('c23', 'style', 'cover', 'xref', 'licence'):
+        return [str(built['python']), str(ROOT / ('tools/%s.py' % command[0]))]
+    if command[0] == 'said':
+        return [str(built['python']), str(ROOT / 'tools/said.py'), str(kept)]
+    if command[0] == 'deps':
+        return [str(built['python']), str(ROOT / 'tools/deps.py'), str(out), '--check']
     return [str(out / (command[0] + built['exe']))] + command[1:]
 
 
@@ -451,11 +463,30 @@ CASES = [(name, ['host', name], match, never) for name, match, never in [
      r"destroy_half.*rows, and of them given D 4 1.*near: by id: alive, and of them given D 4 1.*alive",
      None),
     ('alloc-bytes-kept-from-init', r"say: kept 1 42.*alive", None),
+    ('instance_get_func-no-such-export-refused',
+     r"module 'test:noinit@0.1.0' did not load: no exported function 'bridge_init'.*alive", None),
 ]] + [
     ('define_func-an-entry-the-abi-has-not-refused', ['direct'],
      r"an entry the SDK has not is refused: the native SDK has no entry 'teleport'", None),
 ]
-ALONE = ()
+# the tree, held: each tool of ours is a case, and is run once however many copies are asked for
+CASES += [
+    ('c23', ['c23'], None, None),
+    ('style', ['style'], None, None),
+    ('deps', ['deps'], None, None),
+    ('said', ['said'], None, None),
+    ('cover', ['cover'], None, None),
+    ('xref', ['xref'], None, None),
+    ('licence', ['licence'], None, None),
+    ('cla-the-holder-is-not-asked', ['cla', 'holder', 'holder', ''], '^nothing, passes: the holder', None),
+    ('cla-a-name-on-record-passes', ['cla', 'ann', 'holder', 'bob,ann'], '^nothing, passes: ann has signed', None),
+    ('cla-anybody-else-is-asked-and-fails', ['cla', 'ann', 'holder', 'bob'], '^ask, fails: ann has not signed', None),
+    ('cla-the-sentence-by-its-author-is-recorded', ['cla', 'ann', 'holder', '', 'ann', 'I have read cla.md and I sign it.'], '^record, passes: ann signs', None),
+    ('cla-the-sentence-by-another-is-not-taken', ['cla', 'ann', 'holder', '', 'bob', 'I have read cla.md and I sign it.'], '^ask, fails', None),
+    ('cla-other-words-are-not-taken', ['cla', 'ann', 'holder', '', 'ann', 'I sign, more or less.'], '^ask, fails', None),
+    ('package', ['package'], None, None),
+]
+ALONE = ('c23', 'style', 'deps', 'said', 'cover', 'xref', 'licence', 'cla-the-holder-is-not-asked', 'cla-a-name-on-record-passes', 'cla-anybody-else-is-asked-and-fails', 'cla-the-sentence-by-its-author-is-recorded', 'cla-the-sentence-by-another-is-not-taken', 'cla-other-words-are-not-taken', 'package')
 
 
 if __name__ == '__main__':

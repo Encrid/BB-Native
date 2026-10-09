@@ -1,7 +1,7 @@
 """What the built library and its two backends ask of the system they run on.
 
     python tools/deps.py <built directory>             every import, by artifact
-    python tools/deps.py <built directory> --check     fail on one docs/design/dependencies.md
+    python tools/deps.py <built directory> --check     fail on one docs/dependencies.md
                                                        does not list, and on one it lists
                                                        that nothing imports
 
@@ -16,7 +16,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-ARTIFACTS = ('bridge',)
+ARTIFACTS = ('bridge_native',)
 LISTED = re.compile(r'    (\w+)\s+(\S+)')
 SYSTEMS = {'windows': ('windows', 'every'), 'linux': ('linux', 'posix', 'every'),
            'macos': ('macos', 'posix', 'every')}
@@ -106,8 +106,8 @@ def imports(path):
 
 
 def listed(kinds):
-    """What docs/design/dependencies.md lists under one of these first words."""
-    document = (ROOT / 'docs/design/dependencies.md').read_text(encoding='utf-8')
+    """What docs/dependencies.md lists under one of these first words."""
+    document = (ROOT / 'docs/dependencies.md').read_text(encoding='utf-8')
     return {m.group(2) for m in map(LISTED.match, document.split('\n'))
             if m and m.group(1) in kinds}
 
@@ -118,7 +118,7 @@ def compare(asked, known, what):
     unlisted = sorted(a for a in asked if not any(fnmatch.fnmatchcase(a, k) for k in known))
     unused = sorted(k for k in known if not any(fnmatch.fnmatchcase(a, k) for a in asked))
     for name in unlisted:
-        print('%s: %s is not listed in docs/design/dependencies.md' % (what, name))
+        print('%s: %s is not listed in docs/dependencies.md' % (what, name))
     for name in unused:
         print('%s: %s is listed, and nothing asks for it' % (what, name))
     return len(unlisted) + len(unused)

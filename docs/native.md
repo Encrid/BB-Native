@@ -85,9 +85,9 @@ backend's stated rule rather than a rename nobody can see.
 
 All three are every module's, on this backend as on the other. A native module that **cannot** be
 reloaded says so with `reloadable` in its manifest, and a deployment that says it **may not** with
-`hot_reload`: `wasm.md`, *Exports*, has why those are two statements and why neither is made by
-leaving a symbol out. Each symbol returns a code, which `on_error` governs - `failure.md`, *When
-something fails*.
+`hot_reload`. Why those are two statements, and why neither is made by leaving a symbol out, is
+said where the wasm backend's exports are, in that backend's own documents. Each symbol
+returns a code, which `on_error` governs - `failure.md`, *When something fails*.
 
 `bridge_init` runs once per load, before any of the module's systems or observers run. When that
 is, the host decides - `lifecycle.md`, *The runtime lifecycle*. Everything the module sets up
@@ -169,7 +169,7 @@ nothing else*.
 ## What a native module must not do
 
 Not *cannot* - **nothing here is enforced**, and that is the whole difference. The three-memory
-split in `wasm.md` buys a native module nothing: it holds real pointers, so every region is
+split the wasm backend keeps buys a native module nothing: it holds real pointers, so every region is
 reachable to it, including another module's private memory. A wasm module is protected from other
 wasm modules, never from a native one. Component grants are the same story - a native module is
 given them to stay honest, not because anything could stop it reading what it was not granted.
