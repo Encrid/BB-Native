@@ -237,8 +237,7 @@ def build(target, debug, out, bridge):
     support = '-I%s' % (ROOT / 'tests/support')
     host_o = [compile_('host-' + c.stem, c, ours + [host_seam, seams, support] + defines)
               for c in sorted((ROOT / 'tests/host').glob('*.c')) +
-              sorted((ROOT / 'tests/support').glob('host*.c')) +
-              sorted((ROOT / 'tests/support' / row['os']).glob('host*.c'))]
+              sorted((ROOT / 'tests/support').glob('host*.c'))]
     shared = '-I%s' % (ROOT / 'tests/modules')
     module_o = {name: [compile_('module-%s-%s' % (name, c.stem), c,
                                 ours + [seams, sdk, shared, '-fvisibility=hidden'] +

@@ -101,28 +101,11 @@ void host_close(host_t *h);
 void host_open_only(host_t *h);
 
 /*
-** host_print_record
+** host_load
 **
-** A sink: prints a record with whose it is and its two numbers.
-*/
-void host_print_record(void *ud, const bridge_record_t *r);
-
-/*
-** host_load, host_reload, host_unload
-**
-** Make the call and say how it ended, by the module's identity.
+** Loads a module and says how it ended, by the module's identity.
 */
 void host_load(host_t *h, const bridge_artifact_t *a);
-void host_reload(host_t *h, const bridge_artifact_t *a);
-void host_unload(host_t *h, const char *identity);
-
-/*
-** host_run_frames
-**
-** Runs "update" and "present" `count` times, and says each that was
-** refused.
-*/
-void host_run_frames(host_t *h, int count);
 
 /*
 ** host_run_frames_unsaid
@@ -130,40 +113,6 @@ void host_run_frames(host_t *h, int count);
 ** Runs "update" and "present" `count` times, and says nothing.
 */
 void host_run_frames_unsaid(bridge_t *b, int count);
-
-/*
-** A thread of the host's own: what it runs, with what, and the operating
-** system's handle of it.
-*/
-typedef struct {
-    void (*run)(void *arg);
-    void *arg;
-    void *handle;
-} host_thread_t;
-
-/*
-** host_get_thread_id
-**
-** Answers which thread this is, as a native test module says it: the low
-** 32 bits of what the operating system calls it.
-*/
-uint32_t host_get_thread_id(void);
-
-/*
-** host_thread_start, host_thread_join
-**
-** Start a thread that calls `t->run` with `t->arg`, and wait for it to end.
-*/
-void host_thread_start(host_thread_t *t);
-void host_thread_join(host_thread_t *t);
-
-/*
-** host_is_library_loaded
-**
-** Answers whether a library is in this process, asked of the operating
-** system and of nothing of ours.
-*/
-bool host_is_library_loaded(const char *path);
 
 /*
 ** host_state_native
