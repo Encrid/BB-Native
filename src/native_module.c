@@ -1,14 +1,8 @@
 /*
-** Copyright (C) 2026 BB-Native Owner
-**
-** This file is part of BB-Native.
+** Copyright (C) 2026 Enkrid
 **
 ** Under the GNU Affero General Public License, version 3 only: see license.
-**
-** src/native_module.c -- a module opened: a native module is
-** its library.
 */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -20,23 +14,11 @@ static const char *const NATIVE_MEMORIES[2] = {
     BRIDGE_PRIVATE
 };
 
-/*
-** memory_release
-**
-** Releases an adopted block.
-*/
 BACKEND_EXPORT void memory_release(backend_memory_t *m)
 {
     free(m);
 }
 
-/*
-** module_compile
-**
-** Opens a module's library by its path.
-**
-** backend.md, *What a backend is asked for*
-*/
 BACKEND_EXPORT backend_module_t *module_compile([[maybe_unused]] backend_t *b,
     const backend_source_t *source, backend_err_t *err)
 {
@@ -57,13 +39,6 @@ BACKEND_EXPORT backend_module_t *module_compile([[maybe_unused]] backend_t *b,
     return (m);
 }
 
-/*
-** module_list_imports
-**
-** Writes up to `max` of what a module imports, and answers how many it
-** imports. A library has no import section to read, so it is taken to want
-** both memories.
-*/
 BACKEND_EXPORT uint32_t module_list_imports(
     [[maybe_unused]] backend_module_t *m, backend_import_t *out, uint32_t max)
 {
@@ -80,11 +55,6 @@ BACKEND_EXPORT uint32_t module_list_imports(
     return (2);
 }
 
-/*
-** module_destroy
-**
-** Closes a module's library.
-*/
 BACKEND_EXPORT void module_destroy(backend_module_t *m)
 {
     os_lib_close(m->lib);

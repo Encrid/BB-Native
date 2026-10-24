@@ -1,17 +1,11 @@
 /*
-** Copyright (C) 2026 BB-Native Owner
-**
-** This file is part of BB-Native.
+** Copyright (C) 2026 Enkrid
 **
 ** Under the GNU Affero General Public License, version 3 only: see license.
-**
-** tests/modules/ntoggle/ntoggle_bits.c -- the systems of ntoggle
-** that write T: a value for one entity, and rows turned on or off by a
-** write of their bits, as a value is written, with no call and no barrier.
 */
-
 #include "ntoggle.h"
 #include "native_measured.h"
+#include "native_reach.h"
 
 uint32_t ntoggle_writing;
 
@@ -28,12 +22,6 @@ static uint32_t draw_number(void)
 
 #endif
 
-/*
-** switch_rows
-**
-** Turns each row of a span on or off by writing its bit: on where its value
-** is odd, or in a build for a measurement where one row in ON is drawn.
-*/
 static void switch_rows([[maybe_unused]] const t_t *column, uint64_t *bits,
     uint32_t count)
 {
@@ -54,34 +42,30 @@ static void switch_rows([[maybe_unused]] const t_t *column, uint64_t *bits,
     }
 }
 
-/*
-** flicker
-**
-** Turns off the rows whose T is even, and on the others.
-*/
 NATIVE_MEASURED BRIDGE_NATIVE(flicker)
 {
     const bridge_query_t *q = bridge_native_get_query(api, ntoggle_writing);
+    const uint32_t *bases = get_column_bases(api);
+    uint32_t types = bridge_native_get_header(api)->types;
     const uint32_t *span;
+    uint32_t base;
     uint32_t i = 0;
 
     while (i < q->spans) {
         span = bridge_native_get_span(api, q, i, 1);
-        switch_rows((const t_t *)(api->shared_base + span[2]),
-            bridge_native_get_bits(api, span[2]), span[0]);
+        base = bases[span[0] * types + ntoggle_t];
+        switch_rows((const t_t *)(api->shared_base + base),
+            bridge_native_get_bits(api, base), span[1]);
         i++;
     }
     return (0);
 }
 
-/*
-** combine
-**
-** Turns every row on again.
-*/
 BRIDGE_NATIVE(combine)
 {
     const bridge_query_t *q = bridge_native_get_query(api, ntoggle_writing);
+    const uint32_t *bases = get_column_bases(api);
+    uint32_t types = bridge_native_get_header(api)->types;
     const uint32_t *span;
     uint64_t *bits;
     uint32_t i = 0;
@@ -89,9 +73,9 @@ BRIDGE_NATIVE(combine)
 
     while (i < q->spans) {
         span = bridge_native_get_span(api, q, i, 1);
-        bits = bridge_native_get_bits(api, span[2]);
+        bits = bridge_native_get_bits(api, bases[span[0] * types + ntoggle_t]);
         r = 0;
-        while (r < span[0]) {
+        while (r < span[1]) {
             bits[r >> 6] |= (uint64_t)1 << (r & 63);
             r++;
         }
@@ -100,11 +84,6 @@ BRIDGE_NATIVE(combine)
     return (0);
 }
 
-/*
-** value_a
-**
-** Gives a value to an entity whose T is off: it stays off.
-*/
 BRIDGE_NATIVE(value_a)
 {
     t_t value = { 500 };

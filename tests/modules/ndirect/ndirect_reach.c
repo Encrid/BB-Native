@@ -1,27 +1,14 @@
 /*
-** Copyright (C) 2026 BB-Native Owner
-**
-** This file is part of BB-Native.
+** Copyright (C) 2026 Enkrid
 **
 ** Under the GNU Affero General Public License, version 3 only: see license.
-**
-** tests/modules/ndirect/ndirect_reach.c -- the systems of ndirect
-** that reach D by ids that are held, and walk nothing.
 */
-
 #include "ndirect.h"
 #include "native_measured.h"
 #include "native_reach.h"
 
 uint64_t ndirect_mixed[COUNT];
 
-/*
-** count_reached
-**
-** Reaches each of `count` entities by an id that is held: the generation of
-** its record of the index, its bit, and its cell. Counts in `sum` those
-** that are alive, those of them given D, and the sum of their D.
-*/
 static void count_reached(const bridge_api_t *api, const uint64_t *held,
     uint32_t count, reached_t *sum)
 {
@@ -47,12 +34,6 @@ static void count_reached(const bridge_api_t *api, const uint64_t *held,
     }
 }
 
-/*
-** reach
-**
-** Reaches each of `count` entities by an id that is held, and says how many
-** are alive, how many of them were given D, and the sum of their D.
-*/
 NATIVE_MEASURED static int reach(const bridge_api_t *api, const uint64_t *held,
     uint32_t count)
 {
@@ -64,21 +45,11 @@ NATIVE_MEASURED static int reach(const bridge_api_t *api, const uint64_t *held,
     return (0);
 }
 
-/*
-** near
-**
-** Reaches every entity by its id, in the order they lie.
-*/
 BRIDGE_NATIVE(near)
 {
     return (reach(api, ndirect_ids, COUNT + 2));
 }
 
-/*
-** far
-**
-** Reaches entities by ids that are in no order.
-*/
 BRIDGE_NATIVE(far)
 {
     return (reach(api, ndirect_mixed, COUNT));
