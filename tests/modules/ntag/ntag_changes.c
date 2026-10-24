@@ -1,22 +1,11 @@
 /*
-** Copyright (C) 2026 BB-Native Owner
-**
-** This file is part of BB-Native.
+** Copyright (C) 2026 Enkrid
 **
 ** Under the GNU Affero General Public License, version 3 only: see license.
-**
-** tests/modules/ntag/ntag_changes.c -- the systems of ntag that
-** change something: the entities and their tags, and the bits of O.
 */
-
 #include "ntag.h"
+#include "native_reach.h"
 
-/*
-** spawn
-**
-** Spawns six entities with A. M is given to every second one, P to the
-** first two, O to every one, and R to the odd ones.
-*/
 BRIDGE_NATIVE(spawn)
 {
     a_t value = {};
@@ -36,12 +25,6 @@ BRIDGE_NATIVE(spawn)
     return (0);
 }
 
-/*
-** turn_low_off
-**
-** Turns off, by a write of its bit, each row of a span whose A is less than
-** three.
-*/
 static void turn_low_off(const a_t *column, uint64_t *bits, uint32_t count)
 {
     uint32_t row = 0;
@@ -53,42 +36,31 @@ static void turn_low_off(const a_t *column, uint64_t *bits, uint32_t count)
     }
 }
 
-/*
-** flicker
-**
-** Turns O off for the first three entities, by a write of their bits.
-*/
 BRIDGE_NATIVE(flicker)
 {
     const bridge_query_t *q = bridge_native_get_query(api, ntag_toggled);
+    const uint32_t *bases = get_column_bases(api);
+    uint32_t types = bridge_native_get_header(api)->types;
     const uint32_t *span;
     uint32_t i = 0;
 
     while (i < q->spans) {
         span = bridge_native_get_span(api, q, i, 2);
-        turn_low_off((const a_t *)(api->shared_base + span[2]),
-            bridge_native_get_bits(api, span[3]), span[0]);
+        turn_low_off((const a_t *)(api->shared_base
+            + bases[span[0] * types + ntag_a]),
+            bridge_native_get_bits(api, bases[span[0] * types + ntag_o]),
+            span[1]);
         i++;
     }
     return (0);
 }
 
-/*
-** attach_a
-**
-** Gives W, the singleton.
-*/
 BRIDGE_NATIVE(attach_a)
 {
     api->attach(api, 0, ntag_w, BRIDGE_ZEROED);
     return (0);
 }
 
-/*
-** detach_b
-**
-** Takes M from every entity that has it, which leaves one table.
-*/
 BRIDGE_NATIVE(detach_b)
 {
     uint32_t i = 0;

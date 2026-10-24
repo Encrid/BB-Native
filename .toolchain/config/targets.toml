@@ -1,0 +1,35 @@
+[targets.x86_64-windows-gnu]
+system_defines = []
+system_libraries = []
+bridge_sha256 = "4c55cb740e11546ab01567bfe5b2422c4c7b11bf9d2837e832bc3f06b86d1982"
+bridge_os_sha256 = "fccad6196552cfa144e591f9bfdb95a7cd48f97540736b4415707b08063f01b7"
+
+[targets.x86_64-linux-gnu]
+system_defines = []
+system_libraries = ["-lm", "-lpthread", "-ldl"]
+bridge_sha256 = "75309a20f31eede48e3cc0a24f85fc6b05171e8630efc9d697e82002352e9160"
+bridge_os_sha256 = "d5663e67b4b16af81642cddd9b8419869a8180d46e66c3d70c92e0ddfeb93b2f"
+
+[targets.aarch64-macos]
+system_defines = ["-D_DARWIN_C_SOURCE"]
+system_libraries = []
+bridge_sha256 = "f2269da2a965cf1ea224b0d20885b354bf3cc1f304ab57cc13e88dd3fb0a28b0"
+bridge_os_sha256 = "46da1648a56acb823b477275f80bd5f7a0822f771bf485e4a8d94957c835ba5e"
+
+[targets.aarch64-linux-gnu]
+system_defines = []
+system_libraries = ["-lm", "-lpthread", "-ldl"]
+bridge_sha256 = "332e224b9306f23242ccb99805ec65660ea9c92427a80e823c9ffa5a4cbb0c20"
+bridge_os_sha256 = "c24626c7fc029846c302fc93f5a2fad4005e49a785eb9a127713145eb29cde52"
+
+[targets.x86_64-macos]
+system_defines = ["-D_DARWIN_C_SOURCE"]
+system_libraries = []
+bridge_sha256 = "1b8fac614f23a93cff4cb7a9a40c9084faaf18fb583567e2f6291363cc2926e8"
+bridge_os_sha256 = "599de5467c100451d3284a755c916699c027a2f05977a4847569a875c6129fe3"
+
+[targets.aarch64-windows-gnu]
+system_defines = []
+system_libraries = []
+bridge_sha256 = "ba4547a39a1749722f05890258e24f5cc6b47ab87ac2f8d5b750fd5c2c9154c4"
+bridge_os_sha256 = "5df73ef0903748802bb5fddc34a20aae97ec5d97d18a8ead3f8f55c2383e0f85"

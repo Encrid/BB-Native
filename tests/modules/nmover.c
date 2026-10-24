@@ -1,17 +1,12 @@
 /*
-** Copyright (C) 2026 BB-Native Owner
-**
-** This file is part of BB-Native.
+** Copyright (C) 2026 Enkrid
 **
 ** Under the GNU Affero General Public License, version 3 only: see license.
-**
-** tests/modules/nmover.c -- mover.c as a shared library: it reads
-** and writes the column through a raw pointer.
 */
-
 #include "bridge_native.h"
 #include "game.h"
 #include "native_idle.h"
+#include "native_reach.h"
 
 constexpr uint32_t ENTITIES = 1000;
 
@@ -20,14 +15,11 @@ static uint32_t marked;
 static uint32_t moving;
 static uint32_t tallying;
 
-/*
-** move
-**
-** Adds one to the x of every position.
-*/
 BRIDGE_NATIVE(move)
 {
     const bridge_query_t *q = bridge_native_get_query(api, moving);
+    const uint32_t *bases = get_column_bases(api);
+    uint32_t types = bridge_native_get_header(api)->types;
     const uint32_t *span;
     position_t *p;
     uint32_t s = 0;
@@ -35,9 +27,10 @@ BRIDGE_NATIVE(move)
 
     while (s < q->spans) {
         span = bridge_native_get_span(api, q, s, 1);
-        p = (position_t *)(api->shared_base + span[2]);
+        p = (position_t *)(api->shared_base
+            + bases[span[0] * types + position]);
         r = 0;
-        while (r < span[0]) {
+        while (r < span[1]) {
             p[r].x += 1.0f;
             r++;
         }
@@ -46,11 +39,6 @@ BRIDGE_NATIVE(move)
     return (0);
 }
 
-/*
-** tally
-**
-** Says what its own query matched.
-*/
 BRIDGE_NATIVE(tally)
 {
     const bridge_query_t *q = bridge_native_get_query(api, tallying);
@@ -58,18 +46,13 @@ BRIDGE_NATIVE(tally)
     uint32_t s = 0;
 
     while (s < q->spans) {
-        line.a1 += bridge_native_get_span(api, q, s, 1)[0];
+        line.a1 += bridge_native_get_span(api, q, s, 1)[1];
         s++;
     }
     bridge_native_log(api, BRIDGE_LOG_INFO, &line);
     return (0);
 }
 
-/*
-** populate
-**
-** Spawns the entities: each with a position, and every other one marked.
-*/
 static void populate(const bridge_api_t *api)
 {
     position_t p = { 0.0f, 0.0f };
@@ -86,11 +69,6 @@ static void populate(const bridge_api_t *api)
     }
 }
 
-/*
-** init
-**
-** Declares the two components and the two systems, and spawns the entities.
-*/
 BRIDGE_NATIVE(init)
 {
     bridge_term_t terms[1] = {{ 0, BRIDGE_WRITE, BRIDGE_AND, 0 }};

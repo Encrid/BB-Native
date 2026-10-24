@@ -1,0 +1,10 @@
+[check.retired]
+deck = "world"
+decks = "worlds"
+session = "world"
+sessions = "worlds"
+BridgeC = "Bridge"
+ASM700 = ""
+IdeaTek = ""
+plugin = "module"
+plugins = "modules"

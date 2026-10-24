@@ -1,18 +1,8 @@
 /*
-** Copyright (C) 2026 BB-Native Owner
-**
-** This file is part of BB-Native.
+** Copyright (C) 2026 Enkrid
 **
 ** Under the GNU Affero General Public License, version 3 only: see license.
-**
-** tests/host/kept.c -- what is kept in other layouts than a table, read
-** by a module through the SDK: a singleton, a toggle, a tag, a
-** direct-indexed component and a sparse set. A module of these has a
-** system a phase, and a case runs the phases its row lists, in turn.
-**
-** native.md, *Reaching a component*
 */
-
 #include "cases.h"
 
 static const char *const TEST_PHASES[] = {
@@ -37,23 +27,12 @@ static const test_kept_case_t TEST_KEPT[] = {
         "look_b", "near" } },
 };
 
-/*
-** hear_plain
-**
-** A sink: prints a record by the system that wrote it, and its two numbers.
-*/
 static void hear_plain([[maybe_unused]] void *ud, const bridge_record_t *r)
 {
     printf("  %s: %.*s %u %u\n", r->system ? r->system : "-", (int)r->len,
         r->text, r->arg[0], r->arg[1]);
 }
 
-/*
-** set_room
-**
-** Makes the host's deployment that of a case: a phase for each system of
-** such a module, and the room its layouts need.
-*/
 static void set_room(host_t *h, const test_kept_case_t *c)
 {
     h->sink = hear_plain;
@@ -65,28 +44,18 @@ static void set_room(host_t *h, const test_kept_case_t *c)
     h->cfg.budget.direct_indexed = c->sets;
 }
 
-/*
-** run_phases
-**
-** Runs each phase a case lists, named before what was said in it.
-*/
 static void run_phases(host_t *h, const test_kept_case_t *c)
 {
     uint32_t i = 0;
 
     while (i < 12 && c->phases[i]) {
         printf("%s\n", c->phases[i]);
-        if (bridge_run_phase(h->b, c->phases[i]))
+        if (bridge_run_phase(h->w, c->phases[i]))
             printf("  refused\n");
         i++;
     }
 }
 
-/*
-** test_read_kept
-**
-** The case its row names: the module loaded, and its phases run.
-*/
 void test_read_kept(host_t *h)
 {
     const test_kept_case_t *c = TEST_KEPT;
@@ -99,19 +68,13 @@ void test_read_kept(host_t *h)
         return;
     host_state_native(&a, "st:store@0.1.0", c->path);
     a.cfg.spawns = 16;
-    a.cfg.spans = 1 << 20;
+    a.cfg.spans = 1 << 21;
     a.cfg.log_ring = 256 * 24;
     host_load(h, &a);
     run_phases(h, c);
     host_close(h);
 }
 
-/*
-** test_keep_bytes
-**
-** A module that asks for bytes of the persistent arena, in a deployment
-** that gives it a share.
-*/
 void test_keep_bytes(host_t *h)
 {
     bridge_artifact_t a;
@@ -122,6 +85,6 @@ void test_keep_bytes(host_t *h)
     host_state_native(&a, "test:alloc@0.1.0", NALLOC_PATH);
     a.cfg.persistent = 64;
     host_load(h, &a);
-    host_run_frames_unsaid(h->b, 1);
+    host_run_frames_unsaid(h->w, 1);
     host_close(h);
 }
