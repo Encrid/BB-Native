@@ -1,21 +1,11 @@
 /*
-** Copyright (C) 2026 BB-Native Owner
-**
-** This file is part of BB-Native.
+** Copyright (C) 2026 Enkrid
 **
 ** Under the GNU Affero General Public License, version 3 only: see license.
-**
-** tests/modules/ntag/ntag_look_set.c -- what a module is handed for
-** a tag kept in a sparse set.
 */
-
 #include "ntag.h"
+#include "native_reach.h"
 
-/*
-** look_index
-**
-** Says how many entities have a cell of P's index that says carried.
-*/
 static void look_index(const bridge_api_t *api)
 {
     const uint32_t *index = bridge_native_get_sparse_index(api, ntag_p);
@@ -29,16 +19,11 @@ static void look_index(const bridge_api_t *api)
     say(api, "P, by its index: entities whose cell says carried", carried, 0);
 }
 
-/*
-** ntag_look_set
-**
-** Says what a module is handed for P, the tag kept in a sparse set: by the
-** spans of a query on it alone, whose base says carried as a table's does,
-** and by each entity's cell of its index, which says the same.
-*/
 void ntag_look_set(const bridge_api_t *api)
 {
     const bridge_query_t *q = bridge_native_get_query(api, ntag_in_set);
+    const uint32_t *bases = get_column_bases(api);
+    uint32_t types = bridge_native_get_header(api)->types;
     const uint32_t *span;
     uint32_t rows = 0;
     uint32_t carried = 0;
@@ -46,8 +31,8 @@ void ntag_look_set(const bridge_api_t *api)
 
     while (i < q->spans) {
         span = bridge_native_get_span(api, q, i, 1);
-        rows += span[0];
-        carried += span[2] == BRIDGE_CARRIED;
+        rows += span[1];
+        carried += bases[span[0] * types + ntag_p] == BRIDGE_CARRIED;
         i++;
     }
     say(api, "P, in a sparse set: rows, and spans whose base says carried",

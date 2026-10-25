@@ -1,27 +1,14 @@
 /*
-** Copyright (C) 2026 BB-Native Owner
-**
-** This file is part of BB-Native.
+** Copyright (C) 2026 Enkrid
 **
 ** Under the GNU Affero General Public License, version 3 only: see license.
-**
-** tests/modules/ntoggle/ntoggle_look.c -- the systems of ntoggle
-** that read the rows that are on: found a word of bits at a time, and by a
-** test at every row.
 */
-
 #include "ntoggle.h"
 #include "native_measured.h"
+#include "native_reach.h"
 
 uint32_t ntoggle_reading;
 
-/*
-** see_word
-**
-** Counts the rows whose bits are set in `word`, which is word `w` of the
-** bits of `column`, and adds their values. Sixty-four rows that are all on
-** are read as a column is.
-*/
 static void see_word(const t_t *column, uint64_t word, uint32_t w,
     seen_t *seen)
 {
@@ -42,18 +29,15 @@ static void see_word(const t_t *column, uint64_t word, uint32_t w,
     }
 }
 
-/*
-** see_words
-**
-** Counts the rows of a span that are on, a word of bits at a time. The last
-** word has bits past the last row, which are nobody's, and are set aside.
-*/
 static void see_words(const bridge_api_t *api, const uint32_t *span,
     seen_t *seen)
 {
-    const t_t *column = (const t_t *)(api->shared_base + span[2]);
-    const uint64_t *bits = bridge_native_get_bits(api, span[2]);
-    const uint32_t count = span[0];
+    const uint32_t *bases = get_column_bases(api);
+    uint32_t types = bridge_native_get_header(api)->types;
+    uint32_t base = bases[span[0] * types + ntoggle_t];
+    const t_t *column = (const t_t *)(api->shared_base + base);
+    const uint64_t *bits = bridge_native_get_bits(api, base);
+    const uint32_t count = span[1];
     const uint32_t whole = count / 64;
     uint64_t word;
     uint32_t w = 0;
@@ -67,12 +51,6 @@ static void see_words(const bridge_api_t *api, const uint32_t *span,
     }
 }
 
-/*
-** look
-**
-** Says the rows that are on, found a word of bits at a time: the rows, how
-** many of them are on, the sum of those, and the spans.
-*/
 NATIVE_MEASURED BRIDGE_NATIVE(look)
 {
     const bridge_query_t *q = bridge_native_get_query(api, ntoggle_reading);
@@ -84,7 +62,7 @@ NATIVE_MEASURED BRIDGE_NATIVE(look)
     while (i < q->spans) {
         span = bridge_native_get_span(api, q, i, 1);
         see_words(api, span, &seen);
-        rows += span[0];
+        rows += span[1];
         i++;
     }
     say(api, "by words: rows, and of them on", rows, seen.on);
@@ -92,12 +70,6 @@ NATIVE_MEASURED BRIDGE_NATIVE(look)
     return (0);
 }
 
-/*
-** see_rows
-**
-** Counts the rows that are on by a test of the bit of every row, and adds
-** their values.
-*/
 static void see_rows(const t_t *restrict column, const uint64_t *restrict bits,
     uint32_t count, seen_t *seen)
 {
@@ -112,22 +84,21 @@ static void see_rows(const t_t *restrict column, const uint64_t *restrict bits,
     }
 }
 
-/*
-** look_b
-**
-** Says the rows that are on, tested at every row: how many, and their sum.
-*/
 NATIVE_MEASURED BRIDGE_NATIVE(look_b)
 {
     const bridge_query_t *q = bridge_native_get_query(api, ntoggle_reading);
+    const uint32_t *bases = get_column_bases(api);
+    uint32_t types = bridge_native_get_header(api)->types;
     const uint32_t *span;
+    uint32_t base;
     seen_t seen = {};
     uint32_t i = 0;
 
     while (i < q->spans) {
         span = bridge_native_get_span(api, q, i, 1);
-        see_rows((const t_t *)(api->shared_base + span[2]),
-            bridge_native_get_bits(api, span[2]), span[0], &seen);
+        base = bases[span[0] * types + ntoggle_t];
+        see_rows((const t_t *)(api->shared_base + base),
+            bridge_native_get_bits(api, base), span[1], &seen);
         i++;
     }
     say(api, "by rows: on, and their sum", seen.on, seen.total);

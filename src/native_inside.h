@@ -1,17 +1,8 @@
 /*
-** Copyright (C) 2026 BB-Native Owner
-**
-** This file is part of BB-Native.
+** Copyright (C) 2026 Enkrid
 **
 ** Under the GNU Affero General Public License, version 3 only: see license.
-**
-** src/native_inside.h -- the native backend: the seventeen
-** entries of bridge_backend.h, over a shared library. What its files share.
-**
-** native.md, *The invariant*
-** capabilities.md, *Capabilities, so the swap is honest*
 */
-
 #ifndef BRIDGE_BACKENDS_NATIVE_INSIDE_H
     #define BRIDGE_BACKENDS_NATIVE_INSIDE_H
 
@@ -21,9 +12,6 @@
     #include "bridge_native.h"
     #include "os.h"
 
-/*
-** The entries of the ABI, in the order of their names.
-*/
 enum native_entry : uint32_t {
     NATIVE_DECLARE,
     NATIVE_ADD_SYSTEM,
@@ -66,13 +54,6 @@ struct backend_func {
     backend_func_t *next;
 };
 
-/*
-** An instance.
-**
-**     api           the table the module is handed
-**     calling       the thread a call into it is in progress on, or 0
-**     refused       an entry refused during the call in progress
-*/
 struct backend_instance {
     backend_module_t *m;
     bridge_api_t api;
@@ -83,23 +64,6 @@ struct backend_instance {
     backend_func_t *funcs;
 };
 
-/*
-** native_enter
-**
-** An entry of the ABI, reached from a module. The table a module was handed
-** is part of its instance, so an entry is told whose it is by the table it
-** is given. Native code runs only inside a call this backend made, and that
-** is checked here: an entry reached from any other thread, a foreign
-** thread's callback say, or outside a call, answers zero.
-**
-** A refusal cannot unwind native code, so the entry answers zero and the
-** call returns: Bridge fails the invocation then. Until it does
-** return, every entry answers zero and reaches nothing, which is as near to
-** stopped as native code can be put.
-**
-** native.md, *The invariant*
-** signatures.md, *A call takes nothing and answers a status*
-*/
 static inline uint64_t native_enter(const bridge_api_t *api,
     enum native_entry entry, const uint64_t *args)
 {
@@ -107,7 +71,7 @@ static inline uint64_t native_enter(const bridge_api_t *api,
     backend_instance_t *i = (backend_instance_t *)base;
     uint64_t result = 0;
 
-    if (!i->calling || i->refused || !i->fns[entry])
+    if (i->refused || !i->fns[entry])
         return (0);
     if (i->calling != os_get_thread_id())
         return (0);
@@ -117,16 +81,8 @@ static inline uint64_t native_enter(const bridge_api_t *api,
     return (0);
 }
 
-/*
-** native_fill_api
-**
-** Writes the eight entries into the table a module is handed.
-*/
 void native_fill_api(bridge_api_t *api);
 
-/*
-** The entries a module calls in a phase, as the table has them.
-*/
 uint64_t native_spawn(const bridge_api_t *api);
 void native_destroy(const bridge_api_t *api, uint64_t id);
 void native_attach(const bridge_api_t *api, uint64_t id, uint32_t slot,

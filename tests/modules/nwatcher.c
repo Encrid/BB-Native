@@ -1,14 +1,8 @@
 /*
-** Copyright (C) 2026 BB-Native Owner
-**
-** This file is part of BB-Native.
+** Copyright (C) 2026 Enkrid
 **
 ** Under the GNU Affero General Public License, version 3 only: see license.
-**
-** tests/modules/nwatcher.c -- observes game:Marked being added, under a
-** read grant, and says who it was added to.
 */
-
 #include "bridge_native.h"
 #include "game.h"
 #include "native_idle.h"
@@ -17,13 +11,6 @@
 static uint32_t marked;
 static uint32_t seeing;
 
-/*
-** follow
-**
-** Answers the value another module attached to an id, followed from the
-** id through the index of the entities, or 0xdead for an id that leads
-** nowhere.
-*/
 static uint32_t follow(const bridge_api_t *api, uint64_t id)
 {
     const bridge_header_t *h = bridge_native_get_header(api);
@@ -40,12 +27,6 @@ static uint32_t follow(const bridge_api_t *api, uint64_t id)
     return (column[e->row].by);
 }
 
-/*
-** seen
-**
-** Says, for each trigger, which events it is of and the value the other
-** module attached.
-*/
 BRIDGE_NATIVE(seen)
 {
     const bridge_list_t *list = bridge_native_get_list(api, seeing);
@@ -63,11 +44,6 @@ BRIDGE_NATIVE(seen)
     return (0);
 }
 
-/*
-** init
-**
-** Declares the component, and the observer that reads it.
-*/
 BRIDGE_NATIVE(init)
 {
     bridge_term_t terms[1] = {{ 0, BRIDGE_READ, BRIDGE_AND, 0 }};

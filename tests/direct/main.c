@@ -1,27 +1,12 @@
 /*
-** Copyright (C) 2026 BB-Native Owner
-**
-** This file is part of BB-Native.
+** Copyright (C) 2026 Enkrid
 **
 ** Under the GNU Affero General Public License, version 3 only: see license.
-**
-** tests/direct/main.c -- the backend, called as the library calls it, for
-** what no host can ask of it through the library: an entry that is none of
-** the ABI's.
-**
-** native.md, *What the backend provides*
 */
-
 #include <stdio.h>
 
 #include "backend.h"
 
-/*
-** refuse_entry
-**
-** Asks the backend to keep what answers an entry the ABI does not have.
-** Answers 1, having said so, if it was accepted.
-*/
 static int refuse_entry(const backend_api_t *api, backend_module_t *m)
 {
     backend_err_t err = {};
@@ -37,12 +22,42 @@ static int refuse_entry(const backend_api_t *api, backend_module_t *m)
     return (0);
 }
 
-/*
-** main
-**
-** Opens the backend, opens a module, and makes the check. Nothing is
-** buffered: a crash must not swallow what was said.
-*/
+static void poke_edges(const backend_api_t *api, backend_t *be,
+    backend_module_t *m)
+{
+    backend_err_t err = {};
+    backend_setting_t keyless = {};
+    backend_entry_t wrong = { "other", "spawn", nullptr, nullptr, nullptr };
+    backend_source_t empty = { .path = "" };
+    backend_source_t missing = { .path = "no-such-library" };
+    backend_import_t out[2] = {};
+    backend_instance_t *i = api->instance_create(m, nullptr, 0, &err);
+
+    (void)api->backend_create(&keyless, 1, &err);
+    (void)api->module_compile(be, &empty, &err);
+    (void)api->module_compile(be, &missing, &err);
+    (void)api->module_list_imports(m, out, 1);
+    (void)api->define_func(i, &wrong, &err);
+    api->instance_set_work_limit(i, 1);
+    api->instance_set_timeout(i, 1);
+    api->instance_set_memory_limit(i, 1);
+    api->instance_destroy(i);
+}
+
+static void poke_missing(const backend_api_t *api, backend_t *be)
+{
+    backend_err_t err = {};
+    backend_source_t source = { .path = NCOVER_PATH };
+    backend_module_t *m = api->module_compile(be, &source, &err);
+    backend_instance_t *i = api->instance_create(m, nullptr, 0, &err);
+    backend_func_t *init = api->instance_get_func(i, "init", &err);
+    int32_t status = 0;
+
+    (void)api->call(init, &status, &err);
+    api->instance_destroy(i);
+    api->module_destroy(m);
+}
+
 int main(void)
 {
     backend_api_t api;
@@ -58,6 +73,8 @@ int main(void)
     m = api.module_compile(be, &source, &err);
     if (!m || refuse_entry(&api, m))
         return (printf("FAIL: %s\n", err.text), 1);
+    poke_edges(&api, be, m);
+    poke_missing(&api, be);
     api.module_destroy(m);
     api.backend_destroy(be);
     return (0);

@@ -1,0 +1,29 @@
+[[artifact]]
+name = "bridge_native"
+kind = "library"
+folder = "backends"
+sources = ["src/*.c"]
+include = ["{bridge}/include", "src", "include", "{bridge_os}/include"]
+flags = ["{quiet}", "{system_defines}", "{system_libraries}"]
+link = ["{bridge_os}/os.a"]
+
+[[artifact]]
+name = "native-host"
+kind = "program"
+test = true
+sources = ["tests/host/*.c", "tests/support/host*.c"]
+include = ["{bridge}/include", "tests/host", "tests/support"]
+defines = ["{paths}"]
+flags = ["{quiet}", "{system_defines}", "{system_libraries}"]
+link = ["{bridge}/bridge{library}"]
+beside = ["{bridge}/bridge{library}"]
+
+[[artifact]]
+name = "native-direct"
+kind = "program"
+test = true
+sources = ["tests/direct/*.c"]
+include = ["{bridge}/include", "{bridge_os}/include", "tests/direct"]
+defines = ["{paths}"]
+flags = ["{quiet}", "{system_defines}", "{system_libraries}"]
+link = ["{bridge_os}/os.a"]

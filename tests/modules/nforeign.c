@@ -1,17 +1,8 @@
 /*
-** Copyright (C) 2026 BB-Native Owner
-**
-** This file is part of BB-Native.
+** Copyright (C) 2026 Enkrid
 **
 ** Under the GNU Affero General Public License, version 3 only: see license.
-**
-** tests/modules/nforeign.c -- an entry reached from a thread the
-** backend did not call on answers zero, and one reached on the thread it
-** did call on is honoured.
-**
-** native.md, *The invariant*
 */
-
 #include "bridge_native.h"
 #include "native_idle.h"
 #include "nthread.h"
@@ -24,12 +15,6 @@ static void spawn_elsewhere(void)
     from_elsewhere = kept->spawn(kept);
 }
 
-/*
-** reach
-**
-** Keeps the table it was handed, has another thread spawn through it, waits
-** for that thread, and then spawns itself. It says whether each got an id.
-*/
 BRIDGE_NATIVE(reach)
 {
     bridge_line_t line = {
@@ -44,11 +29,6 @@ BRIDGE_NATIVE(reach)
     return (0);
 }
 
-/*
-** init
-**
-** Declares the one system.
-*/
 BRIDGE_NATIVE(init)
 {
     int none = 0;

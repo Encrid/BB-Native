@@ -1,22 +1,11 @@
 /*
-** Copyright (C) 2026 BB-Native Owner
-**
-** This file is part of BB-Native.
+** Copyright (C) 2026 Enkrid
 **
 ** Under the GNU Affero General Public License, version 3 only: see license.
-**
-** tests/modules/nlayout/nlayout_values.c -- where the values of X
-** are, in each of the storage layouts a build of nlayout may keep it in.
 */
-
 #include "nlayout.h"
+#include "native_reach.h"
 
-/*
-** collect_cells
-**
-** Collects from a direct-indexed X the cell of every entity below 16 whose
-** bit says it was given one.
-*/
 static uint32_t collect_cells(const bridge_api_t *api, const x_t **out,
     uint32_t room)
 {
@@ -46,26 +35,24 @@ static uint32_t collect_single(const bridge_api_t *api, const x_t **out,
     return (1);
 }
 
-/*
-** collect_columns
-**
-** Collects the rows the query matched: X kept in tables, in a sparse set,
-** or as a toggle.
-*/
 static uint32_t collect_columns(const bridge_api_t *api, const x_t **out,
     uint32_t room)
 {
     const bridge_query_t *q = bridge_native_get_query(api, reading);
+    const uint32_t *bases = get_column_bases(api);
+    uint32_t types = bridge_native_get_header(api)->types;
     const uint32_t *span;
+    uint32_t base;
     uint32_t n = 0;
     uint32_t i = 0;
     uint32_t r;
 
     while (i < q->spans) {
         span = bridge_native_get_span(api, q, i, 1);
+        base = bases[span[0] * types + x_slot];
         r = 0;
-        while (r < span[0] && n < room) {
-            out[n] = (const x_t *)(api->shared_base + span[2]) + r;
+        while (r < span[1] && n < room) {
+            out[n] = (const x_t *)(api->shared_base + base) + r;
             n++;
             r++;
         }
@@ -74,12 +61,6 @@ static uint32_t collect_columns(const bridge_api_t *api, const x_t **out,
     return (n);
 }
 
-/*
-** collect_values
-**
-** Puts in `out` where the values of X are, however this build keeps it, and
-** answers how many: `room` at the most.
-*/
 uint32_t collect_values(const bridge_api_t *api, const x_t **out,
     uint32_t room)
 {

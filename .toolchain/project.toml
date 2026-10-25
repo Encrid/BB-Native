@@ -1,0 +1,7 @@
+[project]
+name = "BB-Native"
+
+[test]
+timeout = 120
+copies = 6
+writers = ["snprintf"]

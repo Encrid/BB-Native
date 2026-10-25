@@ -1,23 +1,11 @@
 /*
-** Copyright (C) 2026 BB-Native Owner
-**
-** This file is part of BB-Native.
+** Copyright (C) 2026 Enkrid
 **
 ** Under the GNU Affero General Public License, version 3 only: see license.
-**
-** tests/modules/ntoggle/ntoggle_find.c -- the system of ntoggle that
-** reaches each entity by its id, and reads whether its T is on.
 */
-
 #include "ntoggle.h"
 #include "native_reach.h"
 
-/*
-** see_entity
-**
-** Counts the entity `e` is the record of if its T is on, and adds its
-** value: the column through column_base, and the bits ahead of it.
-*/
 static void see_entity(const bridge_api_t *api, const bridge_entity_t *e,
     seen_t *seen)
 {
@@ -35,12 +23,6 @@ static void see_entity(const bridge_api_t *api, const bridge_entity_t *e,
     seen->on++;
 }
 
-/*
-** find
-**
-** Reaches each entity by its id, and says how many are alive, how many of
-** them have T on, and the sum of those.
-*/
 BRIDGE_NATIVE(find)
 {
     const bridge_entity_t *index = get_entity_index(api);

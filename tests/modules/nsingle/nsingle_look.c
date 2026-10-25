@@ -1,24 +1,13 @@
 /*
-** Copyright (C) 2026 BB-Native Owner
-**
-** This file is part of BB-Native.
+** Copyright (C) 2026 Enkrid
 **
 ** Under the GNU Affero General Public License, version 3 only: see license.
-**
-** tests/modules/nsingle/nsingle_look.c -- what a system reads of the
-** singleton and what an observer hears of it, said in the log.
 */
-
 #include "nsingle.h"
 #include "native_measured.h"
 
 volatile uint32_t nsingle_which;
 
-/*
-** look
-**
-** Says whether the singleton has a value, and the value.
-*/
 BRIDGE_NATIVE(look)
 {
     const g_t *value = bridge_native_get_single(api, nsingle_g);
@@ -31,12 +20,6 @@ BRIDGE_NATIVE(look)
     return (0);
 }
 
-/*
-** one
-**
-** Reads the singleton a million times, finding it again each time, and
-** says the sum of what it read.
-*/
 NATIVE_MEASURED BRIDGE_NATIVE(one)
 {
     const g_t *value;
@@ -53,12 +36,6 @@ NATIVE_MEASURED BRIDGE_NATIVE(one)
     return (0);
 }
 
-/*
-** heard_g
-**
-** Says each thing the observer of the singleton heard: the id, and the
-** events.
-*/
 BRIDGE_NATIVE(heard_g)
 {
     const bridge_list_t *list = bridge_native_get_list(api, nsingle_on_g);

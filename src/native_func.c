@@ -1,30 +1,14 @@
 /*
-** Copyright (C) 2026 BB-Native Owner
-**
-** This file is part of BB-Native.
+** Copyright (C) 2026 Enkrid
 **
 ** Under the GNU Affero General Public License, version 3 only: see license.
-**
-** src/native_func.c -- functions in both directions: an entry
-** of the ABI, kept, and a symbol of a module's library, found and called.
-**
-** native.md, *What the backend provides*
 */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "native_inside.h"
 
-/*
-** define_func
-**
-** Keeps what answers an entry of the ABI. The signature is the one
-** bridge_native.h already declares, so only the pointer is kept.
-**
-** native.md, *What the backend provides*
-*/
 BACKEND_EXPORT int define_func(backend_instance_t *i,
     const backend_entry_t *entry, backend_err_t *err)
 {
@@ -42,15 +26,6 @@ BACKEND_EXPORT int define_func(backend_instance_t *i,
     return (0);
 }
 
-/*
-** instance_get_func
-**
-** Finds a function a module exports, once. Exports are named
-** bridge_<name>: a C process has one flat symbol namespace. A symbol
-** carries no type, so there is no shape to see.
-**
-** signatures.md, *A call takes nothing and answers a status*
-*/
 BACKEND_EXPORT backend_func_t *instance_get_func(backend_instance_t *i,
     const char *name, backend_err_t *err)
 {
@@ -73,13 +48,6 @@ BACKEND_EXPORT backend_func_t *instance_get_func(backend_instance_t *i,
     return (f);
 }
 
-/*
-** call
-**
-** Calls a function of a module, and answers the status it returned. A call
-** made from inside a call returns to it. Nothing is caught: a native module
-** that faults takes the process with it.
-*/
 BACKEND_EXPORT int call(backend_func_t *f, int32_t *status,
     [[maybe_unused]] backend_err_t *err)
 {

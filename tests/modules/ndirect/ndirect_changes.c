@@ -1,14 +1,8 @@
 /*
-** Copyright (C) 2026 BB-Native Owner
-**
-** This file is part of BB-Native.
+** Copyright (C) 2026 Enkrid
 **
 ** Under the GNU Affero General Public License, version 3 only: see license.
-**
-** tests/modules/ndirect/ndirect_changes.c -- the systems of ndirect
-** that change every entity, or every one that is given D.
 */
-
 #include "ndirect.h"
 #include "native_measured.h"
 
@@ -16,12 +10,6 @@ uint32_t ndirect_a;
 uint32_t ndirect_d;
 uint64_t ndirect_ids[COUNT + 2];
 
-/*
-** mix_ids
-**
-** Fills the ids that `far` reaches by: as many as there are entities, each
-** the id of an entity a generator drew.
-*/
 static void mix_ids(void)
 {
     uint32_t state = 2463534242u;
@@ -36,11 +24,6 @@ static void mix_ids(void)
     }
 }
 
-/*
-** spawn
-**
-** Spawns the entities, each with A, and draws the ids in no order.
-*/
 BRIDGE_NATIVE(spawn)
 {
     a_t value = {};
@@ -54,12 +37,6 @@ BRIDGE_NATIVE(spawn)
     return (0);
 }
 
-/*
-** attach_b
-**
-** Gives D to every second entity, or in a build for a measurement to every
-** one, each with a value of its own.
-*/
 NATIVE_MEASURED BRIDGE_NATIVE(attach_b)
 {
     d_t value;
@@ -73,11 +50,6 @@ NATIVE_MEASURED BRIDGE_NATIVE(attach_b)
     return (0);
 }
 
-/*
-** detach_b
-**
-** Takes D from each entity `attach_b` gave it to.
-*/
 NATIVE_MEASURED BRIDGE_NATIVE(detach_b)
 {
     uint32_t i = 0;
@@ -89,11 +61,6 @@ NATIVE_MEASURED BRIDGE_NATIVE(detach_b)
     return (0);
 }
 
-/*
-** destroy
-**
-** Destroys every entity there is, the two of `respawn_half` among them.
-*/
 BRIDGE_NATIVE(destroy)
 {
     uint32_t i = 0;

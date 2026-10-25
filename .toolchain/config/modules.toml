@@ -1,0 +1,84 @@
+[module]
+kind = "library"
+test = true
+folder = "built"
+include = ["{bridge}/include", "include", "tests/modules"]
+flags = ["{quiet}", "{hidden}", "{system_defines}"]
+sources = ["tests/modules/{name}.c"]
+
+[[modules]]
+name = "nmover"
+sources = ["tests/modules/nmover.c", "tests/modules/nidle.c"]
+path = true
+
+[[modules]]
+name = "nflood"
+sources = ["tests/modules/nflood.c", "tests/modules/nidle.c"]
+path = true
+
+[[modules]]
+name = "nforeign"
+sources = ["tests/modules/nforeign.c", "tests/modules/nidle.c"]
+path = true
+
+[[modules]]
+name = "nsetter"
+sources = ["tests/modules/nsetter.c", "tests/modules/nidle.c"]
+path = true
+
+[[modules]]
+name = "nwatcher"
+sources = ["tests/modules/nwatcher.c", "tests/modules/nidle.c"]
+path = true
+
+[[modules]]
+name = "nstamp5"
+sources = ["tests/modules/nstamp.c", "tests/modules/nidle.c"]
+defines = ["VALUE=5", "PHASE=\"update\""]
+variants = [{ name = "nstamp9", defines = ["VALUE=9", "PHASE=\"update\""] }]
+path = true
+
+[[modules]]
+name = "nsingle"
+sources = ["tests/modules/nsingle/*.c", "tests/modules/nidle.c"]
+path = true
+
+[[modules]]
+name = "ntoggle"
+sources = ["tests/modules/ntoggle/*.c", "tests/modules/nidle.c"]
+path = true
+
+[[modules]]
+name = "ntag"
+sources = ["tests/modules/ntag/*.c", "tests/modules/nidle.c"]
+path = true
+
+[[modules]]
+name = "ndirect"
+sources = ["tests/modules/ndirect/*.c", "tests/modules/nidle.c"]
+path = true
+
+[[modules]]
+name = "nsparse"
+sources = ["tests/modules/nsparse/*.c", "tests/modules/nidle.c"]
+path = true
+
+[[modules]]
+name = "nlayout0"
+sources = ["tests/modules/nlayout/*.c"]
+defines = ["V=0", "KEPT=1"]
+path = true
+
+[[modules]]
+name = "nalloc"
+sources = ["tests/modules/nalloc.c", "tests/modules/nidle.c"]
+path = true
+
+[[modules]]
+name = "nnoinit"
+path = true
+
+[[modules]]
+name = "ncover"
+sources = ["tests/modules/ncover.c", "tests/modules/nidle.c"]
+path = true
