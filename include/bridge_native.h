@@ -37,7 +37,7 @@
             sizeof(phase) - 1, \
             bridge_native_put(api, terms, (count) * sizeof(bridge_term_t)), \
             count, BRIDGE_NATIVE_PUT_CHANGES(api, changes, change_count), \
-            change_count))
+            change_count, 0, 0))
     #define BRIDGE_NATIVE_OBSERVER(api, name, events, terms, count, changes, \
         change_count) \
         (api)->observe(api, BRIDGE_NATIVE_STATE(api, \
@@ -46,7 +46,7 @@
             events, \
             bridge_native_put(api, terms, (count) * sizeof(bridge_term_t)), \
             count, BRIDGE_NATIVE_PUT_CHANGES(api, changes, change_count), \
-            change_count))
+            change_count, 0, 0))
     #define BRIDGE_NATIVE_PUT_CHANGES(api, changes, count) \
         ((count) ? bridge_native_put(api, changes, \
             (count) * sizeof(uint32_t)) : 0)
