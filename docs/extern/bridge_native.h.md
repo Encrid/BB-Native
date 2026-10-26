@@ -8,6 +8,7 @@ It pulls in the table, the kept-storage readers and the log, and adds the regist
 `BRIDGE_NATIVE_COMPONENT` and `BRIDGE_NATIVE_DECLARE` register a component from a type and its descriptor.
 `BRIDGE_NATIVE_DECLARE_TAG` registers a tag, a component that carries no bytes.
 `BRIDGE_NATIVE_ADD_SYSTEM` and `BRIDGE_NATIVE_OBSERVER` register a system and an observer, with their terms and changes.
+They fill every field of the statement. `before` and `before_count` are 0, so no system must run before the system or the observer.
 `BRIDGE_NATIVE_PUT_CHANGES` stages a subscriber's changed slots in the arena.
 
 Each macro stages its statement in the arena, then reaches the matching entry.
