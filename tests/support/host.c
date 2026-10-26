@@ -17,7 +17,8 @@ void host_init(host_t *h, int argc, char **argv)
 
     setvbuf(stdout, nullptr, _IONBF, 0);
     *h = (host_t){ .what = argc > 1 ? argv[1] : "" };
-    h->backends[0] = (bridge_backend_t){ "native", NATIVE_PATH };
+    h->backends[0] = (bridge_backend_t){ .name = "native",
+        .library = NATIVE_PATH };
     h->phases[0] = "update";
     h->phases[1] = "present";
     h->cfg = (bridge_config_t){ .abi = BRIDGE_HOST_ABI, .threads = 1 };
