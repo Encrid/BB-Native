@@ -3,7 +3,7 @@ kind = "library"
 test = true
 folder = "built"
 include = ["{bridge}/include", "include", "tests/modules"]
-flags = ["{quiet}", "{hidden}", "{system_defines}"]
+flags = ["{hidden}", "{system_defines}"]
 sources = ["tests/modules/{name}.c"]
 
 [[modules]]
