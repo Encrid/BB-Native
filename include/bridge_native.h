@@ -36,7 +36,7 @@
             bridge_native_put(api, phase, sizeof(phase) - 1), \
             sizeof(phase) - 1, \
             bridge_native_put(api, terms, (count) * sizeof(bridge_term_t)), \
-            count, BRIDGE_NATIVE_PUT_CHANGES(api, changes, change_count), \
+            count, BRIDGE_NATIVE_PUT_SLOTS(api, changes, change_count), \
             change_count, 0, 0))
     #define BRIDGE_NATIVE_OBSERVER(api, name, events, terms, count, changes, \
         change_count) \
@@ -45,10 +45,10 @@
             bridge_native_put(api, name, sizeof(name) - 1), sizeof(name) - 1, \
             events, \
             bridge_native_put(api, terms, (count) * sizeof(bridge_term_t)), \
-            count, BRIDGE_NATIVE_PUT_CHANGES(api, changes, change_count), \
+            count, BRIDGE_NATIVE_PUT_SLOTS(api, changes, change_count), \
             change_count, 0, 0))
-    #define BRIDGE_NATIVE_PUT_CHANGES(api, changes, count) \
-        ((count) ? bridge_native_put(api, changes, \
+    #define BRIDGE_NATIVE_PUT_SLOTS(api, slots, count) \
+        ((count) ? bridge_native_put(api, slots, \
             (count) * sizeof(uint32_t)) : 0)
 
 static inline const bridge_query_t *bridge_native_get_query(
