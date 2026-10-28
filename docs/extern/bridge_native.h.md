@@ -7,7 +7,15 @@ It pulls in the table, the kept-storage readers and the log, and adds the regist
 
 `BRIDGE_NATIVE_COMPONENT` and `BRIDGE_NATIVE_DECLARE` register a component from a type and its descriptor.
 `BRIDGE_NATIVE_DECLARE_TAG` registers a tag, a component that carries no bytes.
-Each of the three takes `on_unload`, `storage` and `on_destroy`, in the order of the declaration of Bridge.
+
+| Macro | Parameters |
+| --- | --- |
+| `BRIDGE_NATIVE_DECLARE` | `api`, `kind`, `name`, `T`, `on_unload`, `storage`, `on_destroy` |
+| `BRIDGE_NATIVE_COMPONENT` | `api`, `name`, `T`, `on_unload`, `storage`, `on_destroy`. The kind is `BRIDGE_STRUCT`. |
+| `BRIDGE_NATIVE_DECLARE_TAG` | `api`, `name`, `on_unload`, `storage`, `on_destroy`. The kind is `BRIDGE_TAG`. |
+
+`name` is a string literal, and `T` is a type with the descriptor `T##_desc`.
+The last three parameters fill the fields of `bridge_declaration_t` with the same names.
 
 `BRIDGE_NATIVE_ADD_SYSTEM` and `BRIDGE_NATIVE_OBSERVER` register a system and an observer, with their terms and changes.
 They fill every field of the statement. `before` and `before_count` are 0, so no system must run before the system or the observer.
