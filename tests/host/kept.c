@@ -44,13 +44,13 @@ static void set_room(host_t *h, const test_kept_case_t *c)
     h->cfg.budget.direct_indexed = c->sets;
 }
 
-static void run_phases(host_t *h, const test_kept_case_t *c)
+void test_run_phases(host_t *h, const char *const *phases, uint32_t count)
 {
     uint32_t i = 0;
 
-    while (i < 12 && c->phases[i]) {
-        printf("%s\n", c->phases[i]);
-        if (bridge_run_phase(h->w, c->phases[i]))
+    while (i < count && phases[i]) {
+        printf("%s\n", phases[i]);
+        if (bridge_run_phase(h->w, phases[i]))
             printf("  refused\n");
         i++;
     }
@@ -71,7 +71,7 @@ void test_read_kept(host_t *h)
     a.cfg.spans = 1 << 21;
     a.cfg.log_ring = 256 * 24;
     host_load(h, &a);
-    run_phases(h, c);
+    test_run_phases(h, c->phases, 12);
     host_close(h);
 }
 

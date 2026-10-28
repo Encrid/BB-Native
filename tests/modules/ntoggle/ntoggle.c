@@ -61,11 +61,11 @@ static void add_walks(const bridge_api_t *api)
 BRIDGE_NATIVE(init)
 {
     ntoggle_a = BRIDGE_NATIVE_COMPONENT(api, "st:A", a_t, BRIDGE_DELETE,
-        BRIDGE_TABLE);
+        BRIDGE_TABLE, BRIDGE_ON_DESTROY_REMOVE);
     ntoggle_b = BRIDGE_NATIVE_COMPONENT(api, "st:B", b_t, BRIDGE_DELETE,
-        BRIDGE_TABLE);
+        BRIDGE_TABLE, BRIDGE_ON_DESTROY_REMOVE);
     ntoggle_t = BRIDGE_NATIVE_COMPONENT(api, "st:T", t_t, BRIDGE_DELETE,
-        BRIDGE_TOGGLE);
+        BRIDGE_TOGGLE, BRIDGE_ON_DESTROY_REMOVE);
     add_changes(api);
     add_walks(api);
     return (0);

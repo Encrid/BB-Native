@@ -16,9 +16,9 @@ static void add_changes(const bridge_api_t *api)
     uint32_t both[2];
 
     nsingle_g = BRIDGE_NATIVE_COMPONENT(api, "st:G", g_t, BRIDGE_DELETE,
-        BRIDGE_SINGLETON);
+        BRIDGE_SINGLETON, BRIDGE_ON_DESTROY_REMOVE);
     nsingle_a = BRIDGE_NATIVE_COMPONENT(api, "st:A", a_t, BRIDGE_DELETE,
-        BRIDGE_TABLE);
+        BRIDGE_TABLE, BRIDGE_ON_DESTROY_REMOVE);
     both[0] = nsingle_g;
     both[1] = nsingle_a;
     BRIDGE_NATIVE_ADD_SYSTEM(api, "attach_a", "attach_a", &none, 0, both, 2);

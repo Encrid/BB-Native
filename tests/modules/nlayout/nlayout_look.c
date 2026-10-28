@@ -3,17 +3,10 @@
 **
 ** Under the GNU Affero General Public License, version 3 only: see license.
 */
+#include "native_say.h"
 #include "nlayout.h"
 
 constexpr uint32_t ROOM = 8;
-
-static void say(const bridge_api_t *api, const char *text, uint32_t first,
-    uint32_t second)
-{
-    bridge_line_t line = { text, (uint32_t)strlen(text), first, second };
-
-    bridge_native_log(api, BRIDGE_LOG_INFO, &line);
-}
 
 static void add_plain(sums_t *sums, const x_t *value)
 {

@@ -16,15 +16,16 @@ BRIDGE_NATIVE(init)
     bridge_term_t one[1] = {{ 0, BRIDGE_READ, ASKED, 0 }};
 
     BRIDGE_NATIVE_DECLARE(api, BRIDGE_ENUM, "st:switch_t", switch_t,
-        BRIDGE_STRIP, BRIDGE_TABLE);
+        BRIDGE_STRIP, BRIDGE_TABLE, BRIDGE_ON_DESTROY_REMOVE);
 #if V == 13
-    BRIDGE_NATIVE_DECLARE_TAG(api, "st:vec_t", BRIDGE_STRIP, BRIDGE_TABLE);
+    BRIDGE_NATIVE_DECLARE_TAG(api, "st:vec_t", BRIDGE_STRIP, BRIDGE_TABLE,
+        BRIDGE_ON_DESTROY_REMOVE);
 #else
     BRIDGE_NATIVE_DECLARE(api, BRIDGE_STRUCT, "st:vec_t", vec_t,
-        BRIDGE_STRIP, BRIDGE_TABLE);
+        BRIDGE_STRIP, BRIDGE_TABLE, BRIDGE_ON_DESTROY_REMOVE);
 #endif
     x_slot = BRIDGE_NATIVE_COMPONENT(api, "st:X", x_t, BRIDGE_DELETE,
-        (enum bridge_storage)KEPT);
+        (enum bridge_storage)KEPT, BRIDGE_ON_DESTROY_REMOVE);
     BRIDGE_NATIVE_ADD_SYSTEM(api, "spawn", "spawn", &none, 0, &x_slot, 1);
     one[0].slot = x_slot;
     reading = BRIDGE_NATIVE_ADD_SYSTEM(api, "look", "look", one, 1, nullptr,
