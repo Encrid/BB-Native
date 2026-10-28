@@ -37,5 +37,6 @@ Each macro stages its statement in the arena, then reaches the matching entry.
 
 | Function | Result |
 | --- | --- |
+| `bridge_native_put_slots` | Stages the slots of `BRIDGE_NATIVE_PUT_SLOTS`, which calls it with the same parameters. |
 | `bridge_native_get_query` | Gives a query's spans, as the last barrier left them. |
 | `bridge_native_get_span` | Gives span `i` of a query, from the private base. |
