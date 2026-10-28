@@ -14,22 +14,26 @@
         (api)->attach(api, id, slot, \
             bridge_native_lend(api, &(value), sizeof(value)))
 
-    #define BRIDGE_NATIVE_DECLARE(api, kind, name, T, on_unload, storage) \
+    #define BRIDGE_NATIVE_DECLARE(api, kind, name, T, on_unload, storage, \
+        on_destroy) \
         (api)->declare(api, BRIDGE_NATIVE_STATE(api, bridge_declaration_t, \
             bridge_native_put(api, name, sizeof(name) - 1), sizeof(name) - 1, \
             kind, sizeof(T), alignof(T), \
             bridge_native_put(api, T##_desc, sizeof(T##_desc) - 1), \
-            sizeof(T##_desc) - 1, on_unload, storage))
-    #define BRIDGE_NATIVE_COMPONENT(api, name, T, on_unload, storage) \
-        BRIDGE_NATIVE_DECLARE(api, BRIDGE_STRUCT, name, T, on_unload, storage)
+            sizeof(T##_desc) - 1, on_unload, storage, on_destroy))
+    #define BRIDGE_NATIVE_COMPONENT(api, name, T, on_unload, storage, \
+        on_destroy) \
+        BRIDGE_NATIVE_DECLARE(api, BRIDGE_STRUCT, name, T, on_unload, \
+            storage, on_destroy)
 
-    #define BRIDGE_NATIVE_DECLARE_TAG(api, name, on_unload, storage) \
+    #define BRIDGE_NATIVE_DECLARE_TAG(api, name, on_unload, storage, \
+        on_destroy) \
         (api)->declare(api, BRIDGE_NATIVE_STATE(api, bridge_declaration_t, \
             bridge_native_put(api, name, sizeof(name) - 1), sizeof(name) - 1, \
-            BRIDGE_TAG, 0, 1, 0, 0, on_unload, storage))
+            BRIDGE_TAG, 0, 1, 0, 0, on_unload, storage, on_destroy))
 
     #define BRIDGE_NATIVE_ADD_SYSTEM(api, name, phase, terms, count, changes, \
-        change_count) \
+        change_count, before, before_count) \
         (api)->add_system(api, BRIDGE_NATIVE_STATE(api, \
             bridge_system_statement_t, \
             bridge_native_put(api, name, sizeof(name) - 1), sizeof(name) - 1, \
@@ -37,19 +41,28 @@
             sizeof(phase) - 1, \
             bridge_native_put(api, terms, (count) * sizeof(bridge_term_t)), \
             count, BRIDGE_NATIVE_PUT_SLOTS(api, changes, change_count), \
-            change_count, 0, 0))
+            change_count, BRIDGE_NATIVE_PUT_SLOTS(api, before, before_count), \
+            before_count))
     #define BRIDGE_NATIVE_OBSERVER(api, name, events, terms, count, changes, \
-        change_count) \
+        change_count, before, before_count) \
         (api)->observe(api, BRIDGE_NATIVE_STATE(api, \
             bridge_observer_statement_t, \
             bridge_native_put(api, name, sizeof(name) - 1), sizeof(name) - 1, \
             events, \
             bridge_native_put(api, terms, (count) * sizeof(bridge_term_t)), \
             count, BRIDGE_NATIVE_PUT_SLOTS(api, changes, change_count), \
-            change_count, 0, 0))
+            change_count, BRIDGE_NATIVE_PUT_SLOTS(api, before, before_count), \
+            before_count))
     #define BRIDGE_NATIVE_PUT_SLOTS(api, slots, count) \
-        ((count) ? bridge_native_put(api, slots, \
-            (count) * sizeof(uint32_t)) : 0)
+        bridge_native_put_slots(api, slots, count)
+
+static inline uint32_t bridge_native_put_slots(const bridge_api_t *api,
+    const uint32_t *slots, uint32_t count)
+{
+    if (!count)
+        return (0);
+    return (bridge_native_put(api, slots, count * sizeof(uint32_t)));
+}
 
 static inline const bridge_query_t *bridge_native_get_query(
     const bridge_api_t *api, uint32_t query)
