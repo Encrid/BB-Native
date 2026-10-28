@@ -20,17 +20,17 @@ uint64_t ntag_ids[COUNT];
 static void declare_components(const bridge_api_t *api)
 {
     ntag_a = BRIDGE_NATIVE_COMPONENT(api, "st:A", a_t, BRIDGE_DELETE,
-        BRIDGE_TABLE);
+        BRIDGE_TABLE, BRIDGE_ON_DESTROY_REMOVE);
     ntag_m = BRIDGE_NATIVE_DECLARE_TAG(api, "st:M", BRIDGE_DELETE,
-        BRIDGE_TABLE);
+        BRIDGE_TABLE, BRIDGE_ON_DESTROY_REMOVE);
     ntag_p = BRIDGE_NATIVE_DECLARE_TAG(api, "st:P", BRIDGE_DELETE,
-        BRIDGE_SPARSE_SET);
+        BRIDGE_SPARSE_SET, BRIDGE_ON_DESTROY_REMOVE);
     ntag_o = BRIDGE_NATIVE_DECLARE_TAG(api, "st:O", BRIDGE_DELETE,
-        BRIDGE_TOGGLE);
+        BRIDGE_TOGGLE, BRIDGE_ON_DESTROY_REMOVE);
     ntag_r = BRIDGE_NATIVE_DECLARE_TAG(api, "st:R", BRIDGE_DELETE,
-        BRIDGE_DIRECT_INDEXED);
+        BRIDGE_DIRECT_INDEXED, BRIDGE_ON_DESTROY_REMOVE);
     ntag_w = BRIDGE_NATIVE_DECLARE_TAG(api, "st:W", BRIDGE_DELETE,
-        BRIDGE_SINGLETON);
+        BRIDGE_SINGLETON, BRIDGE_ON_DESTROY_REMOVE);
 }
 
 static void add_changes(const bridge_api_t *api)

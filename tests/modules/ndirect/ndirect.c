@@ -70,9 +70,9 @@ static void add_refused(const bridge_api_t *api)
 BRIDGE_NATIVE(init)
 {
     ndirect_a = BRIDGE_NATIVE_COMPONENT(api, "st:A", a_t, BRIDGE_DELETE,
-        BRIDGE_TABLE);
+        BRIDGE_TABLE, BRIDGE_ON_DESTROY_REMOVE);
     ndirect_d = BRIDGE_NATIVE_COMPONENT(api, "st:D", d_t, BRIDGE_DELETE,
-        BRIDGE_DIRECT_INDEXED);
+        BRIDGE_DIRECT_INDEXED, BRIDGE_ON_DESTROY_REMOVE);
     add_changes(api);
     add_readers(api);
 #ifndef BIG

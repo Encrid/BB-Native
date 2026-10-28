@@ -75,9 +75,9 @@ static void add_refused(const bridge_api_t *api)
 BRIDGE_NATIVE(init)
 {
     nsparse_a = BRIDGE_NATIVE_COMPONENT(api, "st:A", a_t, BRIDGE_DELETE,
-        BRIDGE_TABLE);
+        BRIDGE_TABLE, BRIDGE_ON_DESTROY_REMOVE);
     nsparse_s = BRIDGE_NATIVE_COMPONENT(api, "st:S", s_t, BRIDGE_DELETE,
-        BRIDGE_SPARSE_SET);
+        BRIDGE_SPARSE_SET, BRIDGE_ON_DESTROY_REMOVE);
     add_changes(api);
     add_walks(api);
 #if !defined(BIG) && !defined(FAT)

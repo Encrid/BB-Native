@@ -49,7 +49,7 @@ BRIDGE_NATIVE(init)
     bridge_term_t terms[1] = {{ 0, BRIDGE_READ, BRIDGE_AND, 0 }};
 
     marked = BRIDGE_NATIVE_COMPONENT(api, "game:Marked", marked_t,
-        BRIDGE_STRIP, BRIDGE_TABLE);
+        BRIDGE_STRIP, BRIDGE_TABLE, BRIDGE_ON_DESTROY_REMOVE);
     terms[0].slot = marked;
     seeing = BRIDGE_NATIVE_OBSERVER(api, "seen", BRIDGE_ON_ENTER, terms, 1,
         nullptr, 0);
