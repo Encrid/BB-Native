@@ -3,8 +3,6 @@
 **
 ** Under the GNU Affero General Public License, version 3 only: see license.
 */
-#include <wchar.h>
-
 #include "bridge_native.h"
 
 BRIDGE_NATIVE(values)
@@ -34,6 +32,6 @@ BRIDGE_NATIVE(unkept)
 
 BRIDGE_NATIVE(wrong)
 {
-    bridge_native_say(api, BRIDGE_LOG_INFO, "%lc", (wint_t)0xD800);
+    bridge_native_say(api, BRIDGE_LOG_INFO, "%ls", L"\xD800");
     return (0);
 }
