@@ -52,6 +52,6 @@ BRIDGE_NATIVE(init)
         BRIDGE_STRIP, BRIDGE_TABLE, BRIDGE_ON_DESTROY_REMOVE);
     terms[0].slot = marked;
     seeing = BRIDGE_NATIVE_OBSERVER(api, "seen", BRIDGE_ON_ENTER, terms, 1,
-        nullptr, 0);
+        nullptr, 0, nullptr, 0);
     return (0);
 }

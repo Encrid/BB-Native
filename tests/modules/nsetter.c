@@ -37,7 +37,8 @@ BRIDGE_NATIVE(init)
         BRIDGE_DELETE, BRIDGE_TABLE, BRIDGE_ON_DESTROY_REMOVE);
     marked = BRIDGE_NATIVE_COMPONENT(api, "game:Marked", marked_t,
         BRIDGE_STRIP, BRIDGE_TABLE, BRIDGE_ON_DESTROY_REMOVE);
-    BRIDGE_NATIVE_ADD_SYSTEM(api, "mark", "update", &none, 0, &marked, 1);
+    BRIDGE_NATIVE_ADD_SYSTEM(api, "mark", "update", &none, 0, &marked, 1,
+        nullptr, 0);
     while (i < ENTITIES) {
         p.x = (float)i;
         ids[i] = api->spawn(api);

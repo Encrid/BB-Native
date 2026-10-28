@@ -25,6 +25,7 @@ BRIDGE_NATIVE(init)
     kept = api->alloc(api, 16);
     if (kept)
         api->shared_base[kept] = 42;
-    BRIDGE_NATIVE_ADD_SYSTEM(api, "say", "update", &none, 0, nullptr, 0);
+    BRIDGE_NATIVE_ADD_SYSTEM(api, "say", "update", &none, 0, nullptr, 0,
+        nullptr, 0);
     return (0);
 }

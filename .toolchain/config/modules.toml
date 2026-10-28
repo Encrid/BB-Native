@@ -94,3 +94,10 @@ sources = ["tests/modules/nkeep.c", "tests/modules/nidle.c"]
 defines = ["KEPT_BY=1"]
 variants = [{ name = "nkeep_declare", defines = ["KEPT_BY=2"] }, { name = "nkeep_tag", defines = ["KEPT_BY=3"] }, { name = "nkeep_none", defines = ["KEPT_BY=0"] }]
 path = true
+
+[[modules]]
+name = "norder"
+sources = ["tests/modules/norder.c", "tests/modules/nidle.c"]
+defines = ["SYSTEMS_ORDERED=1", "OBSERVERS_ORDERED=1"]
+variants = [{ name = "norder_systems", defines = ["SYSTEMS_ORDERED=0", "OBSERVERS_ORDERED=1"] }, { name = "norder_observers", defines = ["SYSTEMS_ORDERED=1", "OBSERVERS_ORDERED=0"] }]
+path = true

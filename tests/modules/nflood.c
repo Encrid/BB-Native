@@ -23,6 +23,7 @@ BRIDGE_NATIVE(init)
 {
     int none = 0;
 
-    BRIDGE_NATIVE_ADD_SYSTEM(api, "flood", "update", &none, 0, nullptr, 0);
+    BRIDGE_NATIVE_ADD_SYSTEM(api, "flood", "update", &none, 0, nullptr, 0,
+        nullptr, 0);
     return (0);
 }

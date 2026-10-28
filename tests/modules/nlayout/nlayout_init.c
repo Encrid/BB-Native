@@ -26,10 +26,11 @@ BRIDGE_NATIVE(init)
 #endif
     x_slot = BRIDGE_NATIVE_COMPONENT(api, "st:X", x_t, BRIDGE_DELETE,
         (enum bridge_storage)KEPT, BRIDGE_ON_DESTROY_REMOVE);
-    BRIDGE_NATIVE_ADD_SYSTEM(api, "spawn", "spawn", &none, 0, &x_slot, 1);
+    BRIDGE_NATIVE_ADD_SYSTEM(api, "spawn", "spawn", &none, 0, &x_slot, 1,
+        nullptr, 0);
     one[0].slot = x_slot;
     reading = BRIDGE_NATIVE_ADD_SYSTEM(api, "look", "look", one, 1, nullptr,
-        0);
+        0, nullptr, 0);
     return (0);
 }
 
