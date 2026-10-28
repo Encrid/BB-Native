@@ -38,11 +38,12 @@ static void add_changes(const bridge_api_t *api)
     int none = 0;
     uint32_t made[5] = { ntag_a, ntag_m, ntag_p, ntag_o, ntag_r };
 
-    BRIDGE_NATIVE_ADD_SYSTEM(api, "spawn", "spawn", &none, 0, made, 5);
+    BRIDGE_NATIVE_ADD_SYSTEM(api, "spawn", "spawn", &none, 0, made, 5,
+        nullptr, 0);
     BRIDGE_NATIVE_ADD_SYSTEM(api, "attach_a", "attach_a", &none, 0, &ntag_w,
-        1);
+        1, nullptr, 0);
     BRIDGE_NATIVE_ADD_SYSTEM(api, "detach_b", "detach_b", &none, 0, &ntag_m,
-        1);
+        1, nullptr, 0);
 }
 
 static void add_walks(const bridge_api_t *api)
@@ -53,15 +54,15 @@ static void add_walks(const bridge_api_t *api)
     two[0].slot = ntag_a;
     two[1].slot = ntag_m;
     ntag_marked = BRIDGE_NATIVE_ADD_SYSTEM(api, "look", "look", two, 2,
-        nullptr, 0);
+        nullptr, 0, nullptr, 0);
     two[0].slot = ntag_p;
     ntag_in_set = BRIDGE_NATIVE_ADD_SYSTEM(api, "in_set", "never", two, 1,
-        nullptr, 0);
+        nullptr, 0, nullptr, 0);
     two[0].slot = ntag_a;
     two[1].slot = ntag_o;
     two[1].access = BRIDGE_WRITE;
     ntag_toggled = BRIDGE_NATIVE_ADD_SYSTEM(api, "flicker", "flicker", two, 2,
-        nullptr, 0);
+        nullptr, 0, nullptr, 0);
 }
 
 BRIDGE_NATIVE(init)

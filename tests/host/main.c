@@ -20,7 +20,7 @@ static const host_case_t TEST_CASES[] = {
     { "BRIDGE_NATIVE_ATTACH-seen-by-an-observer", test_observe, "", test_set },
     { "bridge_native_lend-a-value-lent-to-attach",
         test_observe, "", test_set },
-    { "BRIDGE_NATIVE_PUT_CHANGES-changes-stated-and-made",
+    { "BRIDGE_NATIVE_PUT_SLOTS-changes-stated-and-made",
         test_order_changes, "", test_set },
     { "bridge_api_t-entry-from-a-foreign-thread-refused",
         test_enter_from_foreign_thread, "", test_set },
@@ -110,6 +110,14 @@ static const host_case_t TEST_CASES[] = {
         test_load_keep, NKEEP_TAG_PATH, test_set },
     { "BRIDGE_ON_DESTROY_REMOVE-a-singleton-of-each-macro-loads",
         test_load_keep, NKEEP_NONE_PATH, test_set },
+    { "BRIDGE_NATIVE_ADD_SYSTEM-a-system-runs-after-those-that-before-names",
+        test_run_order, NORDER_PATH, test_set },
+    { "BRIDGE_NATIVE_OBSERVER-an-observer-runs-after-those-that-before-names",
+        test_run_order, NORDER_PATH, test_set },
+    { "BRIDGE_NATIVE_ADD_SYSTEM-two-systems-in-conflict-and-no-before-fail",
+        test_run_order, NORDER_SYSTEMS_PATH, test_set },
+    { "BRIDGE_NATIVE_OBSERVER-two-observers-in-conflict-and-no-before-fail",
+        test_run_order, NORDER_OBSERVERS_PATH, test_set },
 };
 
 int main(int argc, char **argv)

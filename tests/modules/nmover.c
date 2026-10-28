@@ -79,10 +79,10 @@ BRIDGE_NATIVE(init)
         BRIDGE_STRIP, BRIDGE_TABLE, BRIDGE_ON_DESTROY_REMOVE);
     terms[0].slot = position;
     moving = BRIDGE_NATIVE_ADD_SYSTEM(api, "move", "update", terms, 1,
-        nullptr, 0);
+        nullptr, 0, nullptr, 0);
     terms[0].access = BRIDGE_READ;
     tallying = BRIDGE_NATIVE_ADD_SYSTEM(api, "tally", "present", terms, 1,
-        nullptr, 0);
+        nullptr, 0, nullptr, 0);
     populate(api);
     return (0);
 }

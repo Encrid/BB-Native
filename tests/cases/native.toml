@@ -47,8 +47,8 @@ claims = { matches = ["seen 1 77.*alive"] }
 false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE-system-reads-and-writes"] }
 
 [[case]]
-name = "BRIDGE_NATIVE_PUT_CHANGES-changes-stated-and-made"
-run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_PUT_CHANGES-changes-stated-and-made"]
+name = "BRIDGE_NATIVE_PUT_SLOTS-changes-stated-and-made"
+run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_PUT_SLOTS-changes-stated-and-made"]
 claims = { matches = ["seen 1 9.*alive"], lacks = ["seen 1 5"] }
 false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE-system-reads-and-writes"] }
 
@@ -357,3 +357,27 @@ name = "BRIDGE_ON_DESTROY_REMOVE-a-singleton-of-each-macro-loads"
 run = ["{out}/native-host{exe}", "BRIDGE_ON_DESTROY_REMOVE-a-singleton-of-each-macro-loads"]
 claims = { matches = ["st:keep@0\\.1\\.0: loaded.*alive"], lacks = ["did not load"] }
 false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_COMPONENT-passes-on_destroy"] }
+
+[[case]]
+name = "BRIDGE_NATIVE_ADD_SYSTEM-a-system-runs-after-those-that-before-names"
+run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_ADD_SYSTEM-a-system-runs-after-those-that-before-names"]
+claims = { matches = ["game:order@0\\.1\\.0/first: ran.*game:order@0\\.1\\.0/second: ran.*alive"] }
+false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_ADD_SYSTEM-two-systems-in-conflict-and-no-before-fail"] }
+
+[[case]]
+name = "BRIDGE_NATIVE_OBSERVER-an-observer-runs-after-those-that-before-names"
+run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_OBSERVER-an-observer-runs-after-those-that-before-names"]
+claims = { matches = ["game:order@0\\.1\\.0/heard_first: heard.*game:order@0\\.1\\.0/heard_second: heard.*alive"] }
+false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_OBSERVER-two-observers-in-conflict-and-no-before-fail"] }
+
+[[case]]
+name = "BRIDGE_NATIVE_ADD_SYSTEM-two-systems-in-conflict-and-no-before-fail"
+run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_ADD_SYSTEM-two-systems-in-conflict-and-no-before-fail"]
+claims = { matches = ["module 'game:order@0\\.1\\.0' did not load: 'game:order:first' and 'game:order:second' both touch 'game:Marked' in phase 'update', one of them writing it, and their module states no order of them.*alive"] }
+false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_ADD_SYSTEM-a-system-runs-after-those-that-before-names"] }
+
+[[case]]
+name = "BRIDGE_NATIVE_OBSERVER-two-observers-in-conflict-and-no-before-fail"
+run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_OBSERVER-two-observers-in-conflict-and-no-before-fail"]
+claims = { matches = ["module 'game:order@0\\.1\\.0' did not load: 'game:order:heard_first' and 'game:order:heard_second' both touch 'game:Marked' at the barrier, one of them writing it, and their module states no order of them.*alive"] }
+false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_OBSERVER-an-observer-runs-after-those-that-before-names"] }

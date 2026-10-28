@@ -52,7 +52,7 @@ BRIDGE_NATIVE(init)
         BRIDGE_STRIP, BRIDGE_TABLE, BRIDGE_ON_DESTROY_REMOVE);
     terms[0].slot = position;
     stamping = BRIDGE_NATIVE_ADD_SYSTEM(api, "stamp", PHASE, terms, 1,
-        &marked, STATED);
+        &marked, STATED, nullptr, 0);
     BRIDGE_NATIVE_ATTACH(api, api->spawn(api), position, p);
     return (0);
 }
