@@ -32,5 +32,6 @@ If `vsnprintf` gives an error, the line has an empty text, and `a0` is 0.
 
 | Function | Result |
 | --- | --- |
+| `bridge_native_take_record` | Checks the level and the ring for `bridge_native_log` and `bridge_native_say`, and fills the record from the header. Gives the record, or null when the line is not written. |
 | `bridge_native_log` | Writes a line into the module's ring, when its level is kept. |
 | `bridge_native_say` | Makes the text of a line from a format and its values, and writes the line, when its level is kept. |
