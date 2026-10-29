@@ -56,3 +56,12 @@ void test_enter_from_foreign_thread(host_t *h)
     host_run_frames_unsaid(h->w, 1);
     host_close(h);
 }
+
+void test_run_order(host_t *h)
+{
+    if (host_open(h))
+        return;
+    test_load(h, "game:order@0.1.0", h->arg, 8);
+    host_run_frames_unsaid(h->w, 1);
+    host_close(h);
+}

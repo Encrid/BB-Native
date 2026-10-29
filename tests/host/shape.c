@@ -12,3 +12,11 @@ void test_load_no_init(host_t *h)
     test_load(h, "test:noinit@0.1.0", NNOINIT_PATH, BRIDGE_NONE);
     host_close(h);
 }
+
+void test_load_keep(host_t *h)
+{
+    if (host_open(h))
+        return;
+    test_load(h, "st:keep@0.1.0", h->arg, BRIDGE_NONE);
+    host_close(h);
+}

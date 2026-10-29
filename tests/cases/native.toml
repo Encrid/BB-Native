@@ -47,8 +47,8 @@ claims = { matches = ["seen 1 77.*alive"] }
 false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE-system-reads-and-writes"] }
 
 [[case]]
-name = "BRIDGE_NATIVE_PUT_CHANGES-changes-stated-and-made"
-run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_PUT_CHANGES-changes-stated-and-made"]
+name = "BRIDGE_NATIVE_PUT_SLOTS-changes-stated-and-made"
+run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_PUT_SLOTS-changes-stated-and-made"]
 claims = { matches = ["seen 1 9.*alive"], lacks = ["seen 1 5"] }
 false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE-system-reads-and-writes"] }
 
@@ -237,3 +237,147 @@ name = "define_func-an-entry-the-abi-has-not-refused"
 run = ["{out}/native-direct{exe}", "define_func-an-entry-the-abi-has-not-refused"]
 claims = { matches = ["an entry the SDK has not is refused: the native SDK has no entry 'teleport'"] }
 false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE-system-reads-and-writes"] }
+
+[[case]]
+name = "bridge_native_say-a-line-made-from-a-format-and-its-values"
+run = ["{out}/native-host{exe}", "bridge_native_say-a-line-made-from-a-format-and-its-values"]
+claims = { matches = ["test:say@0\\.1\\.0/values: look has 6 rows and -2 left.*alive"] }
+false = { run = ["{out}/native-host{exe}", "bridge_native_say-at-level-3-a-warning-is-not-kept"] }
+
+[[case]]
+name = "bridge_native_say-a-whole-text-has-its-length-in-a0"
+run = ["{out}/native-host{exe}", "bridge_native_say-a-whole-text-has-its-length-in-a0"]
+claims = { matches = ["/values: look has 6 rows and -2 left 27 0.*alive"] }
+false = { run = ["{out}/native-host{exe}", "bridge_native_say-at-level-3-a-warning-is-not-kept"] }
+
+[[case]]
+name = "bridge_native_say-a-cut-text-has-the-full-length-in-a0"
+run = ["{out}/native-host{exe}", "bridge_native_say-a-cut-text-has-the-full-length-in-a0"]
+claims = { matches = ["/cut: 0123456 10 0.*alive"] }
+false = { run = ["{out}/native-host{exe}", "bridge_native_say-at-level-3-a-warning-is-not-kept"] }
+
+[[case]]
+name = "bridge_native_say-the-level-and-the-system-of-the-record"
+run = ["{out}/native-host{exe}", "bridge_native_say-the-level-and-the-system-of-the-record"]
+claims = { matches = ["record\\[4\\] b[0-9]+ test:say@0\\.1\\.0/values: .*alive"] }
+false = { run = ["{out}/native-host{exe}", "bridge_native_say-at-level-3-a-warning-is-not-kept"] }
+
+[[case]]
+name = "bridge_native_say-two-lines-keep-their-own-texts"
+run = ["{out}/native-host{exe}", "bridge_native_say-two-lines-keep-their-own-texts"]
+claims = { matches = ["/two: first 1 7 0.*/two: second 2 8 0.*alive"] }
+false = { run = ["{out}/native-host{exe}", "bridge_native_say-at-level-3-a-warning-is-not-kept"] }
+
+[[case]]
+name = "bridge_native_say-a-text-cut-to-the-room-less-1-byte"
+run = ["{out}/native-host{exe}", "bridge_native_say-a-text-cut-to-the-room-less-1-byte"]
+claims = { matches = ["/cut: 0123456 [0-9]+ 0.*alive"] }
+false = { run = ["{out}/native-host{exe}", "bridge_native_say-at-level-3-a-warning-is-not-kept"] }
+
+[[case]]
+name = "bridge_native_say-the-room-starts-at-a-multiple-of-8"
+run = ["{out}/native-host{exe}", "bridge_native_say-the-room-starts-at-a-multiple-of-8"]
+claims = { matches = ["/cut_odd: 0123456 [0-9]+ 0.*alive"] }
+false = { run = ["{out}/native-host{exe}", "bridge_native_say-at-level-3-a-warning-is-not-kept"] }
+
+[[case]]
+name = "bridge_native_say-with-no-room-the-text-is-empty"
+run = ["{out}/native-host{exe}", "bridge_native_say-with-no-room-the-text-is-empty"]
+claims = { matches = ["/no_room:  [0-9]+ 0.*alive"] }
+false = { run = ["{out}/native-host{exe}", "bridge_native_say-at-level-3-a-warning-is-not-kept"] }
+
+[[case]]
+name = "bridge_native_say-an-error-of-vsnprintf-gives-an-empty-text"
+run = ["{out}/native-host{exe}", "bridge_native_say-an-error-of-vsnprintf-gives-an-empty-text"]
+claims = { matches = ["/wrong:  [0-9]+ 0.*alive"] }
+false = { run = ["{out}/native-host{exe}", "bridge_native_say-at-level-3-a-warning-is-not-kept"] }
+
+[[case]]
+name = "bridge_native_say-an-error-of-vsnprintf-gives-0-in-a0"
+run = ["{out}/native-host{exe}", "bridge_native_say-an-error-of-vsnprintf-gives-0-in-a0"]
+claims = { matches = ["/wrong:  0 0.*alive"] }
+false = { run = ["{out}/native-host{exe}", "bridge_native_say-at-level-3-a-warning-is-not-kept"] }
+
+[[case]]
+name = "bridge_native_say-a-level-not-kept-writes-nothing"
+run = ["{out}/native-host{exe}", "bridge_native_say-a-level-not-kept-writes-nothing"]
+claims = { matches = ["/unkept: the arena grew by.*alive"], lacks = ["a detail 7"] }
+false = { run = ["{out}/native-host{exe}", "bridge_native_say-at-level-7-a-detail-is-kept"] }
+
+[[case]]
+name = "bridge_native_say-a-level-not-kept-makes-no-text"
+run = ["{out}/native-host{exe}", "bridge_native_say-a-level-not-kept-makes-no-text"]
+claims = { matches = ["/unkept: the arena grew by 0 [0-9]+ 0.*alive"] }
+false = { run = ["{out}/native-host{exe}", "bridge_native_say-at-level-7-a-detail-is-kept"] }
+
+[[case]]
+name = "bridge_native_say-a-full-ring-drops-the-line"
+run = ["{out}/native-host{exe}", "bridge_native_say-a-full-ring-drops-the-line"]
+claims = { matches = ["1 log lines were dropped: its ring holds 8.*alive"] }
+false = { run = ["{out}/native-host{exe}", "bridge_native_say-at-level-3-a-warning-is-not-kept"] }
+
+[[case]]
+name = "bridge_native_say-a-dropped-line-makes-no-text"
+run = ["{out}/native-host{exe}", "bridge_native_say-a-dropped-line-makes-no-text"]
+claims = { matches = ["/after_full: the dropped line grew the arena by 0 [0-9]+ 0.*alive"] }
+false = { run = ["{out}/native-host{exe}", "bridge_native_say-at-level-3-a-warning-is-not-kept"] }
+
+[[case]]
+name = "bridge_native_say-at-level-3-a-warning-is-not-kept"
+run = ["{out}/native-host{exe}", "bridge_native_say-at-level-3-a-warning-is-not-kept"]
+claims = { matches = ["test:say@0\\.1\\.0: loaded.*alive"], lacks = ["look has 6 rows"] }
+false = { run = ["{out}/native-host{exe}", "bridge_native_say-a-line-made-from-a-format-and-its-values"] }
+
+[[case]]
+name = "bridge_native_say-at-level-7-a-detail-is-kept"
+run = ["{out}/native-host{exe}", "bridge_native_say-at-level-7-a-detail-is-kept"]
+claims = { matches = ["/unkept: a detail 7 [0-9]+ 0.*alive"] }
+false = { run = ["{out}/native-host{exe}", "bridge_native_say-a-line-made-from-a-format-and-its-values"] }
+
+[[case]]
+name = "BRIDGE_NATIVE_COMPONENT-passes-on_destroy"
+run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_COMPONENT-passes-on_destroy"]
+claims = { matches = ["module 'st:keep@0\\.1\\.0' did not load: type 'st:C' is a singleton, and a singleton states BRIDGE_ON_DESTROY_REMOVE.*alive"] }
+false = { run = ["{out}/native-host{exe}", "BRIDGE_ON_DESTROY_REMOVE-a-singleton-of-each-macro-loads"] }
+
+[[case]]
+name = "BRIDGE_NATIVE_DECLARE-passes-on_destroy"
+run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_DECLARE-passes-on_destroy"]
+claims = { matches = ["module 'st:keep@0\\.1\\.0' did not load: type 'st:D' is a singleton, and a singleton states BRIDGE_ON_DESTROY_REMOVE.*alive"] }
+false = { run = ["{out}/native-host{exe}", "BRIDGE_ON_DESTROY_REMOVE-a-singleton-of-each-macro-loads"] }
+
+[[case]]
+name = "BRIDGE_NATIVE_DECLARE_TAG-passes-on_destroy"
+run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_DECLARE_TAG-passes-on_destroy"]
+claims = { matches = ["module 'st:keep@0\\.1\\.0' did not load: type 'st:T' is a singleton, and a singleton states BRIDGE_ON_DESTROY_REMOVE.*alive"] }
+false = { run = ["{out}/native-host{exe}", "BRIDGE_ON_DESTROY_REMOVE-a-singleton-of-each-macro-loads"] }
+
+[[case]]
+name = "BRIDGE_ON_DESTROY_REMOVE-a-singleton-of-each-macro-loads"
+run = ["{out}/native-host{exe}", "BRIDGE_ON_DESTROY_REMOVE-a-singleton-of-each-macro-loads"]
+claims = { matches = ["st:keep@0\\.1\\.0: loaded.*alive"], lacks = ["did not load"] }
+false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_COMPONENT-passes-on_destroy"] }
+
+[[case]]
+name = "BRIDGE_NATIVE_ADD_SYSTEM-a-system-runs-after-those-that-before-names"
+run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_ADD_SYSTEM-a-system-runs-after-those-that-before-names"]
+claims = { matches = ["game:order@0\\.1\\.0/first: ran.*game:order@0\\.1\\.0/second: ran.*alive"] }
+false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_ADD_SYSTEM-two-systems-in-conflict-and-no-before-fail"] }
+
+[[case]]
+name = "BRIDGE_NATIVE_OBSERVER-an-observer-runs-after-those-that-before-names"
+run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_OBSERVER-an-observer-runs-after-those-that-before-names"]
+claims = { matches = ["game:order@0\\.1\\.0/heard_first: heard.*game:order@0\\.1\\.0/heard_second: heard.*alive"] }
+false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_OBSERVER-two-observers-in-conflict-and-no-before-fail"] }
+
+[[case]]
+name = "BRIDGE_NATIVE_ADD_SYSTEM-two-systems-in-conflict-and-no-before-fail"
+run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_ADD_SYSTEM-two-systems-in-conflict-and-no-before-fail"]
+claims = { matches = ["module 'game:order@0\\.1\\.0' did not load: 'game:order:first' and 'game:order:second' both touch 'game:Marked' in phase 'update', one of them writing it, and their module states no order of them.*alive"] }
+false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_ADD_SYSTEM-a-system-runs-after-those-that-before-names"] }
+
+[[case]]
+name = "BRIDGE_NATIVE_OBSERVER-two-observers-in-conflict-and-no-before-fail"
+run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_OBSERVER-two-observers-in-conflict-and-no-before-fail"]
+claims = { matches = ["module 'game:order@0\\.1\\.0' did not load: 'game:order:heard_first' and 'game:order:heard_second' both touch 'game:Marked' at the barrier, one of them writing it, and their module states no order of them.*alive"] }
+false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_OBSERVER-an-observer-runs-after-those-that-before-names"] }

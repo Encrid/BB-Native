@@ -11,9 +11,7 @@
 static inline void say(const bridge_api_t *api, const char *text, uint32_t x,
     uint32_t y)
 {
-    bridge_line_t line = { text, (uint32_t)strlen(text), x, y };
-
-    bridge_native_log(api, BRIDGE_LOG_INFO, &line);
+    bridge_native_say(api, BRIDGE_LOG_INFO, "%s %u %u", text, x, y);
 }
 
 #endif

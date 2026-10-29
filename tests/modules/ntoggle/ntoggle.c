@@ -28,16 +28,18 @@ static void add_changes(const bridge_api_t *api)
     int none = 0;
     uint32_t made[2] = { ntoggle_a, ntoggle_t };
 
-    BRIDGE_NATIVE_ADD_SYSTEM(api, "spawn", "spawn", &none, 0, made, 2);
-    BRIDGE_NATIVE_ADD_SYSTEM(api, "respawn_half", "respawn_half", &none, 0,
-        made, 2);
-    BRIDGE_NATIVE_ADD_SYSTEM(api, "attach_b", "attach_b", &none, 0,
-        &ntoggle_b, 1);
-    BRIDGE_NATIVE_ADD_SYSTEM(api, "destroy_half", "destroy_half", &none, 0,
+    BRIDGE_NATIVE_ADD_SYSTEM(api, "spawn", "spawn", &none, 0, made, 2,
         nullptr, 0);
+    BRIDGE_NATIVE_ADD_SYSTEM(api, "respawn_half", "respawn_half", &none, 0,
+        made, 2, nullptr, 0);
+    BRIDGE_NATIVE_ADD_SYSTEM(api, "attach_b", "attach_b", &none, 0,
+        &ntoggle_b, 1, nullptr, 0);
+    BRIDGE_NATIVE_ADD_SYSTEM(api, "destroy_half", "destroy_half", &none, 0,
+        nullptr, 0, nullptr, 0);
     BRIDGE_NATIVE_ADD_SYSTEM(api, "value_a", "value_a", &none, 0, &ntoggle_t,
-        1);
-    BRIDGE_NATIVE_ADD_SYSTEM(api, "find", "find", &none, 0, nullptr, 0);
+        1, nullptr, 0);
+    BRIDGE_NATIVE_ADD_SYSTEM(api, "find", "find", &none, 0, nullptr, 0,
+        nullptr, 0);
 }
 
 static void add_walks(const bridge_api_t *api)
@@ -47,25 +49,27 @@ static void add_walks(const bridge_api_t *api)
 #ifndef BIG
     on_t = BRIDGE_NATIVE_OBSERVER(api, "heard_t",
         BRIDGE_ON_ENTER | BRIDGE_ON_ATTACH | BRIDGE_ON_LEAVE, one, 1, nullptr,
-        0);
+        0, nullptr, 0);
 #endif
     ntoggle_reading = BRIDGE_NATIVE_ADD_SYSTEM(api, "look", "look", one, 1,
+        nullptr, 0, nullptr, 0);
+    BRIDGE_NATIVE_ADD_SYSTEM(api, "look_b", "look_b", one, 1, nullptr, 0,
         nullptr, 0);
-    BRIDGE_NATIVE_ADD_SYSTEM(api, "look_b", "look_b", one, 1, nullptr, 0);
     one[0].access = BRIDGE_WRITE;
     ntoggle_writing = BRIDGE_NATIVE_ADD_SYSTEM(api, "flicker", "flicker", one,
-        1, nullptr, 0);
-    BRIDGE_NATIVE_ADD_SYSTEM(api, "combine", "combine", one, 1, nullptr, 0);
+        1, nullptr, 0, nullptr, 0);
+    BRIDGE_NATIVE_ADD_SYSTEM(api, "combine", "combine", one, 1, nullptr, 0,
+        nullptr, 0);
 }
 
 BRIDGE_NATIVE(init)
 {
     ntoggle_a = BRIDGE_NATIVE_COMPONENT(api, "st:A", a_t, BRIDGE_DELETE,
-        BRIDGE_TABLE);
+        BRIDGE_TABLE, BRIDGE_ON_DESTROY_REMOVE);
     ntoggle_b = BRIDGE_NATIVE_COMPONENT(api, "st:B", b_t, BRIDGE_DELETE,
-        BRIDGE_TABLE);
+        BRIDGE_TABLE, BRIDGE_ON_DESTROY_REMOVE);
     ntoggle_t = BRIDGE_NATIVE_COMPONENT(api, "st:T", t_t, BRIDGE_DELETE,
-        BRIDGE_TOGGLE);
+        BRIDGE_TOGGLE, BRIDGE_ON_DESTROY_REMOVE);
     add_changes(api);
     add_walks(api);
     return (0);

@@ -27,12 +27,15 @@ void test_load(host_t *h, const char *identity, const char *path,
 
 void test_load_watcher(host_t *h);
 
+void test_run_phases(host_t *h, const char *const *phases, uint32_t count);
+
 void test_run_mover(host_t *h);
 void test_run_cover(host_t *h);
 void test_refuse_entry(host_t *h);
 void test_enter_from_foreign_thread(host_t *h);
 void test_observe(host_t *h);
 void test_order_changes(host_t *h);
+void test_run_order(host_t *h);
 void test_state_limit(host_t *h);
 void test_state_no_path(host_t *h);
 void test_name_no_library(host_t *h);
@@ -40,5 +43,7 @@ void test_hand_setting(host_t *h);
 void test_read_kept(host_t *h);
 void test_keep_bytes(host_t *h);
 void test_load_no_init(host_t *h);
+void test_load_keep(host_t *h);
+void test_say(host_t *h);
 
 #endif
