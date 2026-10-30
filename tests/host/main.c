@@ -32,6 +32,8 @@ static const host_case_t TEST_CASES[] = {
         test_state_limit, "m", test_set },
     { "backend_get_capabilities-timeout-refused",
         test_state_limit, "t", test_set },
+    { "backend_get_capabilities-element-limit-refused",
+        test_state_limit, "e", test_set },
     { "module_compile-no-path-refused", test_state_no_path, "", test_set },
     { "module_compile-library-cannot-open",
         test_name_no_library, "", test_set },

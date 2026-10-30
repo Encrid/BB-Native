@@ -83,6 +83,12 @@ claims = { matches = ["is refused: it states shutdown_timeout, which backend 'na
 false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE-system-reads-and-writes"] }
 
 [[case]]
+name = "backend_get_capabilities-element-limit-refused"
+run = ["{out}/native-host{exe}", "backend_get_capabilities-element-limit-refused"]
+claims = { matches = ["is refused: it states element_limit, which backend 'native' cannot keep.*alive"], lacks = ["cannot open"] }
+false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE-system-reads-and-writes"] }
+
+[[case]]
 name = "module_compile-no-path-refused"
 run = ["{out}/native-host{exe}", "module_compile-no-path-refused"]
 claims = { matches = ["did not load: this backend opens a module's library by its path, and was handed none.*alive"] }
