@@ -107,6 +107,34 @@ claims = { matches = ["backend 'native' would not start: it knows no setting 'ca
 false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE-system-reads-and-writes"] }
 
 [[case]]
+name = "backend_create-no-memory-refused"
+run = ["{out}/native-host{exe}", "backend_create-no-memory-refused"]
+fail = { calloc = 1 }
+claims = { matches = ["backend 'native' would not start: out of memory: there was none for the backend.*bridge_create refused.*alive"] }
+false = { fail = {} }
+
+[[case]]
+name = "module_compile-no-memory-refused"
+run = ["{out}/native-host{exe}", "module_compile-no-memory-refused"]
+fail = { calloc = 2 }
+claims = { matches = ["module 'game:mover@0\\.1\\.0' did not load: out of memory: there was none for the image of a module.*alive"] }
+false = { fail = {} }
+
+[[case]]
+name = "instance_create-no-memory-refused"
+run = ["{out}/native-host{exe}", "instance_create-no-memory-refused"]
+fail = { calloc = 3 }
+claims = { matches = ["module 'game:mover@0\\.1\\.0' did not load: out of memory: there was none for an instance of an image.*alive"] }
+false = { fail = {} }
+
+[[case]]
+name = "instance_get_func-no-memory-refused"
+run = ["{out}/native-host{exe}", "instance_get_func-no-memory-refused"]
+fail = { calloc = 4 }
+claims = { matches = ["module 'game:mover@0\\.1\\.0' did not load: out of memory: there was none for a function of an instance.*alive"] }
+false = { fail = {} }
+
+[[case]]
 name = "bridge_native_get_single-the-one-row"
 run = ["{out}/native-host{exe}", "bridge_native_get_single-the-one-row"]
 claims = { matches = ["it has no value 0 0.*it has a value: gravity, wind 10 1.*wind 20 2.*wind 20 77.*alive"] }
