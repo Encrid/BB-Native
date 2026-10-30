@@ -7,6 +7,7 @@ This file opens that library by path, lists the memories a module imports, and c
 
 `module_compile` takes the path from the source and opens it with `os_lib_open`.
 It refuses an empty path, and refuses a library the operating system will not open.
+Then it takes the image from `native_allocate`. If that gives null, it closes the library again, and refuses.
 A library has no import section, so `module_list_imports` always names the shared and the private memory.
 
 ## Functions

@@ -16,5 +16,5 @@ Nothing catches a fault, so a native module that faults ends the process.
 | Function | Result |
 | --- | --- |
 | `define_func` | Keeps the pointer that answers an ABI entry. Refuses an entry the native SDK does not have. |
-| `instance_get_func` | Finds an exported function once and remembers it. Refuses when the symbol is missing. |
+| `instance_get_func` | Finds an exported function once, and remembers it in a handle from `native_allocate`. Refuses when the symbol is missing. |
 | `call` | Runs an exported function and gives its status. A call made from inside a call returns to it. |
