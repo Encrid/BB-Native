@@ -19,9 +19,9 @@ BACKEND_EXPORT backend_instance_t *instance_create(backend_module_t *m,
     native_fill_api(&i->api);
     while (k < count) {
         if (!strcmp(memories[k].field, BRIDGE_SHARED))
-            i->api.shared_base = memories[k].memory->ptr;
+            i->api.shared_base = (uint8_t *)memories[k].memory;
         if (!strcmp(memories[k].field, BRIDGE_PRIVATE))
-            i->api.private_base = memories[k].memory->ptr;
+            i->api.private_base = (uint8_t *)memories[k].memory;
         k++;
     }
     return (i);

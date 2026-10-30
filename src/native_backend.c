@@ -39,11 +39,8 @@ BACKEND_EXPORT void memory_get_shape([[maybe_unused]] backend_t *b,
 }
 
 BACKEND_EXPORT backend_memory_t *memory_adopt([[maybe_unused]] backend_t *b,
-    void *ptr, uint64_t len, [[maybe_unused]] backend_err_t *err)
+    void *ptr, [[maybe_unused]] uint64_t len,
+    [[maybe_unused]] backend_err_t *err)
 {
-    backend_memory_t *m = malloc(sizeof(*m));
-
-    m->ptr = ptr;
-    m->len = len;
-    return (m);
+    return ((backend_memory_t *)ptr);
 }

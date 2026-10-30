@@ -14,9 +14,8 @@ static const char *const NATIVE_MEMORIES[2] = {
     BRIDGE_PRIVATE
 };
 
-BACKEND_EXPORT void memory_release(backend_memory_t *m)
+BACKEND_EXPORT void memory_release([[maybe_unused]] backend_memory_t *m)
 {
-    free(m);
 }
 
 BACKEND_EXPORT backend_module_t *module_compile([[maybe_unused]] backend_t *b,

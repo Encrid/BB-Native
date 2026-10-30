@@ -39,11 +39,6 @@ struct backend {
     int unused;
 };
 
-struct backend_memory {
-    void *ptr;
-    uint64_t len;
-};
-
 struct backend_module {
     void *lib;
 };
