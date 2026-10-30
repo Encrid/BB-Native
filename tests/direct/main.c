@@ -41,6 +41,7 @@ static void poke_edges(const backend_api_t *api, backend_t *be,
     api->instance_set_work_limit(i, 1);
     api->instance_set_timeout(i, 1);
     api->instance_set_memory_limit(i, 1);
+    api->instance_set_element_limit(i, 1);
     api->instance_destroy(i);
 }
 
