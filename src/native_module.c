@@ -33,8 +33,11 @@ BACKEND_EXPORT backend_module_t *module_compile([[maybe_unused]] backend_t *b,
         snprintf(err->text, room, "cannot open the library '%.180s'", path);
     if (!lib)
         return (nullptr);
-    m = calloc(1, sizeof(*m));
-    m->lib = lib;
+    m = native_allocate(sizeof(*m), "the image of a module", err);
+    if (!m)
+        os_lib_close(lib);
+    else
+        m->lib = lib;
     return (m);
 }
 
