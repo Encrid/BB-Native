@@ -39,11 +39,6 @@ struct backend {
     int unused;
 };
 
-struct backend_memory {
-    void *ptr;
-    uint64_t len;
-};
-
 struct backend_module {
     void *lib;
 };
@@ -80,6 +75,9 @@ static inline uint64_t native_enter(const bridge_api_t *api,
     i->refused = 1;
     return (0);
 }
+
+[[nodiscard]] void *native_allocate(size_t size, const char *what,
+    backend_err_t *err);
 
 void native_fill_api(bridge_api_t *api);
 

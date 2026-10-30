@@ -22,6 +22,8 @@ void test_state_limit(host_t *h)
         a.cfg.memory_limit = 1 << 20;
     if (*h->arg == 't')
         a.cfg.shutdown_timeout = 2000 * HOST_MS;
+    if (*h->arg == 'e')
+        a.cfg.element_limit = 1 << 16;
     host_load(h, &a);
     host_close(h);
 }

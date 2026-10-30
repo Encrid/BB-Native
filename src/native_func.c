@@ -4,7 +4,6 @@
 ** Under the GNU Affero General Public License, version 3 only: see license.
 */
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 #include "native_inside.h"
@@ -40,7 +39,9 @@ BACKEND_EXPORT backend_func_t *instance_get_func(backend_instance_t *i,
             symbol);
         return (nullptr);
     }
-    f = calloc(1, sizeof(*f));
+    f = native_allocate(sizeof(*f), "a function of an instance", err);
+    if (!f)
+        return (nullptr);
     f->instance = i;
     f->fn = (int (*)(const bridge_api_t *))fn;
     f->next = i->funcs;

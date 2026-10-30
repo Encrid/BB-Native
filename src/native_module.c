@@ -14,9 +14,8 @@ static const char *const NATIVE_MEMORIES[2] = {
     BRIDGE_PRIVATE
 };
 
-BACKEND_EXPORT void memory_release(backend_memory_t *m)
+BACKEND_EXPORT void memory_release([[maybe_unused]] backend_memory_t *m)
 {
-    free(m);
 }
 
 BACKEND_EXPORT backend_module_t *module_compile([[maybe_unused]] backend_t *b,
@@ -34,8 +33,11 @@ BACKEND_EXPORT backend_module_t *module_compile([[maybe_unused]] backend_t *b,
         snprintf(err->text, room, "cannot open the library '%.180s'", path);
     if (!lib)
         return (nullptr);
-    m = calloc(1, sizeof(*m));
-    m->lib = lib;
+    m = native_allocate(sizeof(*m), "the image of a module", err);
+    if (!m)
+        os_lib_close(lib);
+    else
+        m->lib = lib;
     return (m);
 }
 

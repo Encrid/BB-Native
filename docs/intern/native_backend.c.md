@@ -6,15 +6,15 @@ The backend has no setting of its own.
 ## What the backend guarantees
 
 `backend_get_capabilities` answers `BACKEND_RELOAD | BACKEND_UNLOAD`.
-It keeps no work limit, no timeout, and no cap on memory, because a module runs as code in this process.
+It keeps no work limit, no timeout, no cap on memory and no cap on elements, because a module runs as code in this process.
 It also cannot hold two copies of one library at once.
 
 ## Functions
 
 | Function | Result |
 | --- | --- |
-| `backend_create` | Gives a new backend. Any setting key is unknown, so it writes why in `err` and refuses. |
+| `backend_create` | Gives a new backend from `native_allocate`. Any setting key is unknown, so it writes why in `err` and refuses. |
 | `backend_destroy` | Frees the backend. |
 | `backend_get_capabilities` | Gives the flags the backend keeps: reload and unload. |
 | `memory_get_shape` | Asks for no reservation, no guard and no granule. |
-| `memory_adopt` | Wraps a block Bridge reserved, which is already addressable. |
+| `memory_adopt` | Gives the block that Bridge reserved as its handle, since the block is already addressable. It allocates nothing, so it never refuses. |

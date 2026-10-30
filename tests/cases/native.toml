@@ -83,6 +83,12 @@ claims = { matches = ["is refused: it states shutdown_timeout, which backend 'na
 false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE-system-reads-and-writes"] }
 
 [[case]]
+name = "backend_get_capabilities-element-limit-refused"
+run = ["{out}/native-host{exe}", "backend_get_capabilities-element-limit-refused"]
+claims = { matches = ["is refused: it states element_limit, which backend 'native' cannot keep.*alive"], lacks = ["cannot open"] }
+false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE-system-reads-and-writes"] }
+
+[[case]]
 name = "module_compile-no-path-refused"
 run = ["{out}/native-host{exe}", "module_compile-no-path-refused"]
 claims = { matches = ["did not load: this backend opens a module's library by its path, and was handed none.*alive"] }
@@ -99,6 +105,34 @@ name = "backend_create-a-setting-refused"
 run = ["{out}/native-host{exe}", "backend_create-a-setting-refused"]
 claims = { matches = ["backend 'native' would not start: it knows no setting 'cache'.*bridge_create refused.*alive"] }
 false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE-system-reads-and-writes"] }
+
+[[case]]
+name = "backend_create-no-memory-refused"
+run = ["{out}/native-host{exe}", "backend_create-no-memory-refused"]
+fail = { calloc = 1 }
+claims = { matches = ["backend 'native' would not start: out of memory: there was none for the backend.*bridge_create refused.*alive"] }
+false = { fail = {} }
+
+[[case]]
+name = "module_compile-no-memory-refused"
+run = ["{out}/native-host{exe}", "module_compile-no-memory-refused"]
+fail = { calloc = 2 }
+claims = { matches = ["module 'game:mover@0\\.1\\.0' did not load: out of memory: there was none for the image of a module.*alive"] }
+false = { fail = {} }
+
+[[case]]
+name = "instance_create-no-memory-refused"
+run = ["{out}/native-host{exe}", "instance_create-no-memory-refused"]
+fail = { calloc = 3 }
+claims = { matches = ["module 'game:mover@0\\.1\\.0' did not load: out of memory: there was none for an instance of an image.*alive"] }
+false = { fail = {} }
+
+[[case]]
+name = "instance_get_func-no-memory-refused"
+run = ["{out}/native-host{exe}", "instance_get_func-no-memory-refused"]
+fail = { calloc = 4 }
+claims = { matches = ["module 'game:mover@0\\.1\\.0' did not load: out of memory: there was none for a function of an instance.*alive"] }
+false = { fail = {} }
 
 [[case]]
 name = "bridge_native_get_single-the-one-row"

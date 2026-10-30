@@ -14,7 +14,7 @@ BACKEND_EXPORT backend_t *backend_create(const backend_setting_t *settings,
     const char *key = count && settings[0].key ? settings[0].key : "";
 
     if (!count)
-        return (calloc(1, sizeof(backend_t)));
+        return (native_allocate(sizeof(backend_t), "the backend", err));
     snprintf(err->text, sizeof(err->text), "it knows no setting '%.100s'", key);
     return (nullptr);
 }
@@ -39,11 +39,8 @@ BACKEND_EXPORT void memory_get_shape([[maybe_unused]] backend_t *b,
 }
 
 BACKEND_EXPORT backend_memory_t *memory_adopt([[maybe_unused]] backend_t *b,
-    void *ptr, uint64_t len, [[maybe_unused]] backend_err_t *err)
+    void *ptr, [[maybe_unused]] uint64_t len,
+    [[maybe_unused]] backend_err_t *err)
 {
-    backend_memory_t *m = malloc(sizeof(*m));
-
-    m->ptr = ptr;
-    m->len = len;
-    return (m);
+    return ((backend_memory_t *)ptr);
 }
