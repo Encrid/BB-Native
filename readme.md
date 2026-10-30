@@ -45,8 +45,18 @@ The backend writes one of these reasons when it refuses. Angle brackets mark a p
 - `no exported function '<name>'`
 - `this backend opens a module's library by its path, and was handed none`
 - `cannot open the library '<path>'`
+- `out of memory: there was none for <what>`
 
 Bridge puts each reason into a record, after the name of the backend or of the module.
+
+An entry that gets no memory gives null, with the last reason of the list. This table gives `<what>` and the record of each entry:
+
+| Entry | `<what>` | The record |
+| --- | --- | --- |
+| `backend_create` | `the backend` | `backend 'native' would not start: <reason>` |
+| `module_compile` | `the image of a module` | `module '<module>' did not load: <reason>` |
+| `instance_create` | `an instance of an image` | `module '<module>' did not load: <reason>` |
+| `instance_get_func` | `a function of an instance` | `module '<module>' did not load: <reason>` |
 
 ## Contributing
 
