@@ -34,6 +34,7 @@ The SDK includes `bridge_abi.h` and `bridge_schema.h`, thus a module also compil
 
 A host names the backend in its deployment, with the name `native` and the path of its library as `library`.
 The library is `bridge_native.dll`, `bridge_native.so` or `bridge_native.dylib`. The backend knows no setting.
+The backend is built against `BACKEND_ABI` 3, the number of the backend seam of Bridge. A Bridge of another number refuses it.
 
 ## Messages
 
