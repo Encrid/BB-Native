@@ -13,7 +13,7 @@ It also cannot hold two copies of one library at once.
 
 | Function | Result |
 | --- | --- |
-| `backend_create` | Gives a new backend. Any setting key is unknown, so it writes why in `err` and refuses. |
+| `backend_create` | Gives a new backend from `native_allocate`. Any setting key is unknown, so it writes why in `err` and refuses. |
 | `backend_destroy` | Frees the backend. |
 | `backend_get_capabilities` | Gives the flags the backend keeps: reload and unload. |
 | `memory_get_shape` | Asks for no reservation, no guard and no granule. |
