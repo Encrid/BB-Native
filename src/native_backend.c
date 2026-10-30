@@ -14,7 +14,7 @@ BACKEND_EXPORT backend_t *backend_create(const backend_setting_t *settings,
     const char *key = count && settings[0].key ? settings[0].key : "";
 
     if (!count)
-        return (calloc(1, sizeof(backend_t)));
+        return (native_allocate(sizeof(backend_t), "the backend", err));
     snprintf(err->text, sizeof(err->text), "it knows no setting '%.100s'", key);
     return (nullptr);
 }

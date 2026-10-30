@@ -10,11 +10,14 @@
 
 BACKEND_EXPORT backend_instance_t *instance_create(backend_module_t *m,
     const backend_memory_import_t *memories, uint32_t count,
-    [[maybe_unused]] backend_err_t *err)
+    backend_err_t *err)
 {
-    backend_instance_t *i = calloc(1, sizeof(*i));
+    backend_instance_t *i = native_allocate(sizeof(*i),
+        "an instance of an image", err);
     uint32_t k = 0;
 
+    if (!i)
+        return (nullptr);
     i->m = m;
     native_fill_api(&i->api);
     while (k < count) {

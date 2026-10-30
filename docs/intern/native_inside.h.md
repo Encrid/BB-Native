@@ -24,5 +24,6 @@ Once an entry refuses, every later entry answers zero until the call returns, an
 | Function | Result |
 | --- | --- |
 | `native_enter` | Reaches an ABI entry, after the checks above. Gives the entry's result, or zero. |
+| `native_allocate` | Declared here, given by `docs/intern/native_allocate.c.md`. |
 | `native_fill_api` | Declared here, given by `docs/intern/native_load.c.md`. |
 | `native_spawn` and the phase entries | Declared here, given by `docs/intern/native_phase.c.md`. |

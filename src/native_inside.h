@@ -76,6 +76,9 @@ static inline uint64_t native_enter(const bridge_api_t *api,
     return (0);
 }
 
+[[nodiscard]] void *native_allocate(size_t size, const char *what,
+    backend_err_t *err);
+
 void native_fill_api(bridge_api_t *api);
 
 uint64_t native_spawn(const bridge_api_t *api);
