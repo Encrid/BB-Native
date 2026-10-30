@@ -17,4 +17,4 @@ It also cannot hold two copies of one library at once.
 | `backend_destroy` | Frees the backend. |
 | `backend_get_capabilities` | Gives the flags the backend keeps: reload and unload. |
 | `memory_get_shape` | Asks for no reservation, no guard and no granule. |
-| `memory_adopt` | Wraps a block Bridge reserved, which is already addressable. |
+| `memory_adopt` | Gives the block that Bridge reserved as its handle, since the block is already addressable. It allocates nothing, so it never refuses. |
