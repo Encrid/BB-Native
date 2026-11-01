@@ -55,7 +55,8 @@ NATIVE_MEASURED BRIDGE_NATIVE(flicker)
         span = bridge_native_get_span(api, q, i, 1);
         base = bases[span[0] * types + ntoggle_t];
         switch_rows((const t_t *)(api->shared_base + base),
-            bridge_native_get_bits(api, base), span[1]);
+            bridge_native_get_bits(api, base),
+            bridge_native_get_rows(api, span));
         i++;
     }
     return (0);
@@ -75,7 +76,7 @@ BRIDGE_NATIVE(combine)
         span = bridge_native_get_span(api, q, i, 1);
         bits = bridge_native_get_bits(api, bases[span[0] * types + ntoggle_t]);
         r = 0;
-        while (r < span[1]) {
+        while (r < bridge_native_get_rows(api, span)) {
             bits[r >> 6] |= (uint64_t)1 << (r & 63);
             r++;
         }

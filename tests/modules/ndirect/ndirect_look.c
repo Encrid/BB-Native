@@ -13,18 +13,16 @@ static uint32_t add_given(const bridge_api_t *api, const uint32_t *span,
 {
     const bridge_header_t *h = bridge_native_get_header(api);
     const uint32_t *bases = get_column_bases(api);
-    const uint32_t *blocks = get_blocks(api);
     uint32_t cells = bridge_native_get_cells(api, ndirect_d);
     const uint64_t *given = bridge_native_get_bits(api, cells);
     const d_t *cell = (const d_t *)(api->shared_base + cells);
-    const uint64_t *who = (const uint64_t *)(api->shared_base
-        + blocks[span[0]]);
+    const uint64_t *who = bridge_native_get_block(api, span);
     const a_t *column = (const a_t *)(api->shared_base
         + bases[span[0] * h->types + ndirect_a]);
     uint32_t e;
     uint32_t r = 0;
 
-    while (r < span[1]) {
+    while (r < bridge_native_get_rows(api, span)) {
         e = (uint32_t)who[r];
         if (given[e >> 6] >> (e & 63) & 1) {
             total += column[r].v + cell[e].v;
@@ -51,7 +49,7 @@ BRIDGE_NATIVE(look_b)
         span = bridge_native_get_span(api, q, i, 2);
         total = add_given(api, span, total, &found);
         base = bases[span[0] * types + ndirect_d];
-        rows += span[1];
+        rows += bridge_native_get_rows(api, span);
         if (base)
             say(api, "FAIL: a base for a term that is direct-indexed",
                 base, 0);

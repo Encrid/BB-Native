@@ -34,8 +34,9 @@ NATIVE_MEASURED BRIDGE_NATIVE(look)
     while (i < q->spans) {
         span = bridge_native_get_span(api, q, i, 1);
         total = add_values((const s_t *)(api->shared_base
-            + bases[span[0] * types + nsparse_s]), span[1], total);
-        rows += span[1];
+            + bases[span[0] * types + nsparse_s]),
+            bridge_native_get_rows(api, span), total);
+        rows += bridge_native_get_rows(api, span);
         i++;
     }
     say(api, "the set walked: spans, rows", q->spans, rows);
@@ -48,16 +49,14 @@ static uint32_t add_reached(const bridge_api_t *api, const uint32_t *span,
 {
     const bridge_header_t *h = bridge_native_get_header(api);
     const uint32_t *bases = get_column_bases(api);
-    const uint32_t *blocks = get_blocks(api);
     const uint32_t *index = bridge_native_get_sparse_index(api, nsparse_s);
-    const uint64_t *who = (const uint64_t *)(api->shared_base
-        + blocks[span[0]]);
+    const uint64_t *who = bridge_native_get_block(api, span);
     const a_t *column = (const a_t *)(api->shared_base
         + bases[span[0] * h->types + nsparse_a]);
     uint32_t at;
     uint32_t r = 0;
 
-    while (r < span[1]) {
+    while (r < bridge_native_get_rows(api, span)) {
         at = index[(uint32_t)who[r]];
         if (at) {
             total += column[r].v + ((const s_t *)(api->shared_base + at))->v;
@@ -84,7 +83,7 @@ NATIVE_MEASURED BRIDGE_NATIVE(look_b)
         span = bridge_native_get_span(api, q, i, 2);
         total = add_reached(api, span, total, &found);
         base = bases[span[0] * types + nsparse_s];
-        rows += span[1];
+        rows += bridge_native_get_rows(api, span);
         if (base)
             say(api, "FAIL: a base for a term kept in a sparse set", base,
                 0);
