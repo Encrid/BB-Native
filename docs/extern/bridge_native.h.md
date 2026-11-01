@@ -40,3 +40,7 @@ Each macro stages its statement in the arena, then reaches the matching entry.
 | `bridge_native_put_slots` | Stages the slots of `BRIDGE_NATIVE_PUT_SLOTS`, which calls it with the same parameters. |
 | `bridge_native_get_query` | Gives a query's spans, as the last barrier left them. |
 | `bridge_native_get_span` | Gives span `i` of a query, from the private base. |
+| `bridge_native_get_rows` | Gives the row count of the table of a span, from the table directory in the shared memory. |
+| `bridge_native_get_block` | Gives the ids of the rows of the table of a span, from the shared memory: the id of row `r` is entry `r`. |
+
+A span holds only the id of a table. Bridge writes the row count and the block of each table once, in its table directory, at each barrier: https://github.com/Encrid/Bridge/blob/v0.4.0/docs/extern/bridge_abi.h.md#spans.
