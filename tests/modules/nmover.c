@@ -30,7 +30,7 @@ BRIDGE_NATIVE(move)
         p = (position_t *)(api->shared_base
             + bases[span[0] * types + position]);
         r = 0;
-        while (r < span[1]) {
+        while (r < bridge_native_get_rows(api, span)) {
             p[r].x += 1.0f;
             r++;
         }
@@ -46,7 +46,8 @@ BRIDGE_NATIVE(tally)
     uint32_t s = 0;
 
     while (s < q->spans) {
-        line.a1 += bridge_native_get_span(api, q, s, 1)[1];
+        line.a1 += bridge_native_get_rows(api,
+            bridge_native_get_span(api, q, s, 1));
         s++;
     }
     bridge_native_log(api, BRIDGE_LOG_INFO, &line);
