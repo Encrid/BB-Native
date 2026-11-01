@@ -80,4 +80,23 @@ static inline const uint32_t *bridge_native_get_span(const bridge_api_t *api,
         + i * BRIDGE_SPAN_SIZE));
 }
 
+static inline uint32_t bridge_native_get_rows(const bridge_api_t *api,
+    const uint32_t *span)
+{
+    const uint8_t *rows = api->shared_base
+        + bridge_native_get_header(api)->rows;
+
+    return (((const uint32_t *)rows)[span[0]]);
+}
+
+static inline const uint64_t *bridge_native_get_block(const bridge_api_t *api,
+    const uint32_t *span)
+{
+    const uint8_t *blocks = api->shared_base
+        + bridge_native_get_header(api)->blocks;
+
+    return ((const uint64_t *)(api->shared_base
+        + ((const uint32_t *)blocks)[span[0]]));
+}
+
 #endif

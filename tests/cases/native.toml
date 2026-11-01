@@ -29,6 +29,18 @@ claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally
 false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_ATTACH-seen-by-an-observer"] }
 
 [[case]]
+name = "bridge_native_get_rows-rows-of-the-spans-of-a-query"
+run = ["{out}/native-host{exe}", "bridge_native_get_rows-rows-of-the-spans-of-a-query"]
+claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally 2 1000.*alive"] }
+false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_ATTACH-seen-by-an-observer"] }
+
+[[case]]
+name = "bridge_native_get_block-ids-of-the-rows-of-a-span"
+run = ["{out}/native-host{exe}", "bridge_native_get_block-ids-of-the-rows-of-a-span"]
+claims = { matches = ["seen 1 9.*alive"], lacks = ["seen 1 5"] }
+false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE-system-reads-and-writes"] }
+
+[[case]]
 name = "bridge_native_log-a-line-with-two-numbers"
 run = ["{out}/native-host{exe}", "bridge_native_log-a-line-with-two-numbers"]
 claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally 2 1000.*alive"] }
