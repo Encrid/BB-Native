@@ -16,7 +16,7 @@ static uint64_t ids[ENTITIES];
 
 BRIDGE_NATIVE(mark)
 {
-    marked_t m = { 77 };
+    marked_t m = { MARK };
     bridge_line_t line = { "marked", 6, 0, 0 };
 
     runs++;

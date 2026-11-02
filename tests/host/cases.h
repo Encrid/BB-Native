@@ -7,6 +7,7 @@
     #define TEST_CASES_H
 
     #include <stdio.h>
+    #include <stdlib.h>
     #include <string.h>
 
     #include "host.h"
@@ -37,8 +38,7 @@ void test_observe(host_t *h);
 void test_order_changes(host_t *h);
 void test_run_order(host_t *h);
 void test_state_limit(host_t *h);
-void test_state_no_path(host_t *h);
-void test_name_no_library(host_t *h);
+void test_load_path(host_t *h);
 void test_hand_setting(host_t *h);
 void test_read_kept(host_t *h);
 void test_keep_bytes(host_t *h);

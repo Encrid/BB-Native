@@ -9,3 +9,10 @@ BRIDGE_NATIVE(start)
 {
     return (0);
 }
+
+#if INIT
+BRIDGE_NATIVE(init)
+{
+    return (0);
+}
+#endif

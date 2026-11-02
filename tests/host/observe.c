@@ -15,6 +15,11 @@ static const bridge_order_t TEST_FIVE_FIRST = {
     "game:stamp9:stamp"
 };
 
+static const bridge_order_t TEST_NINE_FIRST = {
+    "game:stamp9:stamp",
+    "game:stamp5:stamp"
+};
+
 void test_load_watcher(host_t *h)
 {
     bridge_artifact_t a;
@@ -29,7 +34,7 @@ void test_observe(host_t *h)
 {
     if (host_open(h))
         return;
-    test_load(h, "game:setter@0.1.0", NSETTER_PATH, 8);
+    test_load(h, "game:setter@0.1.0", h->arg, 8);
     test_load_watcher(h);
     host_run_frames_unsaid(h->w, 2);
     host_close(h);
@@ -37,7 +42,8 @@ void test_observe(host_t *h)
 
 void test_order_changes(host_t *h)
 {
-    h->cfg.order = &TEST_FIVE_FIRST;
+    h->cfg.order = strcmp(h->arg, "nine-first") ? &TEST_FIVE_FIRST
+        : &TEST_NINE_FIRST;
     h->cfg.order_count = 1;
     if (host_open(h))
         return;
@@ -52,7 +58,7 @@ void test_enter_from_foreign_thread(host_t *h)
 {
     if (host_open(h))
         return;
-    test_load(h, "test:foreign@0.1.0", NFOREIGN_PATH, 8);
+    test_load(h, "test:foreign@0.1.0", h->arg, 8);
     host_run_frames_unsaid(h->w, 1);
     host_close(h);
 }
