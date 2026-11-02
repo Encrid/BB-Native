@@ -6,8 +6,6 @@
 #include "bridge_native.h"
 #include "native_idle.h"
 
-constexpr uint32_t SPAWNS = 100'000;
-
 BRIDGE_NATIVE(flood)
 {
     uint32_t i = 0;

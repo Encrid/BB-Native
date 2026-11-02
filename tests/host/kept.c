@@ -25,6 +25,23 @@ static const test_kept_case_t TEST_KEPT[] = {
     { "changed", NDIRECT_PATH, 1, { "spawn", "attach_b", "look_b", "near",
         "value_b", "near", "detach_b_half", "look_b", "destroy_half",
         "look_b", "near" } },
+    { "single-no-attach_a", NSINGLE_PATH, BRIDGE_NONE,
+        { "look", "look", "value_a", "look", "work", "look" } },
+    { "toggle-combine", NTOGGLE_PATH, BRIDGE_NONE,
+        { "spawn", "look", "combine", "look", "look_b", "find" } },
+    { "tag-no-spawn", NTAG_PATH, 1, { "look", "flicker", "attach_a", "look" } },
+    { "direct-no-attach_b", NDIRECT_PATH, 1, { "spawn", "look_b", "near" } },
+    { "sparse-no-attach_b", NSPARSE_PATH, 1, { "spawn", "look", "look_b" } },
+    { "layout-no-spawn", NLAYOUT0_PATH, 2, { "look" } },
+    { "changed-attach_b-again", NDIRECT_PATH, 1, { "spawn", "attach_b",
+        "look_b", "near", "attach_b", "near", "detach_b_half", "look_b",
+        "destroy_half", "look_b", "near" } },
+    { "changed-detach_b", NDIRECT_PATH, 1, { "spawn", "attach_b", "look_b",
+        "near", "value_b", "near", "detach_b", "look_b", "destroy_half",
+        "look_b", "near" } },
+    { "changed-destroy", NDIRECT_PATH, 1, { "spawn", "attach_b", "look_b",
+        "near", "value_b", "near", "detach_b_half", "look_b", "destroy",
+        "look_b", "near" } },
 };
 
 static void hear_plain([[maybe_unused]] void *ud, const bridge_record_t *r)
@@ -83,7 +100,7 @@ void test_keep_bytes(host_t *h)
     if (host_open(h))
         return;
     host_state_native(&a, "test:alloc@0.1.0", NALLOC_PATH);
-    a.cfg.persistent = 64;
+    a.cfg.persistent = strtoll(h->arg, nullptr, 10);
     host_load(h, &a);
     host_run_frames_unsaid(h->w, 1);
     host_close(h);
