@@ -8,8 +8,6 @@
 #include "native_idle.h"
 #include "native_reach.h"
 
-constexpr uint32_t ENTITIES = 1000;
-
 static uint32_t position;
 static uint32_t marked;
 static uint32_t moving;

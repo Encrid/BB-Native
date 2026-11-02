@@ -7,11 +7,11 @@
 
 #include "backend.h"
 
-static int refuse_entry(const backend_api_t *api, backend_module_t *m)
+static int refuse_entry(const backend_api_t *api, backend_module_t *m,
+    const char *name)
 {
     backend_err_t err = {};
-    backend_entry_t entry = { "bridge", "teleport", nullptr, nullptr,
-        nullptr };
+    backend_entry_t entry = { "bridge", name, nullptr, nullptr, nullptr };
     backend_instance_t *i = api->instance_create(m, nullptr, 0, &err);
     int refused = api->define_func(i, &entry, &err);
 
@@ -59,7 +59,7 @@ static void poke_missing(const backend_api_t *api, backend_t *be)
     api->module_destroy(m);
 }
 
-int main(void)
+int main(int argc, char **argv)
 {
     backend_api_t api;
     backend_err_t err = {};
@@ -72,7 +72,7 @@ int main(void)
         return (printf("FAIL: %s\n", err.text), 1);
     be = api.backend_create(nullptr, 0, &err);
     m = api.module_compile(be, &source, &err);
-    if (!m || refuse_entry(&api, m))
+    if (!m || refuse_entry(&api, m, argc > 1 ? argv[1] : ""))
         return (printf("FAIL: %s\n", err.text), 1);
     poke_edges(&api, be, m);
     poke_missing(&api, be);

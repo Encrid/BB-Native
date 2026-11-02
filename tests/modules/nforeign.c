@@ -22,7 +22,11 @@ BRIDGE_NATIVE(reach)
     };
 
     kept = api;
+#if ELSEWHERE
     run_on_another_thread(spawn_elsewhere);
+#else
+    spawn_elsewhere();
+#endif
     line.a0 = from_elsewhere != 0;
     line.a1 = api->spawn(api) != 0;
     bridge_native_log(api, BRIDGE_LOG_INFO, &line);

@@ -33,7 +33,7 @@ void test_run_mover(host_t *h)
 {
     if (host_open(h))
         return;
-    test_load(h, "game:mover@0.1.0", NMOVER_PATH, 1024);
+    test_load(h, "game:mover@0.1.0", h->arg, 1024);
     host_run_frames_unsaid(h->w, 2);
     host_close(h);
 }
@@ -42,7 +42,8 @@ void test_run_cover(host_t *h)
 {
     if (host_open(h))
         return;
-    test_load(h, "test:cover@0.1.0", NCOVER_PATH, 16);
+    test_load(h, "test:cover@0.1.0", NCOVER_PATH,
+        strcmp(h->arg, "none") ? strtoll(h->arg, nullptr, 10) : BRIDGE_NONE);
     host_close(h);
 }
 
@@ -50,7 +51,7 @@ void test_refuse_entry(host_t *h)
 {
     if (host_open(h))
         return;
-    test_load(h, "test:flood@0.1.0", NFLOOD_PATH, 1024);
+    test_load(h, "test:flood@0.1.0", h->arg, 1024);
     (void)bridge_run_phase(h->w, "update");
     host_close(h);
 }
