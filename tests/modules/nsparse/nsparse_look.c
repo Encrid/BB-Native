@@ -4,7 +4,6 @@
 ** Under the GNU Affero General Public License, version 3 only: see license.
 */
 #include "nsparse.h"
-#include "native_measured.h"
 #include "native_reach.h"
 
 uint32_t nsparse_in_set;
@@ -21,7 +20,7 @@ static uint32_t add_values(const s_t *column, uint32_t count, uint32_t total)
     return (total);
 }
 
-NATIVE_MEASURED BRIDGE_NATIVE(look)
+BRIDGE_NATIVE(look)
 {
     const bridge_query_t *q = bridge_native_get_query(api, nsparse_in_set);
     const uint32_t *bases = get_column_bases(api);
@@ -67,7 +66,7 @@ static uint32_t add_reached(const bridge_api_t *api, const uint32_t *span,
     return (total);
 }
 
-NATIVE_MEASURED BRIDGE_NATIVE(look_b)
+BRIDGE_NATIVE(look_b)
 {
     const bridge_query_t *q = bridge_native_get_query(api, nsparse_in_table);
     const uint32_t *bases = get_column_bases(api);
