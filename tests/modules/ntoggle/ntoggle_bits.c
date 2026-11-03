@@ -4,7 +4,6 @@
 ** Under the GNU Affero General Public License, version 3 only: see license.
 */
 #include "ntoggle.h"
-#include "native_measured.h"
 #include "native_reach.h"
 
 uint32_t ntoggle_writing;
@@ -42,7 +41,7 @@ static void switch_rows([[maybe_unused]] const t_t *column, uint64_t *bits,
     }
 }
 
-NATIVE_MEASURED BRIDGE_NATIVE(flicker)
+BRIDGE_NATIVE(flicker)
 {
     const bridge_query_t *q = bridge_native_get_query(api, ntoggle_writing);
     const uint32_t *bases = get_column_bases(api);

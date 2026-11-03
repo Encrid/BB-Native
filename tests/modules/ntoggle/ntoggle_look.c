@@ -4,7 +4,6 @@
 ** Under the GNU Affero General Public License, version 3 only: see license.
 */
 #include "ntoggle.h"
-#include "native_measured.h"
 #include "native_reach.h"
 
 uint32_t ntoggle_reading;
@@ -51,7 +50,7 @@ static void see_words(const bridge_api_t *api, const uint32_t *span,
     }
 }
 
-NATIVE_MEASURED BRIDGE_NATIVE(look)
+BRIDGE_NATIVE(look)
 {
     const bridge_query_t *q = bridge_native_get_query(api, ntoggle_reading);
     const uint32_t *span;
@@ -84,7 +83,7 @@ static void see_rows(const t_t *restrict column, const uint64_t *restrict bits,
     }
 }
 
-NATIVE_MEASURED BRIDGE_NATIVE(look_b)
+BRIDGE_NATIVE(look_b)
 {
     const bridge_query_t *q = bridge_native_get_query(api, ntoggle_reading);
     const uint32_t *bases = get_column_bases(api);

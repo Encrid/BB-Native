@@ -4,7 +4,6 @@
 ** Under the GNU Affero General Public License, version 3 only: see license.
 */
 #include "nsparse.h"
-#include "native_measured.h"
 
 uint32_t nsparse_a;
 uint32_t nsparse_s;
@@ -22,7 +21,7 @@ BRIDGE_NATIVE(spawn)
     return (0);
 }
 
-NATIVE_MEASURED BRIDGE_NATIVE(attach_b)
+BRIDGE_NATIVE(attach_b)
 {
     s_t value;
     uint32_t i = 0;
@@ -35,7 +34,7 @@ NATIVE_MEASURED BRIDGE_NATIVE(attach_b)
     return (0);
 }
 
-NATIVE_MEASURED BRIDGE_NATIVE(detach_b)
+BRIDGE_NATIVE(detach_b)
 {
     uint32_t i = 0;
 

@@ -4,7 +4,6 @@
 ** Under the GNU Affero General Public License, version 3 only: see license.
 */
 #include "ndirect.h"
-#include "native_measured.h"
 
 uint32_t ndirect_a;
 uint32_t ndirect_d;
@@ -37,7 +36,7 @@ BRIDGE_NATIVE(spawn)
     return (0);
 }
 
-NATIVE_MEASURED BRIDGE_NATIVE(attach_b)
+BRIDGE_NATIVE(attach_b)
 {
     d_t value;
     uint32_t i = 0;
@@ -50,7 +49,7 @@ NATIVE_MEASURED BRIDGE_NATIVE(attach_b)
     return (0);
 }
 
-NATIVE_MEASURED BRIDGE_NATIVE(detach_b)
+BRIDGE_NATIVE(detach_b)
 {
     uint32_t i = 0;
 

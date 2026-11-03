@@ -4,7 +4,6 @@
 ** Under the GNU Affero General Public License, version 3 only: see license.
 */
 #include "ndirect.h"
-#include "native_measured.h"
 #include "native_reach.h"
 
 uint64_t ndirect_mixed[COUNT];
@@ -34,8 +33,7 @@ static void count_reached(const bridge_api_t *api, const uint64_t *held,
     }
 }
 
-NATIVE_MEASURED static int reach(const bridge_api_t *api, const uint64_t *held,
-    uint32_t count)
+static int reach(const bridge_api_t *api, const uint64_t *held, uint32_t count)
 {
     reached_t sum = {};
 
