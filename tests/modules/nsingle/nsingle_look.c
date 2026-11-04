@@ -4,7 +4,6 @@
 ** Under the GNU Affero General Public License, version 3 only: see license.
 */
 #include "nsingle.h"
-#include "native_measured.h"
 
 volatile uint32_t nsingle_which;
 
@@ -20,7 +19,7 @@ BRIDGE_NATIVE(look)
     return (0);
 }
 
-NATIVE_MEASURED BRIDGE_NATIVE(one)
+BRIDGE_NATIVE(one)
 {
     const g_t *value;
     uint32_t total = 0;
