@@ -15,7 +15,7 @@ The SDK includes `bridge_abi.h` and `bridge_schema.h`, thus a module also compil
 ## Install
 
 1. Install Python 3.11 or a later version.
-2. Run `python project.py fetch`. It downloads zig, the library of Bridge and the os layer of Bridge-OS.
+2. Run `python project.py fetch`. It downloads zig, the library of Bridge and the os layer, mosl.
 
 ## Usage
 
