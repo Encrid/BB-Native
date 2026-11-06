@@ -9,6 +9,7 @@
     #include "bridge_native_api.h"
     #include "bridge_native_kept.h"
     #include "bridge_native_log.h"
+    #include "bridge_native_value.h"
 
     #define BRIDGE_NATIVE_ATTACH(api, id, slot, value) \
         (api)->attach(api, id, slot, \

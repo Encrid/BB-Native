@@ -1,7 +1,7 @@
 # include/bridge_native.h
 
 A native module compiles this header, beside `bridge_abi.h`, to reach Bridge through the backend's table.
-It pulls in the table, the kept-storage readers and the log, and adds the registration macros.
+It pulls in the table, the kept-storage readers, the reader of the value of 1 entity and the log, and adds the registration macros.
 
 ## The macros
 
