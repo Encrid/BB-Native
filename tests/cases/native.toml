@@ -71,6 +71,12 @@ claims = { matches = ["game:find@0.1.0/find: find far 0 0 .*alive"] }
 false = { run = ["{out}/native-host{exe}", "bridge_native_find_value-an-index-inside-the-entity-index"] }
 
 [[case]]
+name = "bridge_native_find_value-BRIDGE_CARRIED-for-a-tag"
+run = ["{out}/native-host{exe}", "bridge_native_find_value-BRIDGE_CARRIED-for-a-tag"]
+claims = { matches = ["game:find@0.1.0/find: find tag 1 .*alive"] }
+false = { run = ["{out}/native-host{exe}", "bridge_native_find_value-an-entity-without-the-tag"] }
+
+[[case]]
 name = "BRIDGE_NATIVE_ATTACH-seen-by-an-observer"
 run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_ATTACH-seen-by-an-observer"]
 claims = { matches = ["b2 game:setter@0.1.0/mark: marked.*b2 view:watcher@0.1.0/seen: seen 1 77.*alive"] }

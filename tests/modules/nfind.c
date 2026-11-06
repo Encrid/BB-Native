@@ -10,6 +10,7 @@
 
 static uint32_t position;
 static uint32_t marked;
+static uint32_t flag;
 static uint32_t runs;
 static uint64_t live;
 static uint64_t bare;
@@ -33,6 +34,7 @@ BRIDGE_NATIVE(find)
     say(api, "find missing", value_of(api, bare), 0);
     say(api, "find stale", value_of(api, stale), 0);
     say(api, "find far", value_of(api, NEAR ? live : UINT32_MAX), 0);
+    say(api, "find tag", bridge_native_find_value(api, live, flag), 0);
     return (0);
 }
 
@@ -56,9 +58,13 @@ BRIDGE_NATIVE(init)
         BRIDGE_DELETE, BRIDGE_TABLE, BRIDGE_ON_DESTROY_REMOVE);
     marked = BRIDGE_NATIVE_COMPONENT(api, "game:Marked", marked_t,
         BRIDGE_STRIP, BRIDGE_TABLE, BRIDGE_ON_DESTROY_REMOVE);
+    flag = BRIDGE_NATIVE_DECLARE_TAG(api, "game:Flag", BRIDGE_STRIP,
+        BRIDGE_TABLE, BRIDGE_ON_DESTROY_REMOVE);
     BRIDGE_NATIVE_ADD_SYSTEM(api, "find", "update", &none, 0, nullptr, 0,
         nullptr, 0);
     live = spawn_marked(api, true);
+    if (!TAGLESS)
+        api->attach(api, live, flag, BRIDGE_ZEROED);
     bare = spawn_marked(api, MISSING);
     stale = spawn_marked(api, true);
     if (!KEPT)
