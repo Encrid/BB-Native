@@ -8,6 +8,8 @@ This header reads the value of a component of a table for 1 entity, by its id.
 `bridge_native_find_value(api, id, slot)` does the steps of `find_value`: https://github.com/Encrid/Bridge/blob/v0.5.0/docs/extern/bridge_abi.h.md#bridge_entity_t.
 It gives 0 for an id whose generation is stale, and for an entity whose table has no column of `slot`.
 It also gives 0 for an id whose index is outside the entity index. Thus a module can give it an id that it read from a component.
+
+For a tag, it gives `BRIDGE_CARRIED`, as each reader of a place gives for a tag: https://github.com/Encrid/Bridge/blob/v0.5.0/docs/extern/bridge_abi.h.md#bridge_kind. A tag has no value, so a caller compares the place with `BRIDGE_CARRIED` before it reads.
 It reads only components of a table. The readers of `docs/extern/bridge_native_kept.h.md` give the other storage.
 
 ## Functions
