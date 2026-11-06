@@ -35,6 +35,19 @@ variants = [{ name = "nsetter78", defines = ["MARK=78"] }]
 path = true
 
 [[modules]]
+name = "nfind"
+sources = ["tests/modules/nfind.c", "tests/modules/nidle.c"]
+defines = ["LIVE=42", "MISSING=false", "KEPT=false", "NEAR=false", "TAGLESS=false"]
+variants = [
+    { name = "nfind43", defines = ["LIVE=43", "MISSING=false", "KEPT=false", "NEAR=false", "TAGLESS=false"] },
+    { name = "nfind_missing", defines = ["LIVE=42", "MISSING=true", "KEPT=false", "NEAR=false", "TAGLESS=false"] },
+    { name = "nfind_kept", defines = ["LIVE=42", "MISSING=false", "KEPT=true", "NEAR=false", "TAGLESS=false"] },
+    { name = "nfind_tagless", defines = ["LIVE=42", "MISSING=false", "KEPT=false", "NEAR=false", "TAGLESS=true"] },
+    { name = "nfind_near", defines = ["LIVE=42", "MISSING=false", "KEPT=false", "NEAR=true", "TAGLESS=false"] },
+]
+path = true
+
+[[modules]]
 name = "nwatcher"
 sources = ["tests/modules/nwatcher.c", "tests/modules/nidle.c"]
 path = true

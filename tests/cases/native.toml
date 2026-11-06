@@ -47,6 +47,36 @@ claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally
 false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE-a-module-of-999-entities"] }
 
 [[case]]
+name = "bridge_native_find_value-the-value-of-a-live-entity"
+run = ["{out}/native-host{exe}", "bridge_native_find_value-the-value-of-a-live-entity"]
+claims = { matches = ["game:find@0.1.0/find: find live 42 0 .*alive"] }
+false = { run = ["{out}/native-host{exe}", "bridge_native_find_value-a-live-value-of-43"] }
+
+[[case]]
+name = "bridge_native_find_value-0-for-a-component-that-the-entity-lacks"
+run = ["{out}/native-host{exe}", "bridge_native_find_value-0-for-a-component-that-the-entity-lacks"]
+claims = { matches = ["game:find@0.1.0/find: find missing 0 0 .*alive"] }
+false = { run = ["{out}/native-host{exe}", "bridge_native_find_value-an-entity-that-carries-the-component"] }
+
+[[case]]
+name = "bridge_native_find_value-0-for-a-stale-id"
+run = ["{out}/native-host{exe}", "bridge_native_find_value-0-for-a-stale-id"]
+claims = { matches = ["game:find@0.1.0/find: find stale 0 0 .*alive"] }
+false = { run = ["{out}/native-host{exe}", "bridge_native_find_value-an-id-that-stays-live"] }
+
+[[case]]
+name = "bridge_native_find_value-0-for-an-index-outside-the-entity-index"
+run = ["{out}/native-host{exe}", "bridge_native_find_value-0-for-an-index-outside-the-entity-index"]
+claims = { matches = ["game:find@0.1.0/find: find far 0 0 .*alive"] }
+false = { run = ["{out}/native-host{exe}", "bridge_native_find_value-an-index-inside-the-entity-index"] }
+
+[[case]]
+name = "bridge_native_find_value-BRIDGE_CARRIED-for-a-tag"
+run = ["{out}/native-host{exe}", "bridge_native_find_value-BRIDGE_CARRIED-for-a-tag"]
+claims = { matches = ["game:find@0.1.0/find: find tag 1 .*alive"] }
+false = { run = ["{out}/native-host{exe}", "bridge_native_find_value-an-entity-without-the-tag"] }
+
+[[case]]
 name = "BRIDGE_NATIVE_ATTACH-seen-by-an-observer"
 run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_ATTACH-seen-by-an-observer"]
 claims = { matches = ["b2 game:setter@0.1.0/mark: marked.*b2 view:watcher@0.1.0/seen: seen 1 77.*alive"] }

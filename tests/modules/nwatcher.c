@@ -6,25 +6,17 @@
 #include "bridge_native.h"
 #include "game.h"
 #include "native_idle.h"
-#include "native_reach.h"
 
 static uint32_t marked;
 static uint32_t seeing;
 
 static uint32_t follow(const bridge_api_t *api, uint64_t id)
 {
-    const bridge_header_t *h = bridge_native_get_header(api);
-    const bridge_entity_t *e = get_entity_index(api) + (uint32_t)id;
-    const marked_t *column;
-    uint32_t base;
+    uint32_t at = bridge_native_find_value(api, id, marked);
 
-    if ((uint32_t)id >= h->entities || e->generation != (uint32_t)(id >> 32))
+    if (!at)
         return (0xdead);
-    base = get_column_bases(api)[e->table * h->types + marked];
-    if (!base)
-        return (0xdead);
-    column = (const marked_t *)(api->shared_base + base);
-    return (column[e->row].by);
+    return (((const marked_t *)(api->shared_base + at))->by);
 }
 
 BRIDGE_NATIVE(seen)
