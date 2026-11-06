@@ -38,6 +38,15 @@ void test_run_mover(host_t *h)
     host_close(h);
 }
 
+void test_run_find(host_t *h)
+{
+    if (host_open(h))
+        return;
+    test_load(h, "game:find@0.1.0", h->arg, 8);
+    host_run_frames_unsaid(h->w, 1);
+    host_close(h);
+}
+
 void test_run_cover(host_t *h)
 {
     if (host_open(h))
