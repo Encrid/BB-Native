@@ -68,7 +68,7 @@ int main(int argc, char **argv)
     backend_module_t *m;
 
     setvbuf(stdout, nullptr, _IONBF, 0);
-    if (!backend_open(NATIVE_PATH, &api, &err))
+    if (!backend_open(BRIDGE_NATIVE_PATH, &api, &err))
         return (printf("FAIL: %s\n", err.text), 1);
     be = api.backend_create(nullptr, 0, &err);
     m = api.module_compile(be, &source, &err);
