@@ -2,6 +2,7 @@
 name = "bridge_native"
 kind = "library"
 folder = "backends"
+path = true
 sources = ["src/*.c"]
 include = ["{bridge}/include", "src", "include", "{bridge_os}/include"]
 flags = ["{system_defines}", "{system_libraries}"]
