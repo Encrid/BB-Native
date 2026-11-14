@@ -1,3 +1,5 @@
+code = ["include/**", "src/**", "tests/**", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
+
 [[case]]
 name = "BRIDGE_NATIVE-system-reads-and-writes"
 run = ["{out}/native-host{exe}", "BRIDGE_NATIVE-system-reads-and-writes"]
