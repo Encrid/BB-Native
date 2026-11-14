@@ -6,6 +6,7 @@
 #include <stdio.h>
 
 #include "backend.h"
+#include "os.h"
 
 static int refuse_entry(const backend_api_t *api, backend_module_t *m,
     const char *name)
@@ -59,6 +60,13 @@ static void poke_missing(const backend_api_t *api, backend_t *be)
     api->module_destroy(m);
 }
 
+static void poke_all(const backend_api_t *api, backend_t *be,
+    backend_module_t *m)
+{
+    poke_edges(api, be, m);
+    poke_missing(api, be);
+}
+
 int main(int argc, char **argv)
 {
     backend_api_t api;
@@ -66,17 +74,23 @@ int main(int argc, char **argv)
     backend_source_t source = { .path = NMOVER_PATH };
     backend_t *be;
     backend_module_t *m;
+    void *lib;
+    int failed;
 
     setvbuf(stdout, nullptr, _IONBF, 0);
-    if (!backend_open(BRIDGE_NATIVE_PATH, &api, &err))
+    lib = backend_open(BRIDGE_NATIVE_PATH, &api, &err);
+    if (!lib)
         return (printf("FAIL: %s\n", err.text), 1);
     be = api.backend_create(nullptr, 0, &err);
     m = api.module_compile(be, &source, &err);
-    if (!m || refuse_entry(&api, m, argc > 1 ? argv[1] : ""))
-        return (printf("FAIL: %s\n", err.text), 1);
-    poke_edges(&api, be, m);
-    poke_missing(&api, be);
-    api.module_destroy(m);
+    failed = !m || refuse_entry(&api, m, argc > 1 ? argv[1] : "");
+    if (failed)
+        printf("FAIL: %s\n", err.text);
+    else
+        poke_all(&api, be, m);
+    if (m)
+        api.module_destroy(m);
     api.backend_destroy(be);
-    return (0);
+    os_lib_close(lib);
+    return (failed);
 }
