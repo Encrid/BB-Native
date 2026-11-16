@@ -4,6 +4,7 @@
 ** Under the GNU Affero General Public License, version 3 only: see license.
 */
 #include "cases.h"
+#include "rows.h"
 
 static const host_case_t TEST_CASES[] = {
     { "BRIDGE_NATIVE-system-reads-and-writes",
@@ -192,10 +193,16 @@ static const host_case_t TEST_CASES[] = {
     { "destroy-each-entity-gone", test_read_kept, "changed-destroy", test_set },
 };
 
-int main(int argc, char **argv)
+static int run(int argc, char **argv)
 {
     host_t h;
 
     host_init(&h, argc, argv);
     return (host_run(&h, TEST_CASES, sizeof(TEST_CASES) / sizeof(*TEST_CASES)));
+}
+
+int main(int argc, char **argv)
+{
+    setvbuf(stdout, nullptr, _IONBF, 0);
+    return (argc > 1 ? run(argc, argv) : rows_run(run));
 }
