@@ -1,12 +1,6 @@
 code = ["include/**", "src/**", "tests/**", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
 
 [[case]]
-name = "define_func-an-entry-the-abi-has-not-refused"
-run = ["{out}/native-direct{exe}", "teleport"]
-claims = { matches = ["an entry the SDK has not is refused: the native SDK has no entry 'teleport'"] }
-false = { run = ["{out}/native-direct{exe}", "declare"] }
-
-[[case]]
 name = "native-host"
 run = ["{out}/native-host{exe}"]
 sweep = ["calloc"]
@@ -87,4 +81,12 @@ rows = [
     { name = "BRIDGE_NATIVE_OBSERVER-an-observer-runs-after-those-that-before-names", in = "BRIDGE_NATIVE_OBSERVER-an-observer-runs-after-those-that-before-names", claims = { matches = ["game:order@0\\.1\\.0/heard_first: heard.*game:order@0\\.1\\.0/heard_second: heard.*alive"] }, false = "BRIDGE_NATIVE_OBSERVER-two-observers-in-conflict-and-no-before-fail" },
     { name = "BRIDGE_NATIVE_ADD_SYSTEM-two-systems-in-conflict-and-no-before-fail", in = "BRIDGE_NATIVE_ADD_SYSTEM-two-systems-in-conflict-and-no-before-fail", claims = { matches = ["module 'game:order@0\\.1\\.0' did not load: 'game:order:first' and 'game:order:second' both touch 'game:Marked' in phase 'update', one of them writing it, and their module states no order of them.*alive"] }, false = "BRIDGE_NATIVE_ADD_SYSTEM-a-system-runs-after-those-that-before-names" },
     { name = "BRIDGE_NATIVE_OBSERVER-two-observers-in-conflict-and-no-before-fail", in = "BRIDGE_NATIVE_OBSERVER-two-observers-in-conflict-and-no-before-fail", claims = { matches = ["module 'game:order@0\\.1\\.0' did not load: 'game:order:heard_first' and 'game:order:heard_second' both touch 'game:Marked' at the barrier, one of them writing it, and their module states no order of them.*alive"] }, false = "BRIDGE_NATIVE_OBSERVER-an-observer-runs-after-those-that-before-names" },
+]
+
+[[case]]
+name = "native-direct"
+run = ["{out}/native-direct{exe}"]
+claims = { status = 0 }
+rows = [
+    { name = "define_func-an-entry-the-abi-has-not-refused", in = "teleport", claims = { matches = ["an entry the SDK has not is refused: the native SDK has no entry 'teleport'"] }, false = "declare" },
 ]

@@ -7,6 +7,7 @@
 
 #include "backend.h"
 #include "os.h"
+#include "rows.h"
 
 static int refuse_entry(const backend_api_t *api, backend_module_t *m,
     const char *name)
@@ -67,18 +68,16 @@ static void poke_all(const backend_api_t *api, backend_t *be,
     poke_missing(api, be);
 }
 
-int main(int argc, char **argv)
+static int run(int argc, char **argv)
 {
     backend_api_t api;
     backend_err_t err = {};
     backend_source_t source = { .path = NMOVER_PATH };
     backend_t *be;
     backend_module_t *m;
-    void *lib;
+    void *lib = backend_open(BRIDGE_NATIVE_PATH, &api, &err);
     int failed;
 
-    setvbuf(stdout, nullptr, _IONBF, 0);
-    lib = backend_open(BRIDGE_NATIVE_PATH, &api, &err);
     if (!lib)
         return (printf("FAIL: %s\n", err.text), 1);
     be = api.backend_create(nullptr, 0, &err);
@@ -93,4 +92,10 @@ int main(int argc, char **argv)
     api.backend_destroy(be);
     os_lib_close(lib);
     return (failed);
+}
+
+int main(int argc, char **argv)
+{
+    setvbuf(stdout, nullptr, _IONBF, 0);
+    return (argc > 1 ? run(argc, argv) : rows_run(run));
 }
