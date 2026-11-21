@@ -8,6 +8,17 @@
 
 #include "native_inside.h"
 
+static const char *const NATIVE_ENTRY_NAMES[NATIVE_ENTRIES] = {
+    "declare",
+    "add_system",
+    "observe",
+    "spawn",
+    "destroy",
+    "attach",
+    "detach",
+    "alloc"
+};
+
 BACKEND_EXPORT int define_func(backend_instance_t *i,
     const backend_entry_t *entry, backend_err_t *err)
 {

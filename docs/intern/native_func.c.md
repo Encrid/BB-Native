@@ -5,7 +5,7 @@ This file keeps the ABI entries a module defines, finds a module's exported func
 
 ## Defining and finding
 
-`define_func` matches the name against `NATIVE_ENTRY_NAMES` and keeps its pointer in the instance.
+`NATIVE_ENTRY_NAMES` gives the names of the eight entries, in the order of `enum native_entry`. `define_func` matches the name against it and keeps its pointer in the instance.
 An unknown name, or another namespace, is refused by name.
 `instance_get_func` looks up the symbol `bridge_` and the name, because one process has a flat symbol namespace.
 `call` records the calling thread, runs the function, and gives the status it returned.

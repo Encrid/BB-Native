@@ -6,7 +6,7 @@ The header `bridge_backend.h` of Bridge lists what Bridge asks a backend for.
 
 ## The entries and the structs
 
-`enum native_entry` numbers the eight entries, and `NATIVE_ENTRY_NAMES` gives their names in that order.
+`enum native_entry` numbers the eight entries. `NATIVE_ENTRY_NAMES` in `src/native_func.c` gives their names in that order.
 The structs hold the backend, an opened module, a kept function, and an instance.
 A memory has no struct, because `memory_adopt` gives the block itself as the handle.
 An instance also records the thread a call runs on, and whether an entry has refused during that call.

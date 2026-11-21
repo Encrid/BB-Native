@@ -24,17 +24,6 @@ enum native_entry : uint32_t {
     NATIVE_ENTRIES
 };
 
-static const char *const NATIVE_ENTRY_NAMES[NATIVE_ENTRIES] = {
-    "declare",
-    "add_system",
-    "observe",
-    "spawn",
-    "destroy",
-    "attach",
-    "detach",
-    "alloc"
-};
-
 struct backend {
     int unused;
 };
