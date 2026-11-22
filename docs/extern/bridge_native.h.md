@@ -14,7 +14,7 @@ It pulls in the table, the kept-storage readers, the reader of the value of 1 en
 | `BRIDGE_NATIVE_COMPONENT` | `api`, `name`, `T`, `on_unload`, `storage`, `on_destroy`. The kind is `BRIDGE_STRUCT`. |
 | `BRIDGE_NATIVE_DECLARE_TAG` | `api`, `name`, `on_unload`, `storage`, `on_destroy`. The kind is `BRIDGE_TAG`. |
 
-`name` is a string literal, and `T` is a type with the descriptor `T##_desc`.
+`T` is a type with the descriptor `T##_desc`.
 The last three parameters fill the fields of `bridge_declaration_t` with the same names.
 
 `BRIDGE_NATIVE_ADD_SYSTEM` and `BRIDGE_NATIVE_OBSERVER` register a system and an observer, with their terms, their changes and their order.
@@ -28,6 +28,13 @@ They fill every field of the statement.
 `before` holds the slots of the systems of the module that run before this one, and `before_count` tells how many. For an observer, they are observers.
 `BRIDGE_NATIVE_PUT_SLOTS(api, slots, count)` stages a list of slots in the arena. With a count of 0, it stages nothing and gives 0.
 The two macros stage their changes and `before` with it.
+
+## The texts of a statement
+
+Each text of a statement is a string literal or an array of `char`: `name`, `phase`, and the descriptor `T##_desc`.
+`BRIDGE_NATIVE_TEXT_BYTES(text)` gives its bytes with no final zero, from `sizeof`.
+A pointer has the size of a pointer, and not of its text. So a pointer stops the build, with the error of an array of a negative size.
+The check is a `_Generic` on `&(text)`. Only an array of `char` gives a pointer to an array of the size of the text.
 
 Each macro stages its statement in the arena, then reaches the matching entry.
 `BRIDGE_NATIVE_ATTACH` lends a value and attaches it by slot.
