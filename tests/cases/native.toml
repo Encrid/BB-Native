@@ -90,3 +90,10 @@ claims = { status = 0 }
 rows = [
     { name = "define_func-an-entry-the-abi-has-not-refused", in = "teleport", claims = { matches = ["an entry the SDK has not is refused: the native SDK has no entry 'teleport'"] }, false = "declare" },
 ]
+
+[[case]]
+name = "a name of a system that is a pointer stops the build, with the error of an array of a negative size"
+process = "status"
+run = ["{python}", "{root}/tools/compile_one.py", "{root}/tests/refused/name_pointer.c", "{root}/include", "{bridge}/include"]
+claims = { status = 1, has = ["name_pointer.c:10:13: error: array size is negative"] }
+false = { run = ["{python}", "{root}/tools/compile_one.py", "{root}/tests/refused/name_literal.c", "{root}/include", "{bridge}/include"] }

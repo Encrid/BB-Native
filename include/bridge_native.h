@@ -11,6 +11,11 @@
     #include "bridge_native_log.h"
     #include "bridge_native_value.h"
 
+    #define BRIDGE_NATIVE_TEXT_BYTES(text) \
+        (sizeof(char [_Generic(&(text), char (*)[sizeof(text)]: 1, \
+            const char (*)[sizeof(text)]: 1, default: -1)]) * 0 \
+            + sizeof(text) - 1)
+
     #define BRIDGE_NATIVE_ATTACH(api, id, slot, value) \
         (api)->attach(api, id, slot, \
             bridge_native_lend(api, &(value), sizeof(value)))
@@ -18,10 +23,12 @@
     #define BRIDGE_NATIVE_DECLARE(api, kind, name, T, on_unload, storage, \
         on_destroy) \
         (api)->declare(api, BRIDGE_NATIVE_STATE(api, bridge_declaration_t, \
-            bridge_native_put(api, name, sizeof(name) - 1), sizeof(name) - 1, \
+            bridge_native_put(api, name, BRIDGE_NATIVE_TEXT_BYTES(name)), \
+            BRIDGE_NATIVE_TEXT_BYTES(name), \
             kind, sizeof(T), alignof(T), \
-            bridge_native_put(api, T##_desc, sizeof(T##_desc) - 1), \
-            sizeof(T##_desc) - 1, on_unload, storage, on_destroy))
+            bridge_native_put(api, T##_desc, \
+                BRIDGE_NATIVE_TEXT_BYTES(T##_desc)), \
+            BRIDGE_NATIVE_TEXT_BYTES(T##_desc), on_unload, storage, on_destroy))
     #define BRIDGE_NATIVE_COMPONENT(api, name, T, on_unload, storage, \
         on_destroy) \
         BRIDGE_NATIVE_DECLARE(api, BRIDGE_STRUCT, name, T, on_unload, \
@@ -30,16 +37,18 @@
     #define BRIDGE_NATIVE_DECLARE_TAG(api, name, on_unload, storage, \
         on_destroy) \
         (api)->declare(api, BRIDGE_NATIVE_STATE(api, bridge_declaration_t, \
-            bridge_native_put(api, name, sizeof(name) - 1), sizeof(name) - 1, \
+            bridge_native_put(api, name, BRIDGE_NATIVE_TEXT_BYTES(name)), \
+            BRIDGE_NATIVE_TEXT_BYTES(name), \
             BRIDGE_TAG, 0, 1, 0, 0, on_unload, storage, on_destroy))
 
     #define BRIDGE_NATIVE_ADD_SYSTEM(api, name, phase, terms, count, changes, \
         change_count, before, before_count) \
         (api)->add_system(api, BRIDGE_NATIVE_STATE(api, \
             bridge_system_statement_t, \
-            bridge_native_put(api, name, sizeof(name) - 1), sizeof(name) - 1, \
-            bridge_native_put(api, phase, sizeof(phase) - 1), \
-            sizeof(phase) - 1, \
+            bridge_native_put(api, name, BRIDGE_NATIVE_TEXT_BYTES(name)), \
+            BRIDGE_NATIVE_TEXT_BYTES(name), \
+            bridge_native_put(api, phase, BRIDGE_NATIVE_TEXT_BYTES(phase)), \
+            BRIDGE_NATIVE_TEXT_BYTES(phase), \
             bridge_native_put(api, terms, (count) * sizeof(bridge_term_t)), \
             count, BRIDGE_NATIVE_PUT_SLOTS(api, changes, change_count), \
             change_count, BRIDGE_NATIVE_PUT_SLOTS(api, before, before_count), \
@@ -48,7 +57,8 @@
         change_count, before, before_count) \
         (api)->observe(api, BRIDGE_NATIVE_STATE(api, \
             bridge_observer_statement_t, \
-            bridge_native_put(api, name, sizeof(name) - 1), sizeof(name) - 1, \
+            bridge_native_put(api, name, BRIDGE_NATIVE_TEXT_BYTES(name)), \
+            BRIDGE_NATIVE_TEXT_BYTES(name), \
             events, \
             bridge_native_put(api, terms, (count) * sizeof(bridge_term_t)), \
             count, BRIDGE_NATIVE_PUT_SLOTS(api, changes, change_count), \
