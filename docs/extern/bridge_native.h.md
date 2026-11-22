@@ -38,6 +38,14 @@ The check is a `_Generic` on `&(text)`. Only an array of `char` gives a pointer 
 
 Each macro stages its statement in the arena, then reaches the matching entry.
 `BRIDGE_NATIVE_ATTACH` lends a value and attaches it by slot.
+
+## The value of an attach
+
+`value` of `BRIDGE_NATIVE_ATTACH` is the component itself, and not a pointer to it.
+The macro lends `sizeof(value)` bytes, and `attach` gives Bridge only their place.
+Bridge reads the size of the type of the slot from that place. So a pointer lends the bytes of the pointer, and Bridge reads past them.
+
+Neither the macro nor Bridge can test it. The macro knows the slot and not its type, and the call has no length.
 `docs/extern/bridge_native_api.h.md` describes the arena.
 
 ## Functions
