@@ -67,16 +67,16 @@ The backend writes one of these reasons when it refuses. Angle brackets mark a p
 - `cannot open the library '<path>'`, also when the library does not read or its copy does not write
 - `out of memory: there was none for <what>`
 
-Bridge puts each reason into a record, after the name of the backend or of the module.
+Bridge puts each reason into a record of its own, at a load and at a reload: https://github.com/Encrid/Bridge/blob/v0.9.0/docs/extern/bridge.h.md#messages.
 
-An entry that gets no memory gives null, with the last reason of the list. This table gives `<what>` and the record of each entry:
+An entry that gets no memory gives null, with the last reason of the list. This table gives `<what>` of each entry:
 
-| Entry | `<what>` | The record |
-| --- | --- | --- |
-| `backend_create` | `the backend`, `the folder of the copies` | `backend 'native' would not start: <reason>` |
-| `module_compile` | `the path of a copy`, `the image of a module` | `module '<module>' did not load: <reason>` |
-| `instance_create` | `an instance of an image` | `module '<module>' did not load: <reason>` |
-| `instance_get_func` | `a function of an instance` | `module '<module>' did not load: <reason>` |
+| Entry | `<what>` |
+| --- | --- |
+| `backend_create` | `the backend`, `the folder of the copies` |
+| `module_compile` | `the path of a copy`, `the image of a module` |
+| `instance_create` | `an instance of an image` |
+| `instance_get_func` | `a function of an instance` |
 
 ## Contributing
 

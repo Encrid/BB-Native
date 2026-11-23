@@ -5,9 +5,71 @@
 */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "bridge_backend.h"
 #include "rows.h"
+
+static int calls;
+static bool refusing;
+
+static int spawn_stub([[maybe_unused]] void *ud,
+    [[maybe_unused]] const uint64_t *args, uint64_t *result)
+{
+    calls++;
+    *result = 5;
+    return (refusing && calls == 1 ? -1 : 0);
+}
+
+static backend_instance_t *made(const backend_api_t *api, backend_module_t *m,
+    bool spawns)
+{
+    backend_err_t err = {};
+    backend_entry_t spawn = { "bridge", "spawn", spawn_stub, nullptr,
+        nullptr };
+    backend_instance_t *i = api->instance_create(m, nullptr, 0, &err);
+
+    if (i && spawns)
+        (void)api->define_func(i, &spawn, &err);
+    return (i);
+}
+
+static int32_t called(const backend_api_t *api, backend_instance_t *i,
+    const char *name)
+{
+    backend_err_t err = {};
+    backend_func_t *f = i ? api->instance_get_func(i, name, &err) : nullptr;
+    int32_t status = -2;
+
+    if (f)
+        (void)api->call(f, &status, &err);
+    return (status);
+}
+
+static int enter(const backend_api_t *api, backend_t *be, const char *mode)
+{
+    backend_err_t err = {};
+    backend_source_t source = { .path = NCOVER_PATH };
+    backend_module_t *m = api->module_compile(be, &source, &err);
+    backend_instance_t *one = nullptr;
+    backend_instance_t *two = nullptr;
+
+    calls = 0;
+    refusing = !strcmp(mode, "enter-refused");
+    one = m ? made(api, m, strcmp(mode, "enter-unset")) : nullptr;
+    printf("%s: init %d, calls %d\n", mode, called(api, one, "init"), calls);
+    if (m && !strcmp(mode, "enter-late")) {
+        two = made(api, m, true);
+        printf("late %d, calls %d\n", called(api, two, "late"), calls);
+    }
+    if (two)
+        api->instance_destroy(two);
+    if (one)
+        api->instance_destroy(one);
+    if (m)
+        api->module_destroy(m);
+    return (!m);
+}
 
 static int refuse_entry(const backend_api_t *api, backend_module_t *m,
     const char *name)
@@ -39,7 +101,8 @@ static void poke_edges(const backend_api_t *api, backend_t *be,
     (void)api->module_compile(be, &empty, &err);
     (void)api->module_compile(be, &missing, &err);
     (void)api->module_list_imports(m, out, 1);
-    (void)api->define_func(i, &wrong, &err);
+    if (api->define_func(i, &wrong, &err))
+        printf("another namespace is refused: %s\n", err.text);
     api->instance_set_work_limit(i, 1);
     api->instance_set_timeout(i, 1);
     api->instance_set_memory_limit(i, 1);
@@ -83,6 +146,12 @@ static int run(int argc, char **argv)
     if (!lib)
         return (printf("FAIL: %s\n", err.text), 1);
     be = api.backend_create(&copies, 1, &err);
+    if (argc > 1 && !strncmp(argv[1], "enter-", 6)) {
+        failed = enter(&api, be, argv[1]);
+        api.backend_destroy(be);
+        backend_close(lib);
+        return (failed);
+    }
     m = api.module_compile(be, &source, &err);
     failed = !m || refuse_entry(&api, m, argc > 1 ? argv[1] : "");
     if (failed)

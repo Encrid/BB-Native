@@ -71,7 +71,10 @@ rows = [
     { name = "destroy-two-entities-gone", in = "destroy-two-entities-gone", claims = { matches = ["destroy_half.*rows, and of them given D 4 1.*near: by id: alive, and of them given D 4 1.*alive"] }, false = "destroy-each-entity-gone" },
     { name = "alloc-bytes-kept-from-init", in = "alloc-bytes-kept-from-init", claims = { matches = ["say: kept 1 42.*alive"] }, false = "alloc-8-bytes-of-room-too-few" },
     { name = "instance_get_func-no-such-export-refused", in = "instance_get_func-no-such-export-refused", claims = { matches = ["module 'test:noinit@0.1.0' did not load: no exported function 'bridge_init'.*alive"] }, false = "instance_get_func-an-init-exported" },
-    { name = "test:cover-the-sdk-guards", in = "test:cover-the-sdk-guards", claims = { matches = ["test:cover@0.1.0: loaded.*alive"] }, false = "test:cover-with-spawns-of-none" },
+    { name = "test:cover-the-sdk-guards", in = "test:cover-the-sdk-guards", claims = { matches = ["arena-edges 0 0.*test:cover@0.1.0: loaded.*alive"] }, false = "test:cover-each-probe-fits" },
+    { name = "test:cover-each-probe-fits", in = "test:cover-each-probe-fits", claims = { matches = ["arena-edges 15 1.*test:cover@0.1.0: loaded.*alive"] }, false = "test:cover-the-sdk-guards" },
+    { name = "bridge_native_lend-zero-at-an-attach-that-does-not-fit", in = "bridge_native_lend-zero-at-an-attach-that-does-not-fit", claims = { matches = ["attach: the value lies outside the scratch arena.*alive"] }, false = "BRIDGE_NATIVE_ATTACH-seen-by-an-observer" },
+    { name = "bridge_unload-the-module-runs-no-more", in = "bridge_unload-the-module-runs-no-more", claims = { matches = ["native tally 2 1000.*unload: 0.*after.*alive"], matches_not = ["after.*native tally"] }, false = "bridge_unload-not-called" },
     { name = "bridge_native_say-a-line-made-from-a-format-and-its-values", in = "bridge_native_say-a-line-made-from-a-format-and-its-values", claims = { matches = ["test:say@0\\.1\\.0/values: look has 6 rows and -2 left.*alive"] }, false = "bridge_native_say-at-level-3-a-warning-is-not-kept" },
     { name = "bridge_native_say-a-whole-text-has-its-length-in-a0", in = "bridge_native_say-a-whole-text-has-its-length-in-a0", claims = { matches = ["/values: look has 6 rows and -2 left 27 0.*alive"] }, false = "bridge_native_say-at-level-3-a-warning-is-not-kept" },
     { name = "bridge_native_say-a-cut-text-has-the-full-length-in-a0", in = "bridge_native_say-a-cut-text-has-the-full-length-in-a0", claims = { matches = ["/cut: 0123456 10 0.*alive"] }, false = "bridge_native_say-at-level-3-a-warning-is-not-kept" },
@@ -105,6 +108,11 @@ env = { TEST_COPIES = "{case}/copies" }
 claims = { status = 0 }
 rows = [
     { name = "define_func-an-entry-the-abi-has-not-refused", in = "teleport", claims = { matches = ["an entry the SDK has not is refused: the native SDK has no entry 'teleport'"] }, false = "declare" },
+    { name = "define_func-another-namespace-refused", in = "teleport", claims = { matches = ["another namespace is refused: the native SDK has no entry 'spawn'"] }, false = "declare" },
+    { name = "native_enter-an-entry-that-is-set-runs", in = "enter-set", claims = { line = ["enter-set: init 85, calls 2"] }, false = "enter-unset" },
+    { name = "native_enter-an-unset-entry-gives-0", in = "enter-unset", claims = { line = ["enter-unset: init 0, calls 0"] }, false = "enter-set" },
+    { name = "native_enter-after-a-refusal-each-entry-gives-0", in = "enter-refused", claims = { line = ["enter-refused: init 0, calls 1"] }, false = "enter-set" },
+    { name = "native_enter-an-entry-after-its-call-returned-gives-0", in = "enter-late", claims = { line = ["late 0, calls 2"] }, false = "enter-set" },
 ]
 
 [[case]]

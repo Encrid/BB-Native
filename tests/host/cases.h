@@ -33,6 +33,7 @@ void test_run_phases(host_t *h, const char *const *phases, uint32_t count);
 void test_run_mover(host_t *h);
 void test_run_find(host_t *h);
 void test_run_text(host_t *h);
+void test_unload(host_t *h);
 void test_run_cover(host_t *h);
 void test_refuse_entry(host_t *h);
 void test_enter_from_foreign_thread(host_t *h);
