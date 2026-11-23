@@ -22,6 +22,9 @@ BRIDGE_NATIVE(mark)
     runs++;
     if (runs != 1)
         return (0);
+    if (FULL)
+        bridge_native_get_header(api)->scratch_used
+            = bridge_native_get_header(api)->scratch_len;
     BRIDGE_NATIVE_ATTACH(api, ids[1], marked, m);
     bridge_native_log(api, BRIDGE_LOG_INFO, &line);
     return (0);

@@ -30,8 +30,8 @@ path = true
 [[modules]]
 name = "nsetter"
 sources = ["tests/modules/nsetter.c", "tests/modules/nidle.c"]
-defines = ["MARK=77"]
-variants = [{ name = "nsetter78", defines = ["MARK=78"] }]
+defines = ["MARK=77", "FULL=0"]
+variants = [{ name = "nsetter78", defines = ["MARK=78", "FULL=0"] }, { name = "nsetter_full", defines = ["MARK=77", "FULL=1"] }]
 path = true
 
 [[modules]]
@@ -119,6 +119,8 @@ path = true
 [[modules]]
 name = "ncover"
 sources = ["tests/modules/ncover.c", "tests/modules/nidle.c"]
+defines = ["FIT=0"]
+variants = [{ name = "ncover_fit", defines = ["FIT=1"] }]
 path = true
 
 [[modules]]
