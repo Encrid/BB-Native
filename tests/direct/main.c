@@ -4,6 +4,7 @@
 ** Under the GNU Affero General Public License, version 3 only: see license.
 */
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "backend.h"
 #include "os.h"
@@ -73,6 +74,8 @@ static int run(int argc, char **argv)
     backend_api_t api;
     backend_err_t err = {};
     backend_source_t source = { .path = NMOVER_PATH };
+    backend_setting_t copies = { "copies", BACKEND_STRING, {},
+        { .s = getenv("TEST_COPIES") } };
     backend_t *be;
     backend_module_t *m;
     void *lib = backend_open(BRIDGE_NATIVE_PATH, &api, &err);
@@ -80,7 +83,7 @@ static int run(int argc, char **argv)
 
     if (!lib)
         return (printf("FAIL: %s\n", err.text), 1);
-    be = api.backend_create(nullptr, 0, &err);
+    be = api.backend_create(&copies, 1, &err);
     m = api.module_compile(be, &source, &err);
     failed = !m || refuse_entry(&api, m, argc > 1 ? argv[1] : "");
     if (failed)
