@@ -45,7 +45,7 @@ BRIDGE_NATIVE(flicker)
     uint32_t i = 0;
 
     while (i < q->spans) {
-        span = bridge_native_get_span(api, q, i, 2);
+        span = bridge_native_get_span(api, q, i);
         turn_low_off((const a_t *)(api->shared_base
             + bases[span[0] * types + ntag_a]),
             bridge_native_get_bits(api, bases[span[0] * types + ntag_o]),

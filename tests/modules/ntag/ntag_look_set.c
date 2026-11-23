@@ -30,7 +30,7 @@ void ntag_look_set(const bridge_api_t *api)
     uint32_t i = 0;
 
     while (i < q->spans) {
-        span = bridge_native_get_span(api, q, i, 1);
+        span = bridge_native_get_span(api, q, i);
         rows += bridge_native_get_rows(api, span);
         carried += bases[span[0] * types + ntag_p] == BRIDGE_CARRIED;
         i++;

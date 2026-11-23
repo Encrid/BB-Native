@@ -58,7 +58,7 @@ static inline void bridge_native_say(const bridge_api_t *api, uint32_t level,
 {
     bridge_header_t *h = bridge_native_get_header(api);
     bridge_log_record_t *r = bridge_native_take_record(api, level);
-    uint32_t used = (h->scratch_used + 7u) & ~7u;
+    uint32_t used = bridge_native_get_free(h);
     uint32_t at = used < h->scratch_len ? used : h->scratch_len;
     uint32_t room = h->scratch_len - at;
     uint32_t most = room ? room - 1u : 0;

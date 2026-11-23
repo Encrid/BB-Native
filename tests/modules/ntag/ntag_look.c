@@ -17,7 +17,7 @@ static void look_tables(const bridge_api_t *api)
     uint32_t i = 0;
 
     while (i < q->spans) {
-        span = bridge_native_get_span(api, q, i, 2);
+        span = bridge_native_get_span(api, q, i);
         rows += bridge_native_get_rows(api, span);
         carried += bases[span[0] * types + ntag_m] == BRIDGE_CARRIED;
         i++;
@@ -40,7 +40,7 @@ static void look_toggle(const bridge_api_t *api)
     uint32_t row;
 
     while (i < q->spans) {
-        span = bridge_native_get_span(api, q, i, 2);
+        span = bridge_native_get_span(api, q, i);
         bits = bridge_native_get_bits(api, bases[span[0] * types + ntag_o]);
         row = 0;
         while (row < bridge_native_get_rows(api, span)) {

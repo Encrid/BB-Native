@@ -20,5 +20,8 @@ The bases are `shared_base`, the shared block, and `private_base`, the module's 
 | Function | Result |
 | --- | --- |
 | `bridge_native_get_header` | Gives the header at the start of the private memory. |
-| `bridge_native_put` | Copies bytes into the arena and gives their offset, or zero when they do not fit. |
-| `bridge_native_lend` | Copies bytes above the used arena without counting them, for a value an entry copies during the call. |
+| `bridge_native_get_free` | Gives where the free arena starts: the used bytes, rounded up to a multiple of 8. |
+| `bridge_native_lend` | Copies bytes above the used arena without counting them, for a value an entry copies during the call, and gives their offset. Gives zero when they do not fit. |
+| `bridge_native_put` | Lends the bytes, then counts them as used, and gives their offset. Gives zero when they do not fit. |
+
+A zero of `bridge_native_lend` reaches `attach` through `BRIDGE_NATIVE_ATTACH`, as the place of the value. Bridge then refuses the attach: `attach: the value lies outside the scratch arena`, and the call fails: https://github.com/Encrid/Bridge/blob/v0.9.0/docs/extern/bridge_abi.h.md#a-change.
