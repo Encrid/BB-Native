@@ -29,4 +29,13 @@ static inline uint32_t bridge_native_find_value(const bridge_api_t *api,
         * ((const uint32_t *)(api->private_base + h->stride))[slot]);
 }
 
+static inline bool bridge_native_in_arena(const bridge_api_t *api,
+    bridge_text_t text)
+{
+    const bridge_header_t *h = bridge_native_get_header(api);
+
+    return (text.at >= h->arena_lo && text.at <= h->arena_hi
+        && text.len <= h->arena_hi - text.at);
+}
+
 #endif

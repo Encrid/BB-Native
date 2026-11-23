@@ -46,6 +46,7 @@ The macro lends `sizeof(value)` bytes, and `attach` gives Bridge only their plac
 Bridge reads the size of the type of the slot from that place. So a pointer lends the bytes of the pointer, and Bridge reads past them.
 
 Neither the macro nor Bridge can test it. The macro knows the slot and not its type, and the call has no length.
+An attach takes `BRIDGE_CHANGE_BYTES` of the size of its value from `changes_left`, as the header `bridge_abi.h` of Bridge gives it: https://github.com/Encrid/Bridge/blob/v0.9.0/docs/extern/bridge_abi.h.md#bridge_header_t.
 `docs/extern/bridge_native_api.h.md` describes the arena.
 
 ## Functions
@@ -58,4 +59,4 @@ Neither the macro nor Bridge can test it. The macro knows the slot and not its t
 | `bridge_native_get_rows` | Gives the row count of the table of a span, from the table directory in the shared memory. |
 | `bridge_native_get_block` | Gives the ids of the rows of the table of a span, from the shared memory: the id of row `r` is entry `r`. |
 
-A span holds only the id of a table. Bridge writes the row count and the block of each table once, in its table directory, at each barrier: https://github.com/Encrid/Bridge/blob/v0.8.0/docs/extern/bridge_abi.h.md#spans.
+A span holds only the id of a table. Bridge writes the row count and the block of each table once, in its table directory, at each barrier: https://github.com/Encrid/Bridge/blob/v0.9.0/docs/extern/bridge_abi.h.md#spans.
