@@ -46,8 +46,10 @@ Thus the backend never holds the file of the host open:
 - A reload gives the new build. An open of the same path would give the library that is open already: on Windows, Linux and macOS.
 - On Windows, a program can write, move or remove the file of a loaded module. No program can write onto a library that is open.
 
-The folder belongs to 1 backend at a time. Give each run of a host a folder of its own, and never a path of its content.
+The folder belongs to 1 backend at a time. Give each host a folder of its own, and never a path of its content.
 At its start, the backend removes each file of the folder with the form of a copy, which an earlier run left. It removes no other file.
+
+A copy that does not go when its module unloads, for example a library that the system still holds, stays with no message. The next start of a backend on that folder removes it.
 The backend is built against `BACKEND_ABI` 1, the number of the backend seam of Bridge. A Bridge of another number refuses it.
 
 ## Messages
