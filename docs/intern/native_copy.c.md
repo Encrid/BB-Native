@@ -33,4 +33,4 @@ A copy that does not go stays, and the next `backend_create` with that folder re
 | `copy_path(b, path, err)` | Gives the path of the next copy, which the caller frees, or null with the reason in `err`. |
 | `write_from_path(path, copy)` | Writes the file of `path` into `copy`. Gives 0, or -1. |
 | `native_copy_open(b, source, copy, err)` | Writes the copy and opens its library, as *The copy* tells. Sets `*copy`, and gives the library, or null with the reason in `err`. |
-| `native_copy_remove(copy)` | Removes the copy and frees its path. A null `copy` does nothing. |
+| `native_copy_remove(copy)` | Removes the copy and frees its path. |

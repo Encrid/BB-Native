@@ -75,7 +75,6 @@ void *native_copy_open(backend_t *b, const backend_source_t *source,
 
 void native_copy_remove(char *copy)
 {
-    if (copy)
-        (void)os_path_remove(copy);
+    (void)os_path_remove(copy);
     free(copy);
 }

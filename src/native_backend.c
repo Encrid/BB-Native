@@ -10,8 +10,7 @@
 
 BACKEND_EXPORT void backend_destroy(backend_t *b)
 {
-    if (b)
-        free(b->copies);
+    free(b->copies);
     free(b);
 }
 

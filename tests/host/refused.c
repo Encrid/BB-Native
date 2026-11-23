@@ -5,12 +5,13 @@
 */
 #include "cases.h"
 
-static const bridge_setting_t TEST_SETTINGS[4][2] = {
+static const bridge_setting_t TEST_SETTINGS[5][2] = {
     { { "cache", BRIDGE_STRING, {}, { .s = "somewhere" } } },
     { { "copies", BRIDGE_INT, {}, { .i = 1 } } },
     { { "copies", BRIDGE_STRING, {}, { .s = "a" } },
         { "copies", BRIDGE_STRING, {}, { .s = "b" } } },
     { { "copies", BRIDGE_STRING, {}, { .s = "" } } },
+    { { "copies", BRIDGE_STRING, {}, { .s = nullptr } } },
 };
 
 void test_state_limit(host_t *h)
@@ -47,7 +48,7 @@ void test_hand_setting(host_t *h)
 {
     int at = *h->arg - '0';
 
-    h->backends[0].settings = at < 4 ? TEST_SETTINGS[at] : nullptr;
-    h->backends[0].setting_count = at == 2 ? 2 : at < 4;
+    h->backends[0].settings = at < 5 ? TEST_SETTINGS[at] : nullptr;
+    h->backends[0].setting_count = at == 2 ? 2 : at < 5;
     host_open_only(h);
 }
