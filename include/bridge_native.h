@@ -85,7 +85,7 @@ static inline const bridge_query_t *bridge_native_get_query(
 }
 
 static inline const uint32_t *bridge_native_get_span(const bridge_api_t *api,
-    const bridge_query_t *q, uint32_t i, [[maybe_unused]] uint32_t terms)
+    const bridge_query_t *q, uint32_t i)
 {
     return ((const uint32_t *)(api->private_base + q->at
         + i * BRIDGE_SPAN_SIZE));

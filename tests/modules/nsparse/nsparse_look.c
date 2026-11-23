@@ -31,7 +31,7 @@ BRIDGE_NATIVE(look)
     uint32_t i = 0;
 
     while (i < q->spans) {
-        span = bridge_native_get_span(api, q, i, 1);
+        span = bridge_native_get_span(api, q, i);
         total = add_values((const s_t *)(api->shared_base
             + bases[span[0] * types + nsparse_s]),
             bridge_native_get_rows(api, span), total);
@@ -79,7 +79,7 @@ BRIDGE_NATIVE(look_b)
     uint32_t i = 0;
 
     while (i < q->spans) {
-        span = bridge_native_get_span(api, q, i, 2);
+        span = bridge_native_get_span(api, q, i);
         total = add_reached(api, span, total, &found);
         base = bases[span[0] * types + nsparse_s];
         rows += bridge_native_get_rows(api, span);

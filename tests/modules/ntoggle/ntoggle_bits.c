@@ -51,7 +51,7 @@ BRIDGE_NATIVE(flicker)
     uint32_t i = 0;
 
     while (i < q->spans) {
-        span = bridge_native_get_span(api, q, i, 1);
+        span = bridge_native_get_span(api, q, i);
         base = bases[span[0] * types + ntoggle_t];
         switch_rows((const t_t *)(api->shared_base + base),
             bridge_native_get_bits(api, base),
@@ -72,7 +72,7 @@ BRIDGE_NATIVE(combine)
     uint32_t r;
 
     while (i < q->spans) {
-        span = bridge_native_get_span(api, q, i, 1);
+        span = bridge_native_get_span(api, q, i);
         bits = bridge_native_get_bits(api, bases[span[0] * types + ntoggle_t]);
         r = 0;
         while (r < bridge_native_get_rows(api, span)) {

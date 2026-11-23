@@ -27,7 +27,7 @@ BRIDGE_NATIVE(stamp)
     uint32_t row;
 
     while (s < q->spans) {
-        span = bridge_native_get_span(api, q, s, 1);
+        span = bridge_native_get_span(api, q, s);
         who = bridge_native_get_block(api, span);
         row = 0;
         while (row < bridge_native_get_rows(api, span)) {

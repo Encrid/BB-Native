@@ -48,7 +48,7 @@ static uint32_t collect_columns(const bridge_api_t *api, const x_t **out,
     uint32_t r;
 
     while (i < q->spans) {
-        span = bridge_native_get_span(api, q, i, 1);
+        span = bridge_native_get_span(api, q, i);
         base = bases[span[0] * types + x_slot];
         r = 0;
         while (r < bridge_native_get_rows(api, span) && n < room) {

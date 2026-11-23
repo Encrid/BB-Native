@@ -46,7 +46,7 @@ BRIDGE_NATIVE(look_b)
     uint32_t i = 0;
 
     while (i < q->spans) {
-        span = bridge_native_get_span(api, q, i, 2);
+        span = bridge_native_get_span(api, q, i);
         total = add_given(api, span, total, &found);
         base = bases[span[0] * types + ndirect_d];
         rows += bridge_native_get_rows(api, span);
