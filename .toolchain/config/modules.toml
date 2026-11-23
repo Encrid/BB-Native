@@ -105,6 +105,21 @@ variants = [{ name = "ntext_wider", defines = ["WIDER=1"] }]
 path = true
 
 [[modules]]
+name = "nhelper"
+sources = ["tests/modules/nhelper.c"]
+flags = ["{system_defines}", "{helper_name}"]
+defines = ["HELPED=7"]
+variants = [{ name = "nhelper8", defines = ["HELPED=8"] }]
+path = true
+
+[[modules]]
+name = "nimports"
+sources = ["tests/modules/nimports.c", "tests/modules/nidle.c"]
+flags = ["{hidden}", "{system_defines}", "{beside}"]
+link = ["{out}/built/nhelper{library}"]
+path = true
+
+[[modules]]
 name = "nalloc"
 sources = ["tests/modules/nalloc.c", "tests/modules/nidle.c"]
 path = true
