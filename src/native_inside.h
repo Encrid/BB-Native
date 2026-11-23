@@ -80,6 +80,18 @@ void native_fill_api(bridge_api_t *api);
 
 void native_copy_remove(char *copy);
 
+[[nodiscard]] size_t native_name_at(const char *path);
+
+[[nodiscard]] char *native_folder_of(const char *path, backend_err_t *err);
+
+[[nodiscard]] char *native_join(const char *folder, const char *name,
+    backend_err_t *err);
+
+[[nodiscard]] int native_copy_file(const char *path, const char *copy);
+
+void native_give_beside(const char *from, const char *skip,
+    const char *folder);
+
 uint64_t native_spawn(const bridge_api_t *api);
 void native_destroy(const bridge_api_t *api, uint64_t id);
 void native_attach(const bridge_api_t *api, uint64_t id, uint32_t slot,

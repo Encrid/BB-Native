@@ -9,10 +9,12 @@
 
 #include "native_inside.h"
 
-static bool is_copy(const char *name)
+static bool is_copy(const char *name, bool is_folder)
 {
     size_t digits = strspn(name, "0123456789");
 
+    if (is_folder)
+        return (digits && !name[digits]);
     return (digits && name[digits] == '-' && name[digits + 1]);
 }
 
@@ -26,7 +28,7 @@ static void clear_copies(const char *folder)
 
     for (; name; name = os_folder_read_entry(f, &is_folder)) {
         size = strlen(folder) + strlen(name) + 2;
-        path = is_folder || !is_copy(name) ? nullptr : calloc(1, size);
+        path = is_copy(name, is_folder) ? calloc(1, size) : nullptr;
         if (path) {
             snprintf(path, size, "%s/%s", folder, name);
             (void)os_path_remove(path);

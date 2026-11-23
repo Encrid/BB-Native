@@ -13,9 +13,10 @@ With no `copies`, the backend refuses too, since each module loads from a copy: 
 
 ## The clear
 
-`clear_copies` reads each entry of the folder, and removes each file whose name has the form of a copy.
-`is_copy` tells that form: 1 digit or more, a `-`, and 1 character or more, as `<generation>-<file name>`.
-It removes no other file and no folder, since the host names the folder.
+`clear_copies` reads each entry of the folder, and removes each one whose name has the form of a copy.
+`is_copy` tells that form. A folder of a generation has a name of digits only. A file of `<generation>-<file name>` is a copy of BB-Native v0.6.0.
+It removes no other entry, since the host names the folder.
+
 A file that does not go, for example a library that another process still holds, stays. No line tells it, since `backend_create` has no record but its reason.
 
 ## Functions

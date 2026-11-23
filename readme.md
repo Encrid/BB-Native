@@ -38,16 +38,20 @@ The library is `bridge_native.dll`, `bridge_native.so` or `bridge_native.dylib`.
 ## The copies
 
 The backend needs 1 setting, `copies`: the path of a folder, as a text. The backend makes the folder if it is not there.
-For each load and each reload, the backend writes a copy of the library into that folder, as `<generation>-<file name>`, and opens the copy.
-When the module unloads, the backend closes the copy and removes it.
+For each load and each reload, the backend makes the folder `<generation>` in it. It writes a copy of the library there under its own name, and opens it.
+Beside the copy, it makes a hard link of each other file of the folder of the library. So the loader finds a runtime such as SDL3.
+
+When the system refuses a link, it copies only a library of the system, and skips the other files.
+When the module unloads, the backend closes the copy and removes its folder.
 
 Thus the backend never holds the file of the host open:
 
 - A reload gives the new build. An open of the same path would give the library that is open already: on Windows, Linux and macOS.
 - On Windows, a program can write, move or remove the file of a loaded module. No program can write onto a library that is open.
+- Replace a library beside a loaded module by a move onto its file. A hard link shares its bytes, so a write in place changes the library of the copy.
 
 The folder belongs to 1 backend at a time. Give each host a folder of its own, and never a path of its content.
-At its start, the backend removes each file of the folder with the form of a copy, which an earlier run left. It removes no other file.
+At its start, the backend removes what an earlier run left: each folder of digits only, and each file `<generation>-<file name>` of v0.6.0. It removes no other entry.
 
 A copy that does not go when its module unloads, for example a library that the system still holds, stays with no message. The next start of a backend on that folder removes it.
 The backend is built against `BACKEND_ABI` 1, the number of the backend seam of Bridge. A Bridge of another number refuses it.
@@ -61,6 +65,7 @@ The backend writes one of these reasons when it refuses. Angle brackets mark a p
 - `it states the setting copies 2 times`
 - `the setting copies is a folder, as a text`
 - `cannot make the folder of the copies '<path>'`
+- `cannot make the folder of a copy '<path>'`
 - `the native SDK has no entry '<name>'`
 - `no exported function '<name>'`
 - `this backend opens a module's library by its path, and was handed none`
