@@ -14,7 +14,7 @@ It also cannot hold two copies of one library at once.
 | Function | Result |
 | --- | --- |
 | `backend_create` | Gives a new backend from `native_allocate`, with the folder of `native_copies_take`. If that refuses, it destroys the backend, and gives null with the reason in `err`. |
-| `backend_destroy` | Frees the folder of the copies and the backend. A null `b` does nothing. |
+| `backend_destroy` | Frees the folder of the copies and the backend. |
 | `backend_get_capabilities` | Gives the flags the backend keeps: reload and unload. |
 | `memory_get_shape` | Asks for no reservation, no guard and no granule. |
 | `memory_adopt` | Gives the block that Bridge reserved as its handle, since the block is already addressable. It allocates nothing, so it never refuses. |
