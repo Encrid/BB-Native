@@ -25,11 +25,13 @@ enum native_entry : uint32_t {
 };
 
 struct backend {
-    int unused;
+    char *copies;
+    uint64_t generation;
 };
 
 struct backend_module {
     void *lib;
+    char *copy;
 };
 
 struct backend_func {
@@ -69,6 +71,14 @@ static inline uint64_t native_enter(const bridge_api_t *api,
     backend_err_t *err);
 
 void native_fill_api(bridge_api_t *api);
+
+[[nodiscard]] int native_copies_take(backend_t *b,
+    const backend_setting_t *settings, uint32_t count, backend_err_t *err);
+
+[[nodiscard]] void *native_copy_open(backend_t *b,
+    const backend_source_t *source, char **copy, backend_err_t *err);
+
+void native_copy_remove(char *copy);
 
 uint64_t native_spawn(const bridge_api_t *api);
 void native_destroy(const bridge_api_t *api, uint64_t id);
