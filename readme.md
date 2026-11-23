@@ -33,7 +33,23 @@ The SDK includes `bridge_abi.h` and `bridge_schema.h`, thus a module also compil
 | `python project.py distclean` | Removes the folder `build`, also what `fetch` downloaded. |
 
 A host names the backend in its deployment, with the name `native` and the path of its library as `library`.
-The library is `bridge_native.dll`, `bridge_native.so` or `bridge_native.dylib`. The backend knows no setting.
+The library is `bridge_native.dll`, `bridge_native.so` or `bridge_native.dylib`.
+
+## The copies
+
+The backend needs 1 setting, `copies`: the path of a folder, as a text. The backend makes the folder if it is not there.
+For each load and each reload, the backend writes a copy of the library into that folder, as `<generation>-<file name>`, and opens the copy.
+When the module unloads, the backend closes the copy and removes it.
+
+Thus the backend never holds the file of the host open:
+
+- A reload gives the new build. An open of the same path would give the library that is open already: on Windows, Linux and macOS.
+- On Windows, a program can write, move or remove the file of a loaded module. No program can write onto a library that is open.
+
+The folder belongs to 1 backend at a time. Give each host a folder of its own, and never a path of its content.
+At its start, the backend removes each file of the folder with the form of a copy, which an earlier run left. It removes no other file.
+
+A copy that does not go when its module unloads, for example a library that the system still holds, stays with no message. The next start of a backend on that folder removes it.
 The backend is built against `BACKEND_ABI` 1, the number of the backend seam of Bridge. A Bridge of another number refuses it.
 
 ## Messages
@@ -41,22 +57,26 @@ The backend is built against `BACKEND_ABI` 1, the number of the backend seam of 
 The backend writes one of these reasons when it refuses. Angle brackets mark a part that changes:
 
 - `it knows no setting '<key>'`
+- `it needs the setting copies: a folder for the copies of the modules`
+- `it states the setting copies 2 times`
+- `the setting copies is a folder, as a text`
+- `cannot make the folder of the copies '<path>'`
 - `the native SDK has no entry '<name>'`
 - `no exported function '<name>'`
 - `this backend opens a module's library by its path, and was handed none`
-- `cannot open the library '<path>'`
+- `cannot open the library '<path>'`, also when the library does not read or its copy does not write
 - `out of memory: there was none for <what>`
 
-Bridge puts each reason into a record, after the name of the backend or of the module.
+Bridge puts each reason into a record of its own, at a load and at a reload: https://github.com/Encrid/Bridge/blob/v0.9.0/docs/extern/bridge.h.md#messages.
 
-An entry that gets no memory gives null, with the last reason of the list. This table gives `<what>` and the record of each entry:
+An entry that gets no memory gives null, with the last reason of the list. This table gives `<what>` of each entry:
 
-| Entry | `<what>` | The record |
-| --- | --- | --- |
-| `backend_create` | `the backend` | `backend 'native' would not start: <reason>` |
-| `module_compile` | `the image of a module` | `module '<module>' did not load: <reason>` |
-| `instance_create` | `an instance of an image` | `module '<module>' did not load: <reason>` |
-| `instance_get_func` | `a function of an instance` | `module '<module>' did not load: <reason>` |
+| Entry | `<what>` |
+| --- | --- |
+| `backend_create` | `the backend`, `the folder of the copies` |
+| `module_compile` | `the path of a copy`, `the image of a module` |
+| `instance_create` | `an instance of an image` |
+| `instance_get_func` | `a function of an instance` |
 
 ## Contributing
 

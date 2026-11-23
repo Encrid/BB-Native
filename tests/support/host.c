@@ -4,9 +4,12 @@
 ** Under the GNU Affero General Public License, version 3 only: see license.
 */
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "host.h"
+
+static bridge_setting_t copies[1];
 
 void host_init(host_t *h, int argc, char **argv)
 {
@@ -15,10 +18,12 @@ void host_init(host_t *h, int argc, char **argv)
         .columns = 1 << 20, .sparse_sets = BRIDGE_NONE,
         .direct_indexed = BRIDGE_NONE };
 
-    setvbuf(stdout, nullptr, _IONBF, 0);
     *h = (host_t){ .what = argc > 1 ? argv[1] : "" };
+    copies[0] = (bridge_setting_t){ "copies", BRIDGE_STRING, {},
+        { .s = getenv("TEST_COPIES") } };
     h->backends[0] = (bridge_backend_t){ .name = "native",
-        .library = BRIDGE_NATIVE_PATH };
+        .library = BRIDGE_NATIVE_PATH, .settings = copies,
+        .setting_count = 1 };
     h->phases[0] = "update";
     h->phases[1] = "present";
     h->cfg = (bridge_config_t){ .abi = BRIDGE_HOST_ABI, .threads = 1,

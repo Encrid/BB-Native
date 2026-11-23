@@ -18,26 +18,27 @@ BACKEND_EXPORT void memory_release([[maybe_unused]] backend_memory_t *m)
 {
 }
 
-BACKEND_EXPORT backend_module_t *module_compile([[maybe_unused]] backend_t *b,
+BACKEND_EXPORT backend_module_t *module_compile(backend_t *b,
     const backend_source_t *source, backend_err_t *err)
 {
-    constexpr size_t room = sizeof(err->text);
     const char *path = source->path;
-    void *lib = path && *path ? os_lib_open(path) : nullptr;
+    char *copy = nullptr;
+    void *lib = path && *path ? native_copy_open(b, source, &copy, err)
+        : nullptr;
     backend_module_t *m;
 
     if (!path || !*path)
-        snprintf(err->text, room, "this backend opens a module's library by "
-            "its path, and was handed none");
-    else if (!lib)
-        snprintf(err->text, room, "cannot open the library '%.180s'", path);
+        snprintf(err->text, sizeof(err->text), "this backend opens a "
+            "module's library by its path, and was handed none");
     if (!lib)
         return (nullptr);
     m = native_allocate(sizeof(*m), "the image of a module", err);
-    if (!m)
+    if (!m) {
         os_lib_close(lib);
-    else
-        m->lib = lib;
+        native_copy_remove(copy);
+    } else {
+        *m = (backend_module_t){ lib, copy };
+    }
     return (m);
 }
 
@@ -60,5 +61,6 @@ BACKEND_EXPORT uint32_t module_list_imports(
 BACKEND_EXPORT void module_destroy(backend_module_t *m)
 {
     os_lib_close(m->lib);
+    native_copy_remove(m->copy);
     free(m);
 }

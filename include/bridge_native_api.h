@@ -46,29 +46,32 @@ static inline bridge_header_t *bridge_native_get_header(const bridge_api_t *api)
     return ((bridge_header_t *)api->private_base);
 }
 
-static inline uint32_t bridge_native_put(const bridge_api_t *api,
-    const void *bytes, uint32_t len)
+static inline uint32_t bridge_native_get_free(const bridge_header_t *h)
 {
-    bridge_header_t *h = bridge_native_get_header(api);
-    uint32_t used = (h->scratch_used + 7u) & ~7u;
-
-    if (used > h->scratch_len || len > h->scratch_len - used)
-        return (0);
-    memcpy(api->private_base + h->scratch + used, bytes, len);
-    h->scratch_used = used + len;
-    return (h->scratch + used);
+    return ((h->scratch_used + 7u) & ~7u);
 }
 
 static inline uint32_t bridge_native_lend(const bridge_api_t *api,
     const void *bytes, uint32_t len)
 {
     const bridge_header_t *h = bridge_native_get_header(api);
-    uint32_t used = (h->scratch_used + 7u) & ~7u;
+    uint32_t used = bridge_native_get_free(h);
 
     if (used > h->scratch_len || len > h->scratch_len - used)
         return (0);
     memcpy(api->private_base + h->scratch + used, bytes, len);
     return (h->scratch + used);
+}
+
+static inline uint32_t bridge_native_put(const bridge_api_t *api,
+    const void *bytes, uint32_t len)
+{
+    bridge_header_t *h = bridge_native_get_header(api);
+    uint32_t at = bridge_native_lend(api, bytes, len);
+
+    if (at)
+        h->scratch_used = at - h->scratch + len;
+    return (at);
 }
 
 #endif

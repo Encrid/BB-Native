@@ -30,8 +30,8 @@ path = true
 [[modules]]
 name = "nsetter"
 sources = ["tests/modules/nsetter.c", "tests/modules/nidle.c"]
-defines = ["MARK=77"]
-variants = [{ name = "nsetter78", defines = ["MARK=78"] }]
+defines = ["MARK=77", "FULL=0"]
+variants = [{ name = "nsetter78", defines = ["MARK=78", "FULL=0"] }, { name = "nsetter_full", defines = ["MARK=77", "FULL=1"] }]
 path = true
 
 [[modules]]
@@ -91,6 +91,20 @@ defines = ["V=0", "KEPT=1"]
 path = true
 
 [[modules]]
+name = "nbuild"
+sources = ["tests/modules/nbuild.c"]
+defines = ["BUILD=1"]
+variants = [{ name = "nbuild2", defines = ["BUILD=2"] }, { name = "nbuild3", defines = ["BUILD=3"] }]
+path = true
+
+[[modules]]
+name = "ntext"
+sources = ["tests/modules/ntext.c", "tests/modules/nidle.c"]
+defines = ["WIDER=0"]
+variants = [{ name = "ntext_wider", defines = ["WIDER=1"] }]
+path = true
+
+[[modules]]
 name = "nalloc"
 sources = ["tests/modules/nalloc.c", "tests/modules/nidle.c"]
 path = true
@@ -105,6 +119,8 @@ path = true
 [[modules]]
 name = "ncover"
 sources = ["tests/modules/ncover.c", "tests/modules/nidle.c"]
+defines = ["FIT=0"]
+variants = [{ name = "ncover_fit", defines = ["FIT=1"] }]
 path = true
 
 [[modules]]

@@ -38,6 +38,34 @@ void test_run_mover(host_t *h)
     host_close(h);
 }
 
+void test_unload(host_t *h)
+{
+    bool keep = !strcmp(h->arg, "keep");
+
+    if (host_open(h))
+        return;
+    test_load(h, "game:mover@0.1.0", NMOVER_PATH, 1024);
+    host_run_frames_unsaid(h->w, 1);
+    if (!keep)
+        printf("unload: %d\n", bridge_unload(h->w, "game:mover@0.1.0"));
+    printf("after\n");
+    host_run_frames_unsaid(h->w, 1);
+    host_close(h);
+}
+
+void test_run_text(host_t *h)
+{
+    bridge_artifact_t a;
+
+    if (host_open(h))
+        return;
+    host_state_native(&a, "test:text@0.1.0", h->arg);
+    a.cfg.persistent = 64;
+    host_load(h, &a);
+    host_run_frames_unsaid(h->w, 1);
+    host_close(h);
+}
+
 void test_run_find(host_t *h)
 {
     if (host_open(h))
@@ -51,8 +79,10 @@ void test_run_cover(host_t *h)
 {
     if (host_open(h))
         return;
-    test_load(h, "test:cover@0.1.0", NCOVER_PATH,
-        strcmp(h->arg, "none") ? strtoll(h->arg, nullptr, 10) : BRIDGE_NONE);
+    test_load(h, "test:cover@0.1.0", *h->arg == 'f' ? NCOVER_FIT_PATH
+        : NCOVER_PATH, strcmp(h->arg, "none") ? strtoll(h->arg + (*h->arg
+        == 'f'), nullptr, 10) : BRIDGE_NONE);
+    host_run_frames_unsaid(h->w, 1);
     host_close(h);
 }
 

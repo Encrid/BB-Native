@@ -8,20 +8,22 @@
 
 #include "native_inside.h"
 
+BACKEND_EXPORT void backend_destroy(backend_t *b)
+{
+    free(b->copies);
+    free(b);
+}
+
 BACKEND_EXPORT backend_t *backend_create(const backend_setting_t *settings,
     uint32_t count, backend_err_t *err)
 {
-    const char *key = count && settings[0].key ? settings[0].key : "";
+    backend_t *b = native_allocate(sizeof(backend_t), "the backend", err);
 
-    if (!count)
-        return (native_allocate(sizeof(backend_t), "the backend", err));
-    snprintf(err->text, sizeof(err->text), "it knows no setting '%.100s'", key);
-    return (nullptr);
-}
-
-BACKEND_EXPORT void backend_destroy(backend_t *b)
-{
-    free(b);
+    if (b && native_copies_take(b, settings, count, err)) {
+        backend_destroy(b);
+        return (nullptr);
+    }
+    return (b);
 }
 
 BACKEND_EXPORT enum backend_capability backend_get_capabilities(

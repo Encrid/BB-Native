@@ -1,461 +1,123 @@
 code = ["include/**", "src/**", "tests/**", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
 
 [[case]]
-name = "BRIDGE_NATIVE-system-reads-and-writes"
-run = ["{out}/native-host{exe}", "BRIDGE_NATIVE-system-reads-and-writes"]
-claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally 2 1000.*alive"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE-a-module-of-999-entities"] }
-
-[[case]]
-name = "BRIDGE_NATIVE_COMPONENT-declared"
-run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_COMPONENT-declared"]
-claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally 2 1000.*alive"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE-a-module-of-999-entities"] }
-
-[[case]]
-name = "BRIDGE_NATIVE_ADD_SYSTEM-registered-and-run"
-run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_ADD_SYSTEM-registered-and-run"]
-claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally 2 1000.*alive"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE-a-module-of-999-entities"] }
-
-[[case]]
-name = "bridge_native_get_query-the-query-of-a-system"
-run = ["{out}/native-host{exe}", "bridge_native_get_query-the-query-of-a-system"]
-claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally 2 1000.*alive"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE-a-module-of-999-entities"] }
-
-[[case]]
-name = "bridge_native_get_span-two-tables-walked"
-run = ["{out}/native-host{exe}", "bridge_native_get_span-two-tables-walked"]
-claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally 2 1000.*alive"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE-a-module-of-999-entities"] }
-
-[[case]]
-name = "bridge_native_get_rows-rows-of-the-spans-of-a-query"
-run = ["{out}/native-host{exe}", "bridge_native_get_rows-rows-of-the-spans-of-a-query"]
-claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally 2 1000.*alive"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE-a-module-of-999-entities"] }
-
-[[case]]
-name = "bridge_native_get_block-ids-of-the-rows-of-a-span"
-run = ["{out}/native-host{exe}", "bridge_native_get_block-ids-of-the-rows-of-a-span"]
-claims = { matches = ["seen 1 9.*alive"], lacks = ["seen 1 5"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_PUT_SLOTS-the-order-nine-first"] }
-
-[[case]]
-name = "bridge_native_log-a-line-with-two-numbers"
-run = ["{out}/native-host{exe}", "bridge_native_log-a-line-with-two-numbers"]
-claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally 2 1000.*alive"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE-a-module-of-999-entities"] }
-
-[[case]]
-name = "bridge_native_find_value-the-value-of-a-live-entity"
-run = ["{out}/native-host{exe}", "bridge_native_find_value-the-value-of-a-live-entity"]
-claims = { matches = ["game:find@0.1.0/find: find live 42 0 .*alive"] }
-false = { run = ["{out}/native-host{exe}", "bridge_native_find_value-a-live-value-of-43"] }
-
-[[case]]
-name = "bridge_native_find_value-0-for-a-component-that-the-entity-lacks"
-run = ["{out}/native-host{exe}", "bridge_native_find_value-0-for-a-component-that-the-entity-lacks"]
-claims = { matches = ["game:find@0.1.0/find: find missing 0 0 .*alive"] }
-false = { run = ["{out}/native-host{exe}", "bridge_native_find_value-an-entity-that-carries-the-component"] }
-
-[[case]]
-name = "bridge_native_find_value-0-for-a-stale-id"
-run = ["{out}/native-host{exe}", "bridge_native_find_value-0-for-a-stale-id"]
-claims = { matches = ["game:find@0.1.0/find: find stale 0 0 .*alive"] }
-false = { run = ["{out}/native-host{exe}", "bridge_native_find_value-an-id-that-stays-live"] }
-
-[[case]]
-name = "bridge_native_find_value-0-for-an-index-outside-the-entity-index"
-run = ["{out}/native-host{exe}", "bridge_native_find_value-0-for-an-index-outside-the-entity-index"]
-claims = { matches = ["game:find@0.1.0/find: find far 0 0 .*alive"] }
-false = { run = ["{out}/native-host{exe}", "bridge_native_find_value-an-index-inside-the-entity-index"] }
-
-[[case]]
-name = "bridge_native_find_value-BRIDGE_CARRIED-for-a-tag"
-run = ["{out}/native-host{exe}", "bridge_native_find_value-BRIDGE_CARRIED-for-a-tag"]
-claims = { matches = ["game:find@0.1.0/find: find tag 1 .*alive"] }
-false = { run = ["{out}/native-host{exe}", "bridge_native_find_value-an-entity-without-the-tag"] }
-
-[[case]]
-name = "BRIDGE_NATIVE_ATTACH-seen-by-an-observer"
-run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_ATTACH-seen-by-an-observer"]
-claims = { matches = ["b2 game:setter@0.1.0/mark: marked.*b2 view:watcher@0.1.0/seen: seen 1 77.*alive"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_ATTACH-a-value-of-78-seen"] }
-
-[[case]]
-name = "bridge_native_lend-a-value-lent-to-attach"
-run = ["{out}/native-host{exe}", "bridge_native_lend-a-value-lent-to-attach"]
-claims = { matches = ["seen 1 77.*alive"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_ATTACH-a-value-of-78-seen"] }
-
-[[case]]
-name = "BRIDGE_NATIVE_PUT_SLOTS-changes-stated-and-made"
-run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_PUT_SLOTS-changes-stated-and-made"]
-claims = { matches = ["seen 1 9.*alive"], lacks = ["seen 1 5"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_PUT_SLOTS-the-order-nine-first"] }
-
-[[case]]
-name = "bridge_api_t-entry-from-a-foreign-thread-refused"
-run = ["{out}/native-host{exe}", "bridge_api_t-entry-from-a-foreign-thread-refused"]
-claims = { matches = ["test:foreign@0.1.0/reach: an id from another thread, and from this one 0 1.*alive"] }
-false = { run = ["{out}/native-host{exe}", "bridge_api_t-entry-from-this-thread-kept"] }
-
-[[case]]
-name = "call-an-entry-refused-fails-the-invocation"
-run = ["{out}/native-host{exe}", "call-an-entry-refused-fails-the-invocation"]
-claims = { matches = ["test:flood@0.1.0/flood: system 'flood' failed: spawn: its spawns of 1024 between two barriers are used up.*alive"] }
-false = { run = ["{out}/native-host{exe}", "call-an-entry-kept-ends-the-invocation"] }
-
-[[case]]
-name = "backend_get_capabilities-work-limit-refused"
-run = ["{out}/native-host{exe}", "backend_get_capabilities-work-limit-refused"]
-claims = { matches = ["is refused: it states work_limit, which backend 'native' cannot keep.*alive"], lacks = ["cannot open"] }
-false = { run = ["{out}/native-host{exe}", "backend_get_capabilities-no-limit-stated"] }
-
-[[case]]
-name = "backend_get_capabilities-memory-limit-refused"
-run = ["{out}/native-host{exe}", "backend_get_capabilities-memory-limit-refused"]
-claims = { matches = ["is refused: it states memory_limit, which backend 'native' cannot keep.*alive"], lacks = ["cannot open"] }
-false = { run = ["{out}/native-host{exe}", "backend_get_capabilities-no-limit-stated"] }
-
-[[case]]
-name = "backend_get_capabilities-timeout-refused"
-run = ["{out}/native-host{exe}", "backend_get_capabilities-timeout-refused"]
-claims = { matches = ["is refused: it states shutdown_timeout, which backend 'native' cannot keep.*alive"], lacks = ["cannot open"] }
-false = { run = ["{out}/native-host{exe}", "backend_get_capabilities-no-limit-stated"] }
-
-[[case]]
-name = "backend_get_capabilities-element-limit-refused"
-run = ["{out}/native-host{exe}", "backend_get_capabilities-element-limit-refused"]
-claims = { matches = ["is refused: it states element_limit, which backend 'native' cannot keep.*alive"], lacks = ["cannot open"] }
-false = { run = ["{out}/native-host{exe}", "backend_get_capabilities-no-limit-stated"] }
-
-[[case]]
-name = "module_compile-no-path-refused"
-run = ["{out}/native-host{exe}", "module_compile-no-path-refused"]
-claims = { matches = ["did not load: this backend opens a module's library by its path, and was handed none.*alive"] }
-false = { run = ["{out}/native-host{exe}", "module_compile-library-cannot-open"] }
-
-[[case]]
-name = "module_compile-library-cannot-open"
-run = ["{out}/native-host{exe}", "module_compile-library-cannot-open"]
-claims = { matches = ["did not load: cannot open the library 'no-such-library'.*alive"] }
-false = { run = ["{out}/native-host{exe}", "module_compile-no-path-refused"] }
-
-[[case]]
-name = "backend_create-a-setting-refused"
-run = ["{out}/native-host{exe}", "backend_create-a-setting-refused"]
-claims = { matches = ["backend 'native' would not start: it knows no setting 'cache'.*bridge_create refused.*alive"] }
-false = { run = ["{out}/native-host{exe}", "backend_create-no-setting-started"] }
-
-[[case]]
-name = "backend_create-no-memory-refused"
-run = ["{out}/native-host{exe}", "backend_create-no-memory-refused"]
-fail = { calloc = 1 }
-claims = { matches = ["backend 'native' would not start: out of memory: there was none for the backend.*bridge_create refused.*alive"] }
-false = { fail = {} }
-
-[[case]]
-name = "module_compile-no-memory-refused"
-run = ["{out}/native-host{exe}", "module_compile-no-memory-refused"]
-fail = { calloc = 2 }
-claims = { matches = ["module 'game:mover@0\\.1\\.0' did not load: out of memory: there was none for the image of a module.*alive"] }
-false = { fail = {} }
-
-[[case]]
-name = "instance_create-no-memory-refused"
-run = ["{out}/native-host{exe}", "instance_create-no-memory-refused"]
-fail = { calloc = 3 }
-claims = { matches = ["module 'game:mover@0\\.1\\.0' did not load: out of memory: there was none for an instance of an image.*alive"] }
-false = { fail = {} }
-
-[[case]]
-name = "instance_get_func-no-memory-refused"
-run = ["{out}/native-host{exe}", "instance_get_func-no-memory-refused"]
-fail = { calloc = 4 }
-claims = { matches = ["module 'game:mover@0\\.1\\.0' did not load: out of memory: there was none for a function of an instance.*alive"] }
-false = { fail = {} }
-
-[[case]]
-name = "bridge_native_get_single-the-one-row"
-run = ["{out}/native-host{exe}", "bridge_native_get_single-the-one-row"]
-claims = { matches = ["it has no value 0 0.*it has a value: gravity, wind 10 1.*wind 20 2.*wind 20 77.*alive"] }
-false = { run = ["{out}/native-host{exe}", "bridge_native_get_single-with-no-attach_a"] }
-
-[[case]]
-name = "bridge_native_get_bits-read-and-turned"
-run = ["{out}/native-host{exe}", "bridge_native_get_bits-read-and-turned"]
-claims = { matches = ["by words: rows, and of them on 6 6.*flicker.*rows, and of them on 6 3.*look_b: by rows: on, and their sum 3 39.*find: by id: alive, and of them on 6 3.*alive"] }
-false = { run = ["{out}/native-host{exe}", "bridge_native_get_bits-turned-by-combine"] }
-
-[[case]]
-name = "BRIDGE_NATIVE_DECLARE_TAG-carried-with-no-bytes"
-run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_DECLARE_TAG-carried-with-no-bytes"]
-claims = { matches = ["look: M, in tables: rows that carry it, and spans whose base says carried 3 1.*P, by its index: entities whose cell says carried 2 0.*R, direct-indexed: entities given it 3 0.*alive"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_DECLARE_TAG-with-no-spawn"] }
-
-[[case]]
-name = "bridge_native_get_cells-reached-by-an-id"
-run = ["{out}/native-host{exe}", "bridge_native_get_cells-reached-by-an-id"]
-claims = { matches = ["look_b: the table walked: rows, and of them given D 6 3.*near: by id: alive, and of them given D 6 3.*near: by id: the sum of D 306 0.*alive"] }
-false = { run = ["{out}/native-host{exe}", "bridge_native_get_cells-with-no-attach_b"] }
-
-[[case]]
-name = "bridge_native_get_sparse_index-reached-by-an-id"
-run = ["{out}/native-host{exe}", "bridge_native_get_sparse_index-reached-by-an-id"]
-claims = { matches = ["look: the set walked: spans, rows 1 3.*the sum of its values 306 0.*look_b: the table walked: rows, and of them in the set 6 3.*alive"] }
-false = { run = ["{out}/native-host{exe}", "bridge_native_get_sparse_index-with-no-attach_b"] }
-
-[[case]]
-name = "BRIDGE_NATIVE_DECLARE-an-enum-a-struct-names"
-run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_DECLARE-an-enum-a-struct-names"]
-claims = { matches = ["st:store@0.1.0: loaded.*look: values, and the sum of a 3 3003.*alive"], lacks = ["not loaded"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_DECLARE-with-no-spawn"] }
-
-[[case]]
-name = "bridge_native_get_list-triggers-of-an-observer"
-run = ["{out}/native-host{exe}", "bridge_native_get_list-triggers-of-an-observer"]
-claims = { matches = ["b2 game:setter@0.1.0/mark: marked.*b2 view:watcher@0.1.0/seen: seen 1 77.*alive"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_ATTACH-a-value-of-78-seen"] }
-
-[[case]]
-name = "BRIDGE_NATIVE_OBSERVER-registered-and-told"
-run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_OBSERVER-registered-and-told"]
-claims = { matches = ["b2 game:setter@0.1.0/mark: marked.*b2 view:watcher@0.1.0/seen: seen 1 77.*alive"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_ATTACH-a-value-of-78-seen"] }
-
-[[case]]
-name = "bridge_native_get_header-read-through-a-pointer"
-run = ["{out}/native-host{exe}", "bridge_native_get_header-read-through-a-pointer"]
-claims = { matches = ["b2 game:setter@0.1.0/mark: marked.*b2 view:watcher@0.1.0/seen: seen 1 77.*alive"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_ATTACH-a-value-of-78-seen"] }
-
-[[case]]
-name = "BRIDGE_NATIVE_STATE-a-statement-put-in-scratch"
-run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_STATE-a-statement-put-in-scratch"]
-claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally 2 1000.*alive"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE-a-module-of-999-entities"] }
-
-[[case]]
-name = "bridge_native_put-bytes-copied-into-scratch"
-run = ["{out}/native-host{exe}", "bridge_native_put-bytes-copied-into-scratch"]
-claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally 2 1000.*alive"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE-a-module-of-999-entities"] }
-
-[[case]]
-name = "bridge_line_t-a-line-with-its-two-numbers"
-run = ["{out}/native-host{exe}", "bridge_line_t-a-line-with-its-two-numbers"]
-claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally 2 1000.*alive"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE-a-module-of-999-entities"] }
-
-[[case]]
-name = "declare-two-components-declared"
-run = ["{out}/native-host{exe}", "declare-two-components-declared"]
-claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally 2 1000.*alive"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE-a-module-of-999-entities"] }
-
-[[case]]
-name = "add_system-registered-and-run"
-run = ["{out}/native-host{exe}", "add_system-registered-and-run"]
-claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally 2 1000.*alive"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE-a-module-of-999-entities"] }
-
-[[case]]
-name = "spawn-a-thousand-made-at-init"
-run = ["{out}/native-host{exe}", "spawn-a-thousand-made-at-init"]
-claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally 2 1000.*alive"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE-a-module-of-999-entities"] }
-
-[[case]]
-name = "observe-told-of-an-attach"
-run = ["{out}/native-host{exe}", "observe-told-of-an-attach"]
-claims = { matches = ["b2 game:setter@0.1.0/mark: marked.*b2 view:watcher@0.1.0/seen: seen 1 77.*alive"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_ATTACH-a-value-of-78-seen"] }
-
-[[case]]
-name = "attach-a-value-given-again"
-run = ["{out}/native-host{exe}", "attach-a-value-given-again"]
-claims = { matches = ["value_b.*heard_d: heard of D: entity, events 3 2.*near: by id: the sum of D 1104 0.*alive"] }
-false = { run = ["{out}/native-host{exe}", "attach-the-first-values-given-again"] }
-
-[[case]]
-name = "detach-a-component-taken"
-run = ["{out}/native-host{exe}", "detach-a-component-taken"]
-claims = { matches = ["detach_b_half.*heard_d: heard of D: entity, events 1 4.*rows, and of them given D 6 2.*alive"] }
-false = { run = ["{out}/native-host{exe}", "detach-each-component-taken"] }
-
-[[case]]
-name = "destroy-two-entities-gone"
-run = ["{out}/native-host{exe}", "destroy-two-entities-gone"]
-claims = { matches = ["destroy_half.*rows, and of them given D 4 1.*near: by id: alive, and of them given D 4 1.*alive"] }
-false = { run = ["{out}/native-host{exe}", "destroy-each-entity-gone"] }
-
-[[case]]
-name = "alloc-bytes-kept-from-init"
-run = ["{out}/native-host{exe}", "alloc-bytes-kept-from-init"]
-claims = { matches = ["say: kept 1 42.*alive"] }
-false = { run = ["{out}/native-host{exe}", "alloc-8-bytes-of-room-too-few"] }
-
-[[case]]
-name = "instance_get_func-no-such-export-refused"
-run = ["{out}/native-host{exe}", "instance_get_func-no-such-export-refused"]
-claims = { matches = ["module 'test:noinit@0.1.0' did not load: no exported function 'bridge_init'.*alive"] }
-false = { run = ["{out}/native-host{exe}", "instance_get_func-an-init-exported"] }
-
-[[case]]
-name = "test:cover-the-sdk-guards"
-run = ["{out}/native-host{exe}", "test:cover-the-sdk-guards"]
-claims = { matches = ["test:cover@0.1.0: loaded.*alive"] }
-false = { run = ["{out}/native-host{exe}", "test:cover-with-spawns-of-none"] }
-
-[[case]]
-name = "define_func-an-entry-the-abi-has-not-refused"
-run = ["{out}/native-direct{exe}", "teleport"]
-claims = { matches = ["an entry the SDK has not is refused: the native SDK has no entry 'teleport'"] }
-false = { run = ["{out}/native-direct{exe}", "declare"] }
-
-[[case]]
-name = "bridge_native_say-a-line-made-from-a-format-and-its-values"
-run = ["{out}/native-host{exe}", "bridge_native_say-a-line-made-from-a-format-and-its-values"]
-claims = { matches = ["test:say@0\\.1\\.0/values: look has 6 rows and -2 left.*alive"] }
-false = { run = ["{out}/native-host{exe}", "bridge_native_say-at-level-3-a-warning-is-not-kept"] }
-
-[[case]]
-name = "bridge_native_say-a-whole-text-has-its-length-in-a0"
-run = ["{out}/native-host{exe}", "bridge_native_say-a-whole-text-has-its-length-in-a0"]
-claims = { matches = ["/values: look has 6 rows and -2 left 27 0.*alive"] }
-false = { run = ["{out}/native-host{exe}", "bridge_native_say-at-level-3-a-warning-is-not-kept"] }
-
-[[case]]
-name = "bridge_native_say-a-cut-text-has-the-full-length-in-a0"
-run = ["{out}/native-host{exe}", "bridge_native_say-a-cut-text-has-the-full-length-in-a0"]
-claims = { matches = ["/cut: 0123456 10 0.*alive"] }
-false = { run = ["{out}/native-host{exe}", "bridge_native_say-at-level-3-a-warning-is-not-kept"] }
-
-[[case]]
-name = "bridge_native_say-the-level-and-the-system-of-the-record"
-run = ["{out}/native-host{exe}", "bridge_native_say-the-level-and-the-system-of-the-record"]
-claims = { matches = ["record\\[4\\] b[0-9]+ test:say@0\\.1\\.0/values: .*alive"] }
-false = { run = ["{out}/native-host{exe}", "bridge_native_say-at-level-3-a-warning-is-not-kept"] }
-
-[[case]]
-name = "bridge_native_say-two-lines-keep-their-own-texts"
-run = ["{out}/native-host{exe}", "bridge_native_say-two-lines-keep-their-own-texts"]
-claims = { matches = ["/two: first 1 7 0.*/two: second 2 8 0.*alive"] }
-false = { run = ["{out}/native-host{exe}", "bridge_native_say-at-level-3-a-warning-is-not-kept"] }
-
-[[case]]
-name = "bridge_native_say-a-text-cut-to-the-room-less-1-byte"
-run = ["{out}/native-host{exe}", "bridge_native_say-a-text-cut-to-the-room-less-1-byte"]
-claims = { matches = ["/cut: 0123456 [0-9]+ 0.*alive"] }
-false = { run = ["{out}/native-host{exe}", "bridge_native_say-at-level-3-a-warning-is-not-kept"] }
-
-[[case]]
-name = "bridge_native_say-the-room-starts-at-a-multiple-of-8"
-run = ["{out}/native-host{exe}", "bridge_native_say-the-room-starts-at-a-multiple-of-8"]
-claims = { matches = ["/cut_odd: 0123456 [0-9]+ 0.*alive"] }
-false = { run = ["{out}/native-host{exe}", "bridge_native_say-at-level-3-a-warning-is-not-kept"] }
-
-[[case]]
-name = "bridge_native_say-with-no-room-the-text-is-empty"
-run = ["{out}/native-host{exe}", "bridge_native_say-with-no-room-the-text-is-empty"]
-claims = { matches = ["/no_room:  [0-9]+ 0.*alive"] }
-false = { run = ["{out}/native-host{exe}", "bridge_native_say-at-level-3-a-warning-is-not-kept"] }
-
-[[case]]
-name = "bridge_native_say-an-error-of-vsnprintf-gives-an-empty-text"
-run = ["{out}/native-host{exe}", "bridge_native_say-an-error-of-vsnprintf-gives-an-empty-text"]
-claims = { matches = ["/wrong:  [0-9]+ 0.*alive"] }
-false = { run = ["{out}/native-host{exe}", "bridge_native_say-at-level-3-a-warning-is-not-kept"] }
-
-[[case]]
-name = "bridge_native_say-an-error-of-vsnprintf-gives-0-in-a0"
-run = ["{out}/native-host{exe}", "bridge_native_say-an-error-of-vsnprintf-gives-0-in-a0"]
-claims = { matches = ["/wrong:  0 0.*alive"] }
-false = { run = ["{out}/native-host{exe}", "bridge_native_say-at-level-3-a-warning-is-not-kept"] }
-
-[[case]]
-name = "bridge_native_say-a-level-not-kept-writes-nothing"
-run = ["{out}/native-host{exe}", "bridge_native_say-a-level-not-kept-writes-nothing"]
-claims = { matches = ["/unkept: the arena grew by.*alive"], lacks = ["a detail 7"] }
-false = { run = ["{out}/native-host{exe}", "bridge_native_say-at-level-7-a-detail-is-kept"] }
-
-[[case]]
-name = "bridge_native_say-a-level-not-kept-makes-no-text"
-run = ["{out}/native-host{exe}", "bridge_native_say-a-level-not-kept-makes-no-text"]
-claims = { matches = ["/unkept: the arena grew by 0 [0-9]+ 0.*alive"] }
-false = { run = ["{out}/native-host{exe}", "bridge_native_say-at-level-7-a-detail-is-kept"] }
-
-[[case]]
-name = "bridge_native_say-a-full-ring-drops-the-line"
-run = ["{out}/native-host{exe}", "bridge_native_say-a-full-ring-drops-the-line"]
-claims = { matches = ["1 log lines were dropped: its ring holds 8.*alive"] }
-false = { run = ["{out}/native-host{exe}", "bridge_native_say-at-level-3-a-warning-is-not-kept"] }
-
-[[case]]
-name = "bridge_native_say-a-dropped-line-makes-no-text"
-run = ["{out}/native-host{exe}", "bridge_native_say-a-dropped-line-makes-no-text"]
-claims = { matches = ["/after_full: the dropped line grew the arena by 0 [0-9]+ 0.*alive"] }
-false = { run = ["{out}/native-host{exe}", "bridge_native_say-at-level-3-a-warning-is-not-kept"] }
-
-[[case]]
-name = "bridge_native_say-at-level-3-a-warning-is-not-kept"
-run = ["{out}/native-host{exe}", "bridge_native_say-at-level-3-a-warning-is-not-kept"]
-claims = { matches = ["test:say@0\\.1\\.0: loaded.*alive"], lacks = ["look has 6 rows"] }
-false = { run = ["{out}/native-host{exe}", "bridge_native_say-a-line-made-from-a-format-and-its-values"] }
-
-[[case]]
-name = "bridge_native_say-at-level-7-a-detail-is-kept"
-run = ["{out}/native-host{exe}", "bridge_native_say-at-level-7-a-detail-is-kept"]
-claims = { matches = ["/unkept: a detail 7 [0-9]+ 0.*alive"] }
-false = { run = ["{out}/native-host{exe}", "bridge_native_say-a-line-made-from-a-format-and-its-values"] }
-
-[[case]]
-name = "BRIDGE_NATIVE_COMPONENT-passes-on_destroy"
-run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_COMPONENT-passes-on_destroy"]
-claims = { matches = ["module 'st:keep@0\\.1\\.0' did not load: type 'st:C' is a singleton, and a singleton states BRIDGE_ON_DESTROY_REMOVE.*alive"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_ON_DESTROY_REMOVE-a-singleton-of-each-macro-loads"] }
-
-[[case]]
-name = "BRIDGE_NATIVE_DECLARE-passes-on_destroy"
-run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_DECLARE-passes-on_destroy"]
-claims = { matches = ["module 'st:keep@0\\.1\\.0' did not load: type 'st:D' is a singleton, and a singleton states BRIDGE_ON_DESTROY_REMOVE.*alive"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_ON_DESTROY_REMOVE-a-singleton-of-each-macro-loads"] }
-
-[[case]]
-name = "BRIDGE_NATIVE_DECLARE_TAG-passes-on_destroy"
-run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_DECLARE_TAG-passes-on_destroy"]
-claims = { matches = ["module 'st:keep@0\\.1\\.0' did not load: type 'st:T' is a singleton, and a singleton states BRIDGE_ON_DESTROY_REMOVE.*alive"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_ON_DESTROY_REMOVE-a-singleton-of-each-macro-loads"] }
-
-[[case]]
-name = "BRIDGE_ON_DESTROY_REMOVE-a-singleton-of-each-macro-loads"
-run = ["{out}/native-host{exe}", "BRIDGE_ON_DESTROY_REMOVE-a-singleton-of-each-macro-loads"]
-claims = { matches = ["st:keep@0\\.1\\.0: loaded.*alive"], lacks = ["did not load"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_COMPONENT-passes-on_destroy"] }
-
-[[case]]
-name = "BRIDGE_NATIVE_ADD_SYSTEM-a-system-runs-after-those-that-before-names"
-run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_ADD_SYSTEM-a-system-runs-after-those-that-before-names"]
-claims = { matches = ["game:order@0\\.1\\.0/first: ran.*game:order@0\\.1\\.0/second: ran.*alive"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_ADD_SYSTEM-two-systems-in-conflict-and-no-before-fail"] }
-
-[[case]]
-name = "BRIDGE_NATIVE_OBSERVER-an-observer-runs-after-those-that-before-names"
-run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_OBSERVER-an-observer-runs-after-those-that-before-names"]
-claims = { matches = ["game:order@0\\.1\\.0/heard_first: heard.*game:order@0\\.1\\.0/heard_second: heard.*alive"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_OBSERVER-two-observers-in-conflict-and-no-before-fail"] }
-
-[[case]]
-name = "BRIDGE_NATIVE_ADD_SYSTEM-two-systems-in-conflict-and-no-before-fail"
-run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_ADD_SYSTEM-two-systems-in-conflict-and-no-before-fail"]
-claims = { matches = ["module 'game:order@0\\.1\\.0' did not load: 'game:order:first' and 'game:order:second' both touch 'game:Marked' in phase 'update', one of them writing it, and their module states no order of them.*alive"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_ADD_SYSTEM-a-system-runs-after-those-that-before-names"] }
-
-[[case]]
-name = "BRIDGE_NATIVE_OBSERVER-two-observers-in-conflict-and-no-before-fail"
-run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_OBSERVER-two-observers-in-conflict-and-no-before-fail"]
-claims = { matches = ["module 'game:order@0\\.1\\.0' did not load: 'game:order:heard_first' and 'game:order:heard_second' both touch 'game:Marked' at the barrier, one of them writing it, and their module states no order of them.*alive"] }
-false = { run = ["{out}/native-host{exe}", "BRIDGE_NATIVE_OBSERVER-an-observer-runs-after-those-that-before-names"] }
+name = "native-host"
+run = ["{out}/native-host{exe}"]
+env = { TEST_COPIES = "{case}/copies", TEST_CONTENT = "{case}/nbuild.module" }
+sweep = ["calloc"]
+claims = { status = 0 }
+rows = [
+    { name = "BRIDGE_NATIVE-system-reads-and-writes", in = "BRIDGE_NATIVE-system-reads-and-writes", claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally 2 1000.*alive"] }, false = "BRIDGE_NATIVE-a-module-of-999-entities" },
+    { name = "BRIDGE_NATIVE_COMPONENT-declared", in = "BRIDGE_NATIVE_COMPONENT-declared", claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally 2 1000.*alive"] }, false = "BRIDGE_NATIVE-a-module-of-999-entities" },
+    { name = "BRIDGE_NATIVE_ADD_SYSTEM-registered-and-run", in = "BRIDGE_NATIVE_ADD_SYSTEM-registered-and-run", claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally 2 1000.*alive"] }, false = "BRIDGE_NATIVE-a-module-of-999-entities" },
+    { name = "bridge_native_get_query-the-query-of-a-system", in = "bridge_native_get_query-the-query-of-a-system", claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally 2 1000.*alive"] }, false = "BRIDGE_NATIVE-a-module-of-999-entities" },
+    { name = "bridge_native_get_span-two-tables-walked", in = "bridge_native_get_span-two-tables-walked", claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally 2 1000.*alive"] }, false = "BRIDGE_NATIVE-a-module-of-999-entities" },
+    { name = "bridge_native_get_rows-rows-of-the-spans-of-a-query", in = "bridge_native_get_rows-rows-of-the-spans-of-a-query", claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally 2 1000.*alive"] }, false = "BRIDGE_NATIVE-a-module-of-999-entities" },
+    { name = "bridge_native_get_block-ids-of-the-rows-of-a-span", in = "bridge_native_get_block-ids-of-the-rows-of-a-span", claims = { matches = ["seen 1 9.*alive"], lacks = ["seen 1 5"] }, false = "BRIDGE_NATIVE_PUT_SLOTS-the-order-nine-first" },
+    { name = "bridge_native_log-a-line-with-two-numbers", in = "bridge_native_log-a-line-with-two-numbers", claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally 2 1000.*alive"] }, false = "BRIDGE_NATIVE-a-module-of-999-entities" },
+    { name = "bridge_native_in_arena-each-edge-of-the-arena", in = "bridge_native_in_arena-each-edge-of-the-arena", claims = { matches = ["in-arena 9 1.*test:text@0.1.0: loaded.*alive"] }, false = "bridge_native_in_arena-each-text-1-byte-longer" },
+    { name = "bridge_native_find_value-the-value-of-a-live-entity", in = "bridge_native_find_value-the-value-of-a-live-entity", claims = { matches = ["game:find@0.1.0/find: find live 42 0 .*alive"] }, false = "bridge_native_find_value-a-live-value-of-43" },
+    { name = "bridge_native_find_value-0-for-a-component-that-the-entity-lacks", in = "bridge_native_find_value-0-for-a-component-that-the-entity-lacks", claims = { matches = ["game:find@0.1.0/find: find missing 0 0 .*alive"] }, false = "bridge_native_find_value-an-entity-that-carries-the-component" },
+    { name = "bridge_native_find_value-0-for-a-stale-id", in = "bridge_native_find_value-0-for-a-stale-id", claims = { matches = ["game:find@0.1.0/find: find stale 0 0 .*alive"] }, false = "bridge_native_find_value-an-id-that-stays-live" },
+    { name = "bridge_native_find_value-0-for-an-index-outside-the-entity-index", in = "bridge_native_find_value-0-for-an-index-outside-the-entity-index", claims = { matches = ["game:find@0.1.0/find: find far 0 0 .*alive"] }, false = "bridge_native_find_value-an-index-inside-the-entity-index" },
+    { name = "bridge_native_find_value-BRIDGE_CARRIED-for-a-tag", in = "bridge_native_find_value-BRIDGE_CARRIED-for-a-tag", claims = { matches = ["game:find@0.1.0/find: find tag 1 .*alive"] }, false = "bridge_native_find_value-an-entity-without-the-tag" },
+    { name = "BRIDGE_NATIVE_ATTACH-seen-by-an-observer", in = "BRIDGE_NATIVE_ATTACH-seen-by-an-observer", claims = { matches = ["b2 game:setter@0.1.0/mark: marked.*b2 view:watcher@0.1.0/seen: seen 1 77.*alive"] }, false = "BRIDGE_NATIVE_ATTACH-a-value-of-78-seen" },
+    { name = "bridge_native_lend-a-value-lent-to-attach", in = "bridge_native_lend-a-value-lent-to-attach", claims = { matches = ["seen 1 77.*alive"] }, false = "BRIDGE_NATIVE_ATTACH-a-value-of-78-seen" },
+    { name = "BRIDGE_NATIVE_PUT_SLOTS-changes-stated-and-made", in = "BRIDGE_NATIVE_PUT_SLOTS-changes-stated-and-made", claims = { matches = ["seen 1 9.*alive"], lacks = ["seen 1 5"] }, false = "BRIDGE_NATIVE_PUT_SLOTS-the-order-nine-first" },
+    { name = "bridge_api_t-entry-from-a-foreign-thread-refused", in = "bridge_api_t-entry-from-a-foreign-thread-refused", claims = { matches = ["test:foreign@0.1.0/reach: an id from another thread, and from this one 0 1.*alive"] }, false = "bridge_api_t-entry-from-this-thread-kept" },
+    { name = "call-an-entry-refused-fails-the-invocation", in = "call-an-entry-refused-fails-the-invocation", claims = { matches = ["test:flood@0.1.0/flood: system 'flood' failed: spawn: its spawns of 1024 between two barriers are used up.*alive"] }, false = "call-an-entry-kept-ends-the-invocation" },
+    { name = "backend_get_capabilities-work-limit-refused", in = "backend_get_capabilities-work-limit-refused", claims = { matches = ["is refused: it states work_limit, which backend 'native' cannot keep.*alive"], lacks = ["cannot open"] }, false = "backend_get_capabilities-no-limit-stated" },
+    { name = "backend_get_capabilities-memory-limit-refused", in = "backend_get_capabilities-memory-limit-refused", claims = { matches = ["is refused: it states memory_limit, which backend 'native' cannot keep.*alive"], lacks = ["cannot open"] }, false = "backend_get_capabilities-no-limit-stated" },
+    { name = "backend_get_capabilities-timeout-refused", in = "backend_get_capabilities-timeout-refused", claims = { matches = ["is refused: it states shutdown_timeout, which backend 'native' cannot keep.*alive"], lacks = ["cannot open"] }, false = "backend_get_capabilities-no-limit-stated" },
+    { name = "backend_get_capabilities-element-limit-refused", in = "backend_get_capabilities-element-limit-refused", claims = { matches = ["is refused: it states element_limit, which backend 'native' cannot keep.*alive"], lacks = ["cannot open"] }, false = "backend_get_capabilities-no-limit-stated" },
+    { name = "module_compile-no-path-refused", in = "module_compile-no-path-refused", claims = { matches = ["did not load: this backend opens a module's library by its path, and was handed none.*alive"] }, false = "module_compile-library-cannot-open" },
+    { name = "module_compile-library-cannot-open", in = "module_compile-library-cannot-open", claims = { matches = ["did not load: cannot open the library 'no-such-library'.*alive"] }, false = "module_compile-no-path-refused" },
+    { name = "backend_create-a-setting-refused", in = "backend_create-a-setting-refused", claims = { matches = ["backend 'native' would not start: it knows no setting 'cache'.*bridge_create refused.*alive"] }, false = "backend_create-no-copies-refused" },
+    { name = "backend_create-no-copies-refused", in = "backend_create-no-copies-refused", claims = { matches = ["backend 'native' would not start: it needs the setting copies: a folder for the copies of the modules.*bridge_create refused.*alive"] }, false = "backend_create-a-setting-refused" },
+    { name = "backend_create-copies-of-another-kind-refused", in = "backend_create-copies-of-another-kind-refused", claims = { matches = ["backend 'native' would not start: the setting copies is a folder, as a text.*bridge_create refused.*alive"] }, false = "backend_create-copies-2-times-refused" },
+    { name = "backend_create-copies-2-times-refused", in = "backend_create-copies-2-times-refused", claims = { matches = ["backend 'native' would not start: it states the setting copies 2 times.*bridge_create refused.*alive"] }, false = "backend_create-copies-of-another-kind-refused" },
+    { name = "backend_create-copies-empty-refused", in = "backend_create-copies-empty-refused", claims = { matches = ["backend 'native' would not start: the setting copies is a folder, as a text.*bridge_create refused.*alive"] }, false = "backend_create-copies-2-times-refused" },
+    { name = "module_compile-a-reload-by-the-same-path-gives-each-new-build", in = "module_compile-a-reload-by-the-same-path-gives-each-new-build", claims = { matches = ["write 1: 0.*test:build@0.1.0: loaded.*build 1 0.*write 2: 0.*reload 2: 0.*build 2 0.*write 3: 0.*reload 3: 0.*build 3 0.*alive"] }, false = "module_compile-a-reload-by-the-same-path-gives-the-first-build" },
+    { name = "module_compile-a-copy-of-the-bytes-of-the-host", in = "module_compile-a-copy-of-the-bytes-of-the-host", claims = { matches = ["build 1 0.*write 2: 0.*reload 2: 0.*build 2 0.*write 3: 0.*reload 3: 0.*build 3 0.*alive"] }, false = "module_compile-a-reload-by-the-same-path-gives-the-first-build" },
+    { name = "backend_create-removes-only-its-copies", in = "backend_create-removes-only-its-copies", claims = { matches = ["7-old.module gone.*keep.txt stays.*8- stays.*x-y stays.*77x stays"] }, false = "backend_create-a-setting-refused" },
+    { name = "backend_create-copies-null-refused", in = "backend_create-copies-null-refused", claims = { matches = ["backend 'native' would not start: the setting copies is a folder, as a text.*bridge_create refused.*alive"] }, false = "backend_create-copies-2-times-refused" },
+    { name = "backend_create-a-folder-that-does-not-list", in = "+refuse os_folder_open=1 backend_create-a-folder-that-does-not-list", claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*alive"] }, false = "backend_create-a-setting-refused" },
+    { name = "backend_create-a-folder-that-cannot-be-made-refused", in = "+refuse os_folder_make=1 backend_create-a-folder-that-cannot-be-made-refused", claims = { matches = ["backend 'native' would not start: cannot make the folder of the copies '.*copies'.*bridge_create refused.*alive"] }, false = "backend_create-a-folder-that-cannot-be-made-refused" },
+    { name = "module_compile-no-memory-for-the-folder-refused", in = "+refuse calloc=2 module_compile-no-memory-for-the-folder-refused", claims = { matches = ["backend 'native' would not start: out of memory: there was none for the folder of the copies.*bridge_create refused.*alive"] }, false = "module_compile-no-memory-for-the-folder-refused" },
+    { name = "module_compile-no-memory-for-the-path-of-a-copy-refused", in = "+refuse calloc=3 module_compile-no-memory-for-the-path-of-a-copy-refused", claims = { matches = ["did not load: out of memory: there was none for the path of a copy.*alive"] }, false = "module_compile-no-memory-for-the-path-of-a-copy-refused" },
+    { name = "module_compile-no-memory-for-the-read-refused", in = "+refuse calloc=4 module_compile-no-memory-for-the-read-refused", claims = { matches = ["did not load: cannot open the library '.*nmover.*'.*alive"] }, false = "module_compile-no-memory-for-the-read-refused" },
+    { name = "backend_create-no-memory-refused", in = "+refuse calloc=1 backend_create-no-memory-refused", claims = { matches = ["backend 'native' would not start: out of memory: there was none for the backend.*bridge_create refused.*alive"] }, false = "backend_create-no-memory-refused" },
+    { name = "module_compile-no-memory-refused", in = "+refuse calloc=5 module_compile-no-memory-refused", claims = { matches = ["module 'game:mover@0\\.1\\.0' did not load: out of memory: there was none for the image of a module.*alive"] }, false = "module_compile-no-memory-refused" },
+    { name = "instance_create-no-memory-refused", in = "+refuse calloc=6 instance_create-no-memory-refused", claims = { matches = ["module 'game:mover@0\\.1\\.0' did not load: out of memory: there was none for an instance of an image.*alive"] }, false = "instance_create-no-memory-refused" },
+    { name = "instance_get_func-no-memory-refused", in = "+refuse calloc=7 instance_get_func-no-memory-refused", claims = { matches = ["module 'game:mover@0\\.1\\.0' did not load: out of memory: there was none for a function of an instance.*alive"] }, false = "instance_get_func-no-memory-refused" },
+    { name = "bridge_native_get_single-the-one-row", in = "bridge_native_get_single-the-one-row", claims = { matches = ["it has no value 0 0.*it has a value: gravity, wind 10 1.*wind 20 2.*wind 20 77.*alive"] }, false = "bridge_native_get_single-with-no-attach_a" },
+    { name = "bridge_native_get_bits-read-and-turned", in = "bridge_native_get_bits-read-and-turned", claims = { matches = ["by words: rows, and of them on 6 6.*flicker.*rows, and of them on 6 3.*look_b: by rows: on, and their sum 3 39.*find: by id: alive, and of them on 6 3.*alive"] }, false = "bridge_native_get_bits-turned-by-combine" },
+    { name = "BRIDGE_NATIVE_DECLARE_TAG-carried-with-no-bytes", in = "BRIDGE_NATIVE_DECLARE_TAG-carried-with-no-bytes", claims = { matches = ["look: M, in tables: rows that carry it, and spans whose base says carried 3 1.*P, by its index: entities whose cell says carried 2 0.*R, direct-indexed: entities given it 3 0.*alive"] }, false = "BRIDGE_NATIVE_DECLARE_TAG-with-no-spawn" },
+    { name = "bridge_native_get_cells-reached-by-an-id", in = "bridge_native_get_cells-reached-by-an-id", claims = { matches = ["look_b: the table walked: rows, and of them given D 6 3.*near: by id: alive, and of them given D 6 3.*near: by id: the sum of D 306 0.*alive"] }, false = "bridge_native_get_cells-with-no-attach_b" },
+    { name = "bridge_native_get_sparse_index-reached-by-an-id", in = "bridge_native_get_sparse_index-reached-by-an-id", claims = { matches = ["look: the set walked: spans, rows 1 3.*the sum of its values 306 0.*look_b: the table walked: rows, and of them in the set 6 3.*alive"] }, false = "bridge_native_get_sparse_index-with-no-attach_b" },
+    { name = "BRIDGE_NATIVE_DECLARE-an-enum-a-struct-names", in = "BRIDGE_NATIVE_DECLARE-an-enum-a-struct-names", claims = { matches = ["st:store@0.1.0: loaded.*look: values, and the sum of a 3 3003.*alive"], lacks = ["not loaded"] }, false = "BRIDGE_NATIVE_DECLARE-with-no-spawn" },
+    { name = "bridge_native_get_list-triggers-of-an-observer", in = "bridge_native_get_list-triggers-of-an-observer", claims = { matches = ["b2 game:setter@0.1.0/mark: marked.*b2 view:watcher@0.1.0/seen: seen 1 77.*alive"] }, false = "BRIDGE_NATIVE_ATTACH-a-value-of-78-seen" },
+    { name = "BRIDGE_NATIVE_OBSERVER-registered-and-told", in = "BRIDGE_NATIVE_OBSERVER-registered-and-told", claims = { matches = ["b2 game:setter@0.1.0/mark: marked.*b2 view:watcher@0.1.0/seen: seen 1 77.*alive"] }, false = "BRIDGE_NATIVE_ATTACH-a-value-of-78-seen" },
+    { name = "bridge_native_get_header-read-through-a-pointer", in = "bridge_native_get_header-read-through-a-pointer", claims = { matches = ["b2 game:setter@0.1.0/mark: marked.*b2 view:watcher@0.1.0/seen: seen 1 77.*alive"] }, false = "BRIDGE_NATIVE_ATTACH-a-value-of-78-seen" },
+    { name = "BRIDGE_NATIVE_STATE-a-statement-put-in-scratch", in = "BRIDGE_NATIVE_STATE-a-statement-put-in-scratch", claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally 2 1000.*alive"] }, false = "BRIDGE_NATIVE-a-module-of-999-entities" },
+    { name = "bridge_native_put-bytes-copied-into-scratch", in = "bridge_native_put-bytes-copied-into-scratch", claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally 2 1000.*alive"] }, false = "BRIDGE_NATIVE-a-module-of-999-entities" },
+    { name = "bridge_line_t-a-line-with-its-two-numbers", in = "bridge_line_t-a-line-with-its-two-numbers", claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally 2 1000.*alive"] }, false = "BRIDGE_NATIVE-a-module-of-999-entities" },
+    { name = "declare-two-components-declared", in = "declare-two-components-declared", claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally 2 1000.*alive"] }, false = "BRIDGE_NATIVE-a-module-of-999-entities" },
+    { name = "add_system-registered-and-run", in = "add_system-registered-and-run", claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally 2 1000.*alive"] }, false = "BRIDGE_NATIVE-a-module-of-999-entities" },
+    { name = "spawn-a-thousand-made-at-init", in = "spawn-a-thousand-made-at-init", claims = { matches = ["game:mover@0.1.0/tally: native tally 2 1000.*native tally 2 1000.*alive"] }, false = "BRIDGE_NATIVE-a-module-of-999-entities" },
+    { name = "observe-told-of-an-attach", in = "observe-told-of-an-attach", claims = { matches = ["b2 game:setter@0.1.0/mark: marked.*b2 view:watcher@0.1.0/seen: seen 1 77.*alive"] }, false = "BRIDGE_NATIVE_ATTACH-a-value-of-78-seen" },
+    { name = "attach-a-value-given-again", in = "attach-a-value-given-again", claims = { matches = ["value_b.*heard_d: heard of D: entity, events 3 2.*near: by id: the sum of D 1104 0.*alive"] }, false = "attach-the-first-values-given-again" },
+    { name = "detach-a-component-taken", in = "detach-a-component-taken", claims = { matches = ["detach_b_half.*heard_d: heard of D: entity, events 1 4.*rows, and of them given D 6 2.*alive"] }, false = "detach-each-component-taken" },
+    { name = "destroy-two-entities-gone", in = "destroy-two-entities-gone", claims = { matches = ["destroy_half.*rows, and of them given D 4 1.*near: by id: alive, and of them given D 4 1.*alive"] }, false = "destroy-each-entity-gone" },
+    { name = "alloc-bytes-kept-from-init", in = "alloc-bytes-kept-from-init", claims = { matches = ["say: kept 1 42.*alive"] }, false = "alloc-8-bytes-of-room-too-few" },
+    { name = "instance_get_func-no-such-export-refused", in = "instance_get_func-no-such-export-refused", claims = { matches = ["module 'test:noinit@0.1.0' did not load: no exported function 'bridge_init'.*alive"] }, false = "instance_get_func-an-init-exported" },
+    { name = "test:cover-the-sdk-guards", in = "test:cover-the-sdk-guards", claims = { matches = ["arena-edges 0 0.*test:cover@0.1.0: loaded.*alive"] }, false = "test:cover-each-probe-fits" },
+    { name = "test:cover-each-probe-fits", in = "test:cover-each-probe-fits", claims = { matches = ["arena-edges 15 1.*test:cover@0.1.0: loaded.*alive"] }, false = "test:cover-the-sdk-guards" },
+    { name = "bridge_native_lend-zero-at-an-attach-that-does-not-fit", in = "bridge_native_lend-zero-at-an-attach-that-does-not-fit", claims = { matches = ["attach: the value lies outside the scratch arena.*alive"] }, false = "BRIDGE_NATIVE_ATTACH-seen-by-an-observer" },
+    { name = "bridge_unload-the-module-runs-no-more", in = "bridge_unload-the-module-runs-no-more", claims = { matches = ["native tally 2 1000.*unload: 0.*after.*alive"], matches_not = ["after.*native tally"] }, false = "bridge_unload-not-called" },
+    { name = "bridge_native_say-a-line-made-from-a-format-and-its-values", in = "bridge_native_say-a-line-made-from-a-format-and-its-values", claims = { matches = ["test:say@0\\.1\\.0/values: look has 6 rows and -2 left.*alive"] }, false = "bridge_native_say-at-level-3-a-warning-is-not-kept" },
+    { name = "bridge_native_say-a-whole-text-has-its-length-in-a0", in = "bridge_native_say-a-whole-text-has-its-length-in-a0", claims = { matches = ["/values: look has 6 rows and -2 left 27 0.*alive"] }, false = "bridge_native_say-at-level-3-a-warning-is-not-kept" },
+    { name = "bridge_native_say-a-cut-text-has-the-full-length-in-a0", in = "bridge_native_say-a-cut-text-has-the-full-length-in-a0", claims = { matches = ["/cut: 0123456 10 0.*alive"] }, false = "bridge_native_say-at-level-3-a-warning-is-not-kept" },
+    { name = "bridge_native_say-the-level-and-the-system-of-the-record", in = "bridge_native_say-the-level-and-the-system-of-the-record", claims = { matches = ["record\\[4\\] b[0-9]+ test:say@0\\.1\\.0/values: .*alive"] }, false = "bridge_native_say-at-level-3-a-warning-is-not-kept" },
+    { name = "bridge_native_say-two-lines-keep-their-own-texts", in = "bridge_native_say-two-lines-keep-their-own-texts", claims = { matches = ["/two: first 1 7 0.*/two: second 2 8 0.*alive"] }, false = "bridge_native_say-at-level-3-a-warning-is-not-kept" },
+    { name = "bridge_native_say-a-text-cut-to-the-room-less-1-byte", in = "bridge_native_say-a-text-cut-to-the-room-less-1-byte", claims = { matches = ["/cut: 0123456 [0-9]+ 0.*alive"] }, false = "bridge_native_say-at-level-3-a-warning-is-not-kept" },
+    { name = "bridge_native_say-the-room-starts-at-a-multiple-of-8", in = "bridge_native_say-the-room-starts-at-a-multiple-of-8", claims = { matches = ["/cut_odd: 0123456 [0-9]+ 0.*alive"] }, false = "bridge_native_say-at-level-3-a-warning-is-not-kept" },
+    { name = "bridge_native_say-with-no-room-the-text-is-empty", in = "bridge_native_say-with-no-room-the-text-is-empty", claims = { matches = ["/no_room:  [0-9]+ 0.*alive"] }, false = "bridge_native_say-at-level-3-a-warning-is-not-kept" },
+    { name = "bridge_native_say-an-error-of-vsnprintf-gives-an-empty-text", in = "bridge_native_say-an-error-of-vsnprintf-gives-an-empty-text", claims = { matches = ["/wrong:  [0-9]+ 0.*alive"] }, false = "bridge_native_say-at-level-3-a-warning-is-not-kept" },
+    { name = "bridge_native_say-an-error-of-vsnprintf-gives-0-in-a0", in = "bridge_native_say-an-error-of-vsnprintf-gives-0-in-a0", claims = { matches = ["/wrong:  0 0.*alive"] }, false = "bridge_native_say-at-level-3-a-warning-is-not-kept" },
+    { name = "bridge_native_say-a-level-not-kept-writes-nothing", in = "bridge_native_say-a-level-not-kept-writes-nothing", claims = { matches = ["/unkept: the arena grew by.*alive"], lacks = ["a detail 7"] }, false = "bridge_native_say-at-level-7-a-detail-is-kept" },
+    { name = "bridge_native_say-a-level-not-kept-makes-no-text", in = "bridge_native_say-a-level-not-kept-makes-no-text", claims = { matches = ["/unkept: the arena grew by 0 [0-9]+ 0.*alive"] }, false = "bridge_native_say-at-level-7-a-detail-is-kept" },
+    { name = "bridge_native_say-a-full-ring-drops-the-line", in = "bridge_native_say-a-full-ring-drops-the-line", claims = { matches = ["1 log lines were dropped: its ring holds 8.*alive"] }, false = "bridge_native_say-at-level-3-a-warning-is-not-kept" },
+    { name = "bridge_native_say-a-dropped-line-makes-no-text", in = "bridge_native_say-a-dropped-line-makes-no-text", claims = { matches = ["/after_full: the dropped line grew the arena by 0 [0-9]+ 0.*alive"] }, false = "bridge_native_say-at-level-3-a-warning-is-not-kept" },
+    { name = "bridge_native_say-at-level-3-a-warning-is-not-kept", in = "bridge_native_say-at-level-3-a-warning-is-not-kept", claims = { matches = ["test:say@0\\.1\\.0: loaded.*alive"], lacks = ["look has 6 rows"] }, false = "bridge_native_say-a-line-made-from-a-format-and-its-values" },
+    { name = "bridge_native_say-at-level-7-a-detail-is-kept", in = "bridge_native_say-at-level-7-a-detail-is-kept", claims = { matches = ["/unkept: a detail 7 [0-9]+ 0.*alive"] }, false = "bridge_native_say-a-line-made-from-a-format-and-its-values" },
+    { name = "BRIDGE_NATIVE_COMPONENT-passes-on_destroy", in = "BRIDGE_NATIVE_COMPONENT-passes-on_destroy", claims = { matches = ["module 'st:keep@0\\.1\\.0' did not load: type 'st:C' is a singleton, and a singleton states BRIDGE_ON_DESTROY_REMOVE.*alive"] }, false = "BRIDGE_ON_DESTROY_REMOVE-a-singleton-of-each-macro-loads" },
+    { name = "BRIDGE_NATIVE_DECLARE-passes-on_destroy", in = "BRIDGE_NATIVE_DECLARE-passes-on_destroy", claims = { matches = ["module 'st:keep@0\\.1\\.0' did not load: type 'st:D' is a singleton, and a singleton states BRIDGE_ON_DESTROY_REMOVE.*alive"] }, false = "BRIDGE_ON_DESTROY_REMOVE-a-singleton-of-each-macro-loads" },
+    { name = "BRIDGE_NATIVE_DECLARE_TAG-passes-on_destroy", in = "BRIDGE_NATIVE_DECLARE_TAG-passes-on_destroy", claims = { matches = ["module 'st:keep@0\\.1\\.0' did not load: type 'st:T' is a singleton, and a singleton states BRIDGE_ON_DESTROY_REMOVE.*alive"] }, false = "BRIDGE_ON_DESTROY_REMOVE-a-singleton-of-each-macro-loads" },
+    { name = "BRIDGE_ON_DESTROY_REMOVE-a-singleton-of-each-macro-loads", in = "BRIDGE_ON_DESTROY_REMOVE-a-singleton-of-each-macro-loads", claims = { matches = ["st:keep@0\\.1\\.0: loaded.*alive"], lacks = ["did not load"] }, false = "BRIDGE_NATIVE_COMPONENT-passes-on_destroy" },
+    { name = "BRIDGE_NATIVE_ADD_SYSTEM-a-system-runs-after-those-that-before-names", in = "BRIDGE_NATIVE_ADD_SYSTEM-a-system-runs-after-those-that-before-names", claims = { matches = ["game:order@0\\.1\\.0/first: ran.*game:order@0\\.1\\.0/second: ran.*alive"] }, false = "BRIDGE_NATIVE_ADD_SYSTEM-two-systems-in-conflict-and-no-before-fail" },
+    { name = "BRIDGE_NATIVE_OBSERVER-an-observer-runs-after-those-that-before-names", in = "BRIDGE_NATIVE_OBSERVER-an-observer-runs-after-those-that-before-names", claims = { matches = ["game:order@0\\.1\\.0/heard_first: heard.*game:order@0\\.1\\.0/heard_second: heard.*alive"] }, false = "BRIDGE_NATIVE_OBSERVER-two-observers-in-conflict-and-no-before-fail" },
+    { name = "BRIDGE_NATIVE_ADD_SYSTEM-two-systems-in-conflict-and-no-before-fail", in = "BRIDGE_NATIVE_ADD_SYSTEM-two-systems-in-conflict-and-no-before-fail", claims = { matches = ["module 'game:order@0\\.1\\.0' did not load: 'game:order:first' and 'game:order:second' both touch 'game:Marked' in phase 'update', one of them writing it, and their module states no order of them.*alive"] }, false = "BRIDGE_NATIVE_ADD_SYSTEM-a-system-runs-after-those-that-before-names" },
+    { name = "BRIDGE_NATIVE_OBSERVER-two-observers-in-conflict-and-no-before-fail", in = "BRIDGE_NATIVE_OBSERVER-two-observers-in-conflict-and-no-before-fail", claims = { matches = ["module 'game:order@0\\.1\\.0' did not load: 'game:order:heard_first' and 'game:order:heard_second' both touch 'game:Marked' at the barrier, one of them writing it, and their module states no order of them.*alive"] }, false = "BRIDGE_NATIVE_OBSERVER-an-observer-runs-after-those-that-before-names" },
+]
+
+[[case]]
+name = "native-direct"
+run = ["{out}/native-direct{exe}"]
+env = { TEST_COPIES = "{case}/copies" }
+claims = { status = 0 }
+rows = [
+    { name = "define_func-an-entry-the-abi-has-not-refused", in = "teleport", claims = { matches = ["an entry the SDK has not is refused: the native SDK has no entry 'teleport'"] }, false = "declare" },
+    { name = "define_func-another-namespace-refused", in = "teleport", claims = { matches = ["another namespace is refused: the native SDK has no entry 'spawn'"] }, false = "declare" },
+    { name = "native_enter-an-entry-that-is-set-runs", in = "enter-set", claims = { line = ["enter-set: init 85, calls 2"] }, false = "enter-unset" },
+    { name = "native_enter-an-unset-entry-gives-0", in = "enter-unset", claims = { line = ["enter-unset: init 0, calls 0"] }, false = "enter-set" },
+    { name = "native_enter-after-a-refusal-each-entry-gives-0", in = "enter-refused", claims = { line = ["enter-refused: init 0, calls 1"] }, false = "enter-set" },
+    { name = "native_enter-an-entry-after-its-call-returned-gives-0", in = "enter-late", claims = { line = ["late 0, calls 2"] }, false = "enter-set" },
+]
+
+[[case]]
+name = "a name of a system that is a pointer stops the build, with the error of an array of a negative size"
+process = "status"
+run = ["{python}", "{root}/tools/compile_one.py", "{root}/tests/refused/name_pointer.c", "{root}/include", "{bridge}/include"]
+claims = { status = 1, has = ["name_pointer.c:10:13: error: array size is negative"] }
+false = { run = ["{python}", "{root}/tools/compile_one.py", "{root}/tests/refused/name_literal.c", "{root}/include", "{bridge}/include"] }

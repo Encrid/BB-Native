@@ -4,6 +4,7 @@
 ** Under the GNU Affero General Public License, version 3 only: see license.
 */
 #include "cases.h"
+#include "rows.h"
 
 static const host_case_t TEST_CASES[] = {
     { "BRIDGE_NATIVE-system-reads-and-writes",
@@ -23,6 +24,10 @@ static const host_case_t TEST_CASES[] = {
         test_order_changes, "five-first", test_set },
     { "bridge_native_log-a-line-with-two-numbers",
         test_run_mover, NMOVER_PATH, test_set },
+    { "bridge_native_in_arena-each-edge-of-the-arena",
+        test_run_text, NTEXT_PATH, test_set },
+    { "bridge_native_in_arena-each-text-1-byte-longer",
+        test_run_text, NTEXT_WIDER_PATH, test_set },
     { "bridge_native_find_value-the-value-of-a-live-entity",
         test_run_find, NFIND_PATH, test_set },
     { "bridge_native_find_value-0-for-a-component-that-the-entity-lacks",
@@ -54,7 +59,13 @@ static const host_case_t TEST_CASES[] = {
     { "module_compile-no-path-refused", test_load_path, nullptr, test_set },
     { "module_compile-library-cannot-open",
         test_load_path, "no-such-library", test_set },
-    { "backend_create-a-setting-refused", test_hand_setting, "1", test_set },
+    { "backend_create-a-setting-refused", test_hand_setting, "0", test_set },
+    { "backend_create-copies-of-another-kind-refused", test_hand_setting, "1",
+        test_set },
+    { "backend_create-copies-2-times-refused", test_hand_setting, "2",
+        test_set },
+    { "backend_create-copies-empty-refused", test_hand_setting, "3",
+        test_set },
     { "backend_create-no-memory-refused",
         test_run_mover, NMOVER_PATH, test_set },
     { "module_compile-no-memory-refused",
@@ -168,11 +179,36 @@ static const host_case_t TEST_CASES[] = {
         test_refuse_entry, NFLOOD1000_PATH, test_set },
     { "backend_get_capabilities-no-limit-stated",
         test_state_limit, "", test_set },
-    { "backend_create-no-setting-started", test_hand_setting, "0", test_set },
+    { "backend_create-no-copies-refused", test_hand_setting, "9", test_set },
+    { "module_compile-a-reload-by-the-same-path-gives-each-new-build",
+        test_reload_builds, "new", test_set },
+    { "module_compile-a-reload-by-the-same-path-gives-the-first-build",
+        test_reload_builds, "same", test_set },
+    { "module_compile-a-copy-of-the-bytes-of-the-host",
+        test_reload_builds, "bytes", test_set },
+    { "backend_create-removes-only-its-copies", test_clear_copies, "",
+        test_set },
+    { "backend_create-copies-null-refused", test_hand_setting, "4",
+        test_set },
+    { "backend_create-a-folder-that-does-not-list",
+        test_run_mover, NMOVER_PATH, test_set },
+    { "backend_create-a-folder-that-cannot-be-made-refused",
+        test_run_mover, NMOVER_PATH, test_set },
+    { "module_compile-no-memory-for-the-folder-refused",
+        test_run_mover, NMOVER_PATH, test_set },
+    { "module_compile-no-memory-for-the-path-of-a-copy-refused",
+        test_run_mover, NMOVER_PATH, test_set },
+    { "module_compile-no-memory-for-the-read-refused",
+        test_run_mover, NMOVER_PATH, test_set },
     { "alloc-8-bytes-of-room-too-few", test_keep_bytes, "8", test_set },
     { "instance_get_func-an-init-exported",
         test_load_no_init, NINIT_PATH, test_set },
     { "test:cover-with-spawns-of-none", test_run_cover, "none", test_set },
+    { "test:cover-each-probe-fits", test_run_cover, "f16", test_set },
+    { "bridge_native_lend-zero-at-an-attach-that-does-not-fit",
+        test_observe, NSETTER_FULL_PATH, test_set },
+    { "bridge_unload-the-module-runs-no-more", test_unload, "", test_set },
+    { "bridge_unload-not-called", test_unload, "keep", test_set },
     { "bridge_native_get_single-with-no-attach_a",
         test_read_kept, "single-no-attach_a", test_set },
     { "bridge_native_get_bits-turned-by-combine",
@@ -192,10 +228,16 @@ static const host_case_t TEST_CASES[] = {
     { "destroy-each-entity-gone", test_read_kept, "changed-destroy", test_set },
 };
 
-int main(int argc, char **argv)
+static int run(int argc, char **argv)
 {
     host_t h;
 
     host_init(&h, argc, argv);
     return (host_run(&h, TEST_CASES, sizeof(TEST_CASES) / sizeof(*TEST_CASES)));
+}
+
+int main(int argc, char **argv)
+{
+    setvbuf(stdout, nullptr, _IONBF, 0);
+    return (argc > 1 ? run(argc, argv) : rows_run(run));
 }
