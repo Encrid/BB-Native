@@ -98,6 +98,13 @@ variants = [{ name = "nbuild2", defines = ["BUILD=2"] }, { name = "nbuild3", def
 path = true
 
 [[modules]]
+name = "ntext"
+sources = ["tests/modules/ntext.c", "tests/modules/nidle.c"]
+defines = ["WIDER=0"]
+variants = [{ name = "ntext_wider", defines = ["WIDER=1"] }]
+path = true
+
+[[modules]]
 name = "nalloc"
 sources = ["tests/modules/nalloc.c", "tests/modules/nidle.c"]
 path = true
