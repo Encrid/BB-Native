@@ -6,8 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "backend.h"
-#include "os.h"
+#include "bridge_backend.h"
 #include "rows.h"
 
 static int refuse_entry(const backend_api_t *api, backend_module_t *m,
@@ -93,7 +92,7 @@ static int run(int argc, char **argv)
     if (m)
         api.module_destroy(m);
     api.backend_destroy(be);
-    os_lib_close(lib);
+    backend_close(lib);
     return (failed);
 }
 
