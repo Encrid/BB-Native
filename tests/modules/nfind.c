@@ -5,6 +5,7 @@
 */
 #include "bridge_native.h"
 #include "game.h"
+#include "native_entry.h"
 #include "native_idle.h"
 #include "native_say.h"
 
@@ -27,9 +28,17 @@ static uint32_t value_of(const bridge_api_t *api, uint64_t id)
 
 BRIDGE_NATIVE(find)
 {
+    uint32_t left = bridge_native_get_header(api)->changes_left;
+
     runs++;
     if (runs != 1)
         return (0);
+    say(api, "is-alive", bridge_native_is_alive(api, live),
+        bridge_native_is_alive(api, stale));
+    say(api, "is-alive far", bridge_native_is_alive(api,
+        NEAR ? live : UINT32_MAX), 0);
+    say(api, "room", bridge_native_has_room(api, left + ROOM_PAST),
+        bridge_native_has_room(api, left + 1));
     say(api, "find live", value_of(api, live), 0);
     say(api, "find missing", value_of(api, bare), 0);
     say(api, "find stale", value_of(api, stale), 0);
@@ -62,6 +71,7 @@ BRIDGE_NATIVE(init)
         BRIDGE_TABLE, BRIDGE_ON_DESTROY_REMOVE);
     BRIDGE_NATIVE_ADD_SYSTEM(api, "find", "update", &none, 0, nullptr, 0,
         nullptr, 0);
+    nentry_add(api, marked);
     live = spawn_marked(api, true);
     if (!TAGLESS)
         api->attach(api, live, flag, BRIDGE_ZEROED);

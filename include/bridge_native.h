@@ -7,6 +7,7 @@
     #define BRIDGE_NATIVE_H
 
     #include "bridge_native_api.h"
+    #include "bridge_native_entry.h"
     #include "bridge_native_kept.h"
     #include "bridge_native_log.h"
     #include "bridge_native_value.h"
@@ -66,14 +67,6 @@
             before_count))
     #define BRIDGE_NATIVE_PUT_SLOTS(api, slots, count) \
         bridge_native_put_slots(api, slots, count)
-
-static inline uint32_t bridge_native_put_slots(const bridge_api_t *api,
-    const uint32_t *slots, uint32_t count)
-{
-    if (!count)
-        return (0);
-    return (bridge_native_put(api, slots, count * sizeof(uint32_t)));
-}
 
 static inline const bridge_query_t *bridge_native_get_query(
     const bridge_api_t *api, uint32_t query)
