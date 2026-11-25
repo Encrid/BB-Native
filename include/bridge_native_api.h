@@ -59,7 +59,8 @@ static inline uint32_t bridge_native_lend(const bridge_api_t *api,
 
     if (used > h->scratch_len || len > h->scratch_len - used)
         return (0);
-    memcpy(api->private_base + h->scratch + used, bytes, len);
+    if (len)
+        memcpy(api->private_base + h->scratch + used, bytes, len);
     return (h->scratch + used);
 }
 
