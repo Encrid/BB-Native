@@ -24,4 +24,7 @@ The bases are `shared_base`, the shared block, and `private_base`, the module's 
 | `bridge_native_lend` | Copies bytes above the used arena without counting them, for a value an entry copies during the call, and gives their offset. Gives zero when they do not fit. |
 | `bridge_native_put` | Lends the bytes, then counts them as used, and gives their offset. Gives zero when they do not fit. |
 
+With a length of 0, `bridge_native_lend` copies nothing and gives the offset of the free arena. So `bytes` can then be a null pointer.
+It calls no `memcpy` then, since `memcpy` with a null pointer is undefined also for 0 bytes: ISO/IEC 9899:2024, 7.26.1.
+
 A zero of `bridge_native_lend` reaches `attach` through `BRIDGE_NATIVE_ATTACH`, as the place of the value. Bridge then refuses the attach: `attach: the value lies outside the scratch arena`, and the call fails: https://github.com/Encrid/Bridge/blob/v0.9.0/docs/extern/bridge_abi.h.md#a-change.
