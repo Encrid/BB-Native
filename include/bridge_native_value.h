@@ -8,6 +8,17 @@
 
     #include "bridge_native_api.h"
 
+static inline bool bridge_native_is_alive(const bridge_api_t *api,
+    uint64_t id)
+{
+    const bridge_header_t *h = bridge_native_get_header(api);
+    const bridge_entity_t *e = (const bridge_entity_t *)(api->shared_base
+        + h->entity_index);
+
+    return ((uint32_t)id < h->entities
+        && e[(uint32_t)id].generation == (uint32_t)(id >> 32));
+}
+
 static inline uint32_t bridge_native_find_value(const bridge_api_t *api,
     uint64_t id, uint32_t slot)
 {
@@ -15,12 +26,10 @@ static inline uint32_t bridge_native_find_value(const bridge_api_t *api,
     const bridge_entity_t *e;
     uint32_t base;
 
-    if ((uint32_t)id >= h->entities)
+    if (!bridge_native_is_alive(api, id))
         return (0);
     e = (const bridge_entity_t *)(api->shared_base + h->entity_index)
         + (uint32_t)id;
-    if (e->generation != (uint32_t)(id >> 32))
-        return (0);
     base = ((const uint32_t *)(api->private_base + h->column_base))[e->table
         * h->types + slot];
     if (!base)

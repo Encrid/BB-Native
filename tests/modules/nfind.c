@@ -12,6 +12,7 @@ static uint32_t position;
 static uint32_t marked;
 static uint32_t flag;
 static uint32_t runs;
+static uint32_t entries;
 static uint64_t live;
 static uint64_t bare;
 static uint64_t stale;
@@ -25,11 +26,27 @@ static uint32_t value_of(const bridge_api_t *api, uint64_t id)
     return (((const marked_t *)(api->shared_base + at))->by);
 }
 
+BRIDGE_NATIVE(entry)
+{
+    entries++;
+    if (entries == 1)
+        say(api, "entry ran", entries, 0);
+    return (0);
+}
+
 BRIDGE_NATIVE(find)
 {
+    uint32_t left = bridge_native_get_header(api)->changes_left;
+
     runs++;
     if (runs != 1)
         return (0);
+    say(api, "is-alive", bridge_native_is_alive(api, live),
+        bridge_native_is_alive(api, stale));
+    say(api, "is-alive far", bridge_native_is_alive(api,
+        NEAR ? live : UINT32_MAX), 0);
+    say(api, "room", bridge_native_has_room(api, left + ROOM_PAST),
+        bridge_native_has_room(api, left + 1));
     say(api, "find live", value_of(api, live), 0);
     say(api, "find missing", value_of(api, bare), 0);
     say(api, "find stale", value_of(api, stale), 0);
@@ -53,6 +70,8 @@ static uint64_t spawn_marked(const bridge_api_t *api, bool with_mark)
 BRIDGE_NATIVE(init)
 {
     int none = 0;
+    bridge_native_entry_t entry = { .name = "entry",
+        .phase = PHASE_LOST ? "nowhere" : "update" };
 
     position = BRIDGE_NATIVE_COMPONENT(api, "game:Position", position_t,
         BRIDGE_DELETE, BRIDGE_TABLE, BRIDGE_ON_DESTROY_REMOVE);
@@ -62,6 +81,7 @@ BRIDGE_NATIVE(init)
         BRIDGE_TABLE, BRIDGE_ON_DESTROY_REMOVE);
     BRIDGE_NATIVE_ADD_SYSTEM(api, "find", "update", &none, 0, nullptr, 0,
         nullptr, 0);
+    bridge_native_add_entry(api, &entry);
     live = spawn_marked(api, true);
     if (!TAGLESS)
         api->attach(api, live, flag, BRIDGE_ZEROED);

@@ -13,6 +13,11 @@ It also gives 0 for an id whose index is outside the entity index. Thus a module
 For a tag, it gives `BRIDGE_CARRIED`, as each reader of a place gives for a tag: https://github.com/Encrid/Bridge/blob/v0.9.0/docs/extern/bridge_abi.h.md#bridge_kind. A tag has no value, so a caller compares the place with `BRIDGE_CARRIED` before it reads.
 It reads only components of a table. The readers of `docs/extern/bridge_native_kept.h.md` give the other storage.
 
+## An entity that is alive
+
+`bridge_native_is_alive(api, id)` tells if an id names a live entity. It does the first steps of `find_value`. The index of the id is inside the entity index, and its generation is the generation of that entry.
+It gives false for an id whose generation is stale, and for an id whose index is outside the entity index. `bridge_native_find_value` tests the id with it.
+
 ## A text in the arena
 
 `bridge_native_in_arena(api, text)` tells if the bytes of a `bridge_text_t` are all in the shared arena that the module can read: https://github.com/Encrid/Bridge/blob/v0.9.0/docs/extern/bridge_abi.h.md#bridge_header_t.
@@ -24,4 +29,5 @@ It gives false for each other text, also when `at` plus `len` would wrap. Thus a
 | Function | Result |
 | --- | --- |
 | `bridge_native_find_value` | Gives where the value of a component of a table is, for 1 entity, in the shared memory, or 0. |
+| `bridge_native_is_alive` | Tells if an id names a live entity, as *An entity that is alive* tells. |
 | `bridge_native_in_arena` | Tells if a text is in the shared arena that the module can read, as *A text in the arena* tells. |

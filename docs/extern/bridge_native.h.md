@@ -2,6 +2,7 @@
 
 A native module compiles this header, beside `bridge_abi.h`, to reach Bridge through the backend's table.
 It pulls in the table, the kept-storage readers, the reader of the value of 1 entity and the log, and adds the registration macros.
+It also pulls in the statements from a table and the room of the changes: `docs/extern/bridge_native_entry.h.md`.
 
 ## The macros
 
@@ -26,7 +27,7 @@ The last three parameters fill the fields of `bridge_declaration_t` with the sam
 
 They fill every field of the statement.
 `before` holds the slots of the systems of the module that run before this one, and `before_count` tells how many. For an observer, they are observers.
-`BRIDGE_NATIVE_PUT_SLOTS(api, slots, count)` stages a list of slots in the arena. With a count of 0, it stages nothing and gives 0.
+`BRIDGE_NATIVE_PUT_SLOTS(api, slots, count)` calls `bridge_native_put_slots`: `docs/extern/bridge_native_entry.h.md`.
 The two macros stage their changes and `before` with it.
 
 ## The texts of a statement
@@ -53,7 +54,6 @@ An attach takes `BRIDGE_CHANGE_BYTES` of the size of its value from `changes_lef
 
 | Function | Result |
 | --- | --- |
-| `bridge_native_put_slots` | Stages the slots of `BRIDGE_NATIVE_PUT_SLOTS`, which calls it with the same parameters. |
 | `bridge_native_get_query` | Gives a query's spans, as the last barrier left them. |
 | `bridge_native_get_span` | Gives span `i` of a query, from the private base. |
 | `bridge_native_get_rows` | Gives the row count of the table of a span, from the table directory in the shared memory. |
