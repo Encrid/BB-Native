@@ -5,6 +5,7 @@
 */
 #include "bridge_native.h"
 #include "game.h"
+#include "native_entry.h"
 #include "native_idle.h"
 #include "native_say.h"
 
@@ -12,7 +13,6 @@ static uint32_t position;
 static uint32_t marked;
 static uint32_t flag;
 static uint32_t runs;
-static uint32_t entries;
 static uint64_t live;
 static uint64_t bare;
 static uint64_t stale;
@@ -24,14 +24,6 @@ static uint32_t value_of(const bridge_api_t *api, uint64_t id)
     if (!at)
         return (0);
     return (((const marked_t *)(api->shared_base + at))->by);
-}
-
-BRIDGE_NATIVE(entry)
-{
-    entries++;
-    if (entries == 1)
-        say(api, "entry ran", entries, 0);
-    return (0);
 }
 
 BRIDGE_NATIVE(find)
@@ -70,8 +62,6 @@ static uint64_t spawn_marked(const bridge_api_t *api, bool with_mark)
 BRIDGE_NATIVE(init)
 {
     int none = 0;
-    bridge_native_entry_t entry = { .name = "entry",
-        .phase = PHASE_LOST ? "nowhere" : "update" };
 
     position = BRIDGE_NATIVE_COMPONENT(api, "game:Position", position_t,
         BRIDGE_DELETE, BRIDGE_TABLE, BRIDGE_ON_DESTROY_REMOVE);
@@ -81,7 +71,7 @@ BRIDGE_NATIVE(init)
         BRIDGE_TABLE, BRIDGE_ON_DESTROY_REMOVE);
     BRIDGE_NATIVE_ADD_SYSTEM(api, "find", "update", &none, 0, nullptr, 0,
         nullptr, 0);
-    bridge_native_add_entry(api, &entry);
+    nentry_add(api, marked);
     live = spawn_marked(api, true);
     if (!TAGLESS)
         api->attach(api, live, flag, BRIDGE_ZEROED);
