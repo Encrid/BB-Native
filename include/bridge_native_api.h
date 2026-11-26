@@ -41,6 +41,11 @@ struct bridge_api {
     uint8_t *private_base;
 };
 
+typedef struct {
+    const void *bytes;
+    uint32_t len;
+} bridge_native_bytes_t;
+
 static inline bridge_header_t *bridge_native_get_header(const bridge_api_t *api)
 {
     return ((bridge_header_t *)api->private_base);
@@ -73,6 +78,12 @@ static inline uint32_t bridge_native_put(const bridge_api_t *api,
     if (at)
         h->scratch_used = at - h->scratch + len;
     return (at);
+}
+
+static inline void bridge_native_attach(const bridge_api_t *api, uint64_t id,
+    uint32_t slot, bridge_native_bytes_t value)
+{
+    api->attach(api, id, slot, bridge_native_lend(api, value.bytes, value.len));
 }
 
 #endif
