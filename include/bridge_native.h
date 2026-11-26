@@ -18,8 +18,8 @@
             + sizeof(text) - 1)
 
     #define BRIDGE_NATIVE_ATTACH(api, id, slot, value) \
-        (api)->attach(api, id, slot, \
-            bridge_native_lend(api, &(value), sizeof(value)))
+        bridge_native_attach(api, id, slot, \
+            (bridge_native_bytes_t){ &(value), sizeof(value) })
 
     #define BRIDGE_NATIVE_DECLARE(api, kind, name, T, on_unload, storage, \
         on_destroy) \

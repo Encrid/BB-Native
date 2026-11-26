@@ -47,6 +47,14 @@ BRIDGE_NATIVE(find)
     return (0);
 }
 
+static uint32_t put_then(const bridge_api_t *api, uint32_t slot)
+{
+    const char bytes[] = "put before the lend";
+
+    bridge_native_put(api, bytes, sizeof(bytes));
+    return (slot);
+}
+
 static uint64_t spawn_marked(const bridge_api_t *api, bool with_mark)
 {
     position_t p = { 1.0f, 2.0f };
@@ -55,7 +63,7 @@ static uint64_t spawn_marked(const bridge_api_t *api, bool with_mark)
 
     BRIDGE_NATIVE_ATTACH(api, id, position, p);
     if (with_mark)
-        BRIDGE_NATIVE_ATTACH(api, id, marked, m);
+        BRIDGE_NATIVE_ATTACH(api, id, put_then(api, marked), m);
     return (id);
 }
 

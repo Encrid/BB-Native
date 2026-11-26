@@ -38,7 +38,8 @@ A pointer has the size of a pointer, and not of its text. So a pointer stops the
 The check is a `_Generic` on `&(text)`. Only an array of `char` gives a pointer to an array of the size of the text.
 
 Each macro stages its statement in the arena, then reaches the matching entry.
-`BRIDGE_NATIVE_ATTACH` lends a value and attaches it by slot.
+`BRIDGE_NATIVE_ATTACH` lends a value and attaches it by slot, through `bridge_native_attach`.
+Its argument `slot` can put or declare, for example `BRIDGE_NATIVE_COMPONENT(...)`: the lend comes after it, `docs/extern/bridge_native_api.h.md`.
 
 ## The value of an attach
 
